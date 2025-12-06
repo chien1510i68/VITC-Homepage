@@ -48,7 +48,6 @@ export const COLORS = {
   },
 
 
->>>>>>> d238d9b (update version nextjs)
   // Status Colors
   status: {
     success: 'green-600',
