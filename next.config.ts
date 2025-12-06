@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'vitc.edu.vn',
+        pathname: '/Frond_end/images/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'images.unsplash.com',
       },
     ],

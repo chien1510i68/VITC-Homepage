@@ -51,7 +51,7 @@ export default function LookupSection() {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50" id="tra-cuu">
+    <section className="py-10 md:py-16 bg-gradient-to-b from-white to-gray-50" id="tra-cuu">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -97,35 +97,54 @@ export default function LookupSection() {
         </div>
 
         {/* Filter Form */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 mb-8 ">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            {/* CCCD - Always show */}
-            <div>
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mb-8">
+          <div className="max-w-4xl mx-auto">
+            {/* CCCD Input - Full Width */}
+            <div className="mb-4">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 CCCD/CMND/MSV <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
-                value={cccd}
-                onChange={(e) => setCccd(e.target.value)}
-                placeholder="Nhập số CCCD/CMND/MSV"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                required
-              />
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  value={cccd}
+                  onChange={(e) => setCccd(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                  placeholder="Nhập số CCCD/CMND/MSV"
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
+                  required
+                />
+                <Button
+                  onClick={handleSearch}
+                  className={`${TAILWIND_COLORS.bgPrimary} ${TAILWIND_COLORS.bgPrimaryHover} text-white font-semibold px-8 py-3 text-base h-auto`}
+                  disabled={isLoading || !cccd.trim()}
+                >
+                  <Search className="w-5 h-5 mr-2" />
+                  {isLoading ? 'Đang tìm...' : 'Tra cứu'}
+                </Button>
+                <Button
+                  onClick={handleReset}
+                  variant="outline"
+                  className="px-6 py-3 text-base h-auto border-gray-300"
+                  disabled={isLoading}
+                >
+                  Đặt lại
+                </Button>
+              </div>
             </div>
 
-            {/* Show certificate type dropdown only for certificate lookup */}
+            {/* Certificate Type - Only for certificate lookup */}
             {lookupType === 'certificate' && (
-              <div>
+              <div className="mb-4">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Loại chứng chỉ
+                  Loại chứng chỉ (Tùy chọn)
                 </label>
                 <select
                   value={certificateType}
                   onChange={(e) => setCertificateType(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
                 >
-                  <option value="all">Chọn loại chứng chỉ</option>
+                  <option value="all">Tất cả loại chứng chỉ</option>
                   <option value="basic">Cơ bản</option>
                   <option value="advanced">Nâng cao</option>
                   <option value="standard">Chuẩn đầu ra tin học</option>
@@ -133,34 +152,19 @@ export default function LookupSection() {
               </div>
             )}
 
-            {/* Actions */}
-            <div className="flex items-end gap-2">
-              <Button
-                onClick={handleSearch}
-                className={`flex-1 ${TAILWIND_COLORS.bgPrimary} ${TAILWIND_COLORS.bgPrimaryHover} text-white font-semibold`}
-                disabled={isLoading || !cccd.trim()}
-              >
-                <Search className="w-4 h-4 mr-2" />
-                {isLoading ? 'Đang tìm kiếm...' : 'Tra cứu'}
-              </Button>
-              <Button
-                onClick={handleReset}
-                variant="outline"
-                className="px-4"
-                disabled={isLoading}
-              >
-                Đặt lại
-              </Button>
+            {/* Quick Tips */}
+            <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-4 mt-4">
+              <div className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="text-sm text-gray-700">
+                  <strong className="text-blue-800">Hướng dẫn:</strong> {lookupType === 'score' 
+                    ? 'Nhập số CCCD/CMND/MSV để tra cứu kết quả thi của bạn. Bấm Enter hoặc click nút "Tra cứu" để tìm kiếm.' 
+                    : 'Nhập số CCCD/CMND/MSV để tra cứu chứng chỉ. Bạn có thể lọc thêm theo loại chứng chỉ để kết quả chính xác hơn.'}
+                </p>
+              </div>
             </div>
-          </div>
-
-          {/* Quick Tips */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm text-blue-800">
-              <strong>Hướng dẫn:</strong> {lookupType === 'score' 
-                ? 'Nhập số CCCD/CMND/MSV để tra cứu kết quả thi của bạn.' 
-                : 'Nhập số CCCD/CMND/MSV (bắt buộc) và chọn loại chứng chỉ để tra cứu thông tin chứng chỉ của bạn.'}
-            </p>
           </div>
         </div>
 

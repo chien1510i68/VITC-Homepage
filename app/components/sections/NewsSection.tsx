@@ -49,7 +49,7 @@ export default function NewsSection() {
 
   if (isLoading) {
     return (
-      <section className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden" id="tin-tuc">
+      <section className="py-10 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden" id="tin-tuc">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-gray-600">Đang tải tin tức...</p>
         </div>
@@ -62,7 +62,7 @@ export default function NewsSection() {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden" id="tin-tuc">
+    <section className="py-10 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden" id="tin-tuc">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -78,7 +78,7 @@ export default function NewsSection() {
         </div>
 
         {/* Horizontal Scrolling Container */}
-        <div 
+        <div
           ref={scrollRef}
           className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
           style={{ scrollBehavior: 'smooth' }}
@@ -137,12 +137,14 @@ export default function NewsSection() {
 
         {/* View All Button */}
         <div className="text-center mt-8">
-          <Button 
+          <Button
             variant="outline"
             size="lg"
             className={`border-2 ${TAILWIND_COLORS.borderPrimary} ${TAILWIND_COLORS.textPrimary} hover:bg-green-50 font-semibold`}
           >
-            Xem tất cả tin tức →
+            <a href="/tin-tuc-thong-bao">
+              Xem tất cả tin tức →
+            </a>
           </Button>
         </div>
       </div>

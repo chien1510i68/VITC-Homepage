@@ -31,7 +31,7 @@ export default function InstructorsSection() {
   // Auto slide every 3 seconds
   useEffect(() => {
     if (instructors.length === 0) return;
-    
+
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % instructors.length);
     }, 3000);
@@ -77,16 +77,17 @@ export default function InstructorsSection() {
   const centerInstructor = visibleInstructors[2];
 
   return (
-    <section className="py-12 md:py-16 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+    <section className="py-10 md:py-16 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-400 mb-2 tracking-wider">
-            OUR TEAM
-          </h2>
-          <p className="text-sm text-gray-600">
             Đội ngũ giảng viên giàu kinh nghiệm
-          </p>
+
+          </h2>
+          {/* <p className="text-sm text-gray-600">
+            Đội ngũ giảng viên giàu kinh nghiệm
+          </p> */}
         </div>
 
         {/* Carousel */}
@@ -99,7 +100,7 @@ export default function InstructorsSection() {
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          
+
           <button
             onClick={handleNext}
             className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-green-600 text-gray-800 hover:text-white p-2 rounded-full transition-all duration-300 border border-gray-200"
@@ -113,13 +114,13 @@ export default function InstructorsSection() {
             {visibleInstructors.map((instructor, index) => {
               const position = index - 2; // -2, -1, 0, 1, 2
               const isCenter = position === 0;
-              
+
               // Calculate transform based on position with minimal spacing
               let translateX = position * 100; // reduced spacing
               let scale = 1;
               let zIndex = 1;
               let opacity = 0.4;
-              
+
               if (isCenter) {
                 scale = 1;
                 zIndex = 10;
@@ -157,7 +158,7 @@ export default function InstructorsSection() {
                       />
                       {/* Gradient Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      
+
                       {/* Info Overlay - Only show on center card */}
                       {isCenter && (
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
@@ -181,7 +182,7 @@ export default function InstructorsSection() {
           </div>
         </div>
 
-        
+
       </div>
     </section>
   );

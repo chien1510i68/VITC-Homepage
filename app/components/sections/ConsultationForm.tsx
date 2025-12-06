@@ -27,7 +27,7 @@ export default function ConsultationForm() {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
+    <section className="py-10 md:py-16 bg-gray-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <Card className="max-w-2xl mx-auto">
             <CardHeader>

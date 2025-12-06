@@ -47,7 +47,7 @@ export default function ProgramsSection() {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50" id="programs">
+    <section className="py-10 md:py-16 bg-gradient-to-b from-white to-gray-50" id="programs">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -206,8 +206,10 @@ export default function ProgramsSection() {
 
                 {/* View All Button */}
                 <div className="p-4 border-t border-gray-200 bg-gray-50">
-                  <Button variant="link" className={`w-full ${TAILWIND_COLORS.textPrimary} font-semibold`}>
-                    Xem tất cả khóa học →
+                  <Button variant="link" className={`w-full ${TAILWIND_COLORS.textPrimary} font-semibold`} asChild>
+                    <a href="/khoa-hoc">
+                      Xem tất cả khóa học →
+                    </a>
                   </Button>
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { MapPin, Phone, Mail, Facebook, Youtube, Clock, GraduationCap } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';
 
@@ -39,14 +40,14 @@ export default function Footer() {
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-4">
-              <div className={`w-10 h-10 ${TAILWIND_COLORS.bgPrimary} rounded-lg flex items-center justify-center`}>
-                <GraduationCap className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-white">VITC</h3>
-                <p className="text-xs text-gray-400">Vietnam IT Center</p>
-              </div>
+            <div className="mb-4">
+              <Image 
+                src="https://vitc.edu.vn/Frond_end/images/logo.png"
+                alt="VITC Logo"
+                width={150}
+                height={50}
+                className="h-12 w-auto brightness-0 invert"
+              />
             </div>
             <p className="text-sm leading-relaxed">
               Trung tâm đào tạo Tin học và Công nghệ thông tin hàng đầu, cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm.

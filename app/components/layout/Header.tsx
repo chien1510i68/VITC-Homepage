@@ -1,39 +1,89 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { TAILWIND_COLORS } from '@/lib/colors';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show header when scrolling up, hide when scrolling down
+      if (currentScrollY < lastScrollY || currentScrollY < 10) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+        setIsMenuOpen(false); // Close mobile menu when hiding
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
 
   const navItems = [
     { name: 'Trang chủ', href: '/' },
     { name: 'Chương trình Đào tạo', href: '/khoa-hoc' },
     { name: 'Tiện ích - Dịch vụ', href: '/tien-ich-dich-vu' },
-    { name: 'Tin tức - Thông báo', href: '#news' },
+    { name: 'Tin tức - Thông báo', href: '/tin-tuc-thong-bao' },
+    { name: 'Thư viện', href: '/thu-vien' },
   ];
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className={`bg-white border-b border-gray-200 sticky top-0 z-50 transition-transform duration-300 ${
+      isVisible ? 'translate-y-0' : '-translate-y-full'
+    }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-gray-900">VITC</span>
+            <Image 
+              src="https://vitc.edu.vn/Frond_end/images/logo.png"
+              alt="VITC Logo"
+              width={120}
+              height={40}
+              className="h-10 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || 
+                (item.href !== '/' && pathname.startsWith(item.href));
+              
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`text-sm font-medium transition-colors relative ${
+                    isActive 
+                      ? `${TAILWIND_COLORS.textPrimary}` 
+                      : 'text-gray-700 hover:text-gray-900'
+                  }`}
+                >
+                  {item.name}
+                  {isActive && (
+                    <span className={`absolute -bottom-[21px] left-0 right-0 h-0.5 ${TAILWIND_COLORS.bgPrimary}`}></span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Login Button */}
@@ -79,16 +129,25 @@ export default function Header() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden pb-4 space-y-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || 
+                (item.href !== '/' && pathname.startsWith(item.href));
+              
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`block px-3 py-2 rounded-md font-medium transition-colors ${
+                    isActive
+                      ? `${TAILWIND_COLORS.bgPrimaryLight} ${TAILWIND_COLORS.textPrimaryDark}`
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
             <div className="px-3">
               <Button asChild className="w-full">
                 <Link href="#login" onClick={() => setIsMenuOpen(false)}>

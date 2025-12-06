@@ -255,7 +255,7 @@ export default function KhoaHocPage() {
                 <p className="text-gray-600 text-lg">Không tìm thấy khóa học nào</p>
               </div>
             ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredPrograms.map((program) => (
                 <Link key={program.id} href={`/khoa-hoc/${program.id}`}>
                   <Card 

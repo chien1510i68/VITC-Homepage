@@ -64,15 +64,15 @@ const schedules = [
 export default function ScheduleSection() {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('vi-VN', { 
-      day: '2-digit', 
-      month: '2-digit', 
-      year: 'numeric' 
+    return date.toLocaleDateString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
     });
   };
 
   return (
-    <section className="py-16 md:py-24 bg-white" id="lich-khai-giang">
+    <section className="py-10 md:py-16 bg-white" id="lich-khai-giang">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -98,7 +98,7 @@ export default function ScheduleSection() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {schedules.map((schedule) => (
-                <tr 
+                <tr
                   key={schedule.id}
                   className="hover:bg-gray-50 transition-colors"
                 >
@@ -125,12 +125,14 @@ export default function ScheduleSection() {
 
         {/* View All Button */}
         <div className="text-center mt-8">
-          <Button 
+          <Button
             variant="outline"
             size="lg"
             className={`border-2 ${TAILWIND_COLORS.borderPrimary} ${TAILWIND_COLORS.textPrimary} hover:bg-green-50 font-semibold`}
           >
-            Xem tất cả lịch khai giảng →
+            <a href="/khoa-hoc">
+              Xem tất cả lịch khai giảng →
+            </a>
           </Button>
         </div>
       </div>

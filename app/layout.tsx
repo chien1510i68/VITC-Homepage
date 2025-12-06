@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import FloatingRegisterButton from "./components/ui/FloatingRegisterButton";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -38,6 +39,7 @@ export default function RootLayout({
         className={`${montserrat.variable} font-sans antialiased`}
       >
         {children}
+        <FloatingRegisterButton />
       </body>
     </html>
   );

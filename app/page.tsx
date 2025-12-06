@@ -9,6 +9,7 @@ import ConsultationForm from './components/sections/ConsultationForm';
 import InstructorsSection from './components/sections/InstructorsSection';
 import NewsSection from './components/sections/NewsSection';
 import ProductsSection from './components/sections/ProductsSection';
+import PartnersSection from './components/sections/PartnersSection';
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
         <ScheduleSection />
         <ConsultationForm />
         <AboutSection />
+        <PartnersSection />
         <InstructorsSection />
         <NewsSection />
         <ProductsSection />

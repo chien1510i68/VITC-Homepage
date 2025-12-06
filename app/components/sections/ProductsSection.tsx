@@ -37,7 +37,7 @@ export default function ProductsSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+    <section className="py-10 md:py-16 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-30">
         <div className={`absolute top-20 right-20 w-72 h-72 bg-gradient-to-br ${TAILWIND_COLORS.bgPrimary} rounded-full blur-3xl`}></div>
