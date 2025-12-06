@@ -25,8 +25,12 @@ export const COLORS = {
   
   // Neutral Colors
   neutral: {
-    white: 'white',
-    black: 'black',
+    white: {
+    DEFAULT: 'white'
+  },
+  black: {
+    DEFAULT: 'black'
+  },
     gray: {
       50: 'gray-50',
       100: 'gray-100',
