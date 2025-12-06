@@ -58,9 +58,20 @@ export const getColor = (
   type: 'bg' | 'text' | 'border' | 'hover:bg' | 'hover:text' | 'hover:border',
   color: keyof typeof COLORS | string
 ): string => {
-  const colorValue = typeof color === 'string' && color in COLORS 
-    ? COLORS[color as keyof typeof COLORS].DEFAULT 
-    : color;
+  let colorValue: string;
+  
+  if (typeof color === 'string' && color in COLORS) {
+    const colorObj = COLORS[color as keyof typeof COLORS];
+    // Check if colorObj has DEFAULT property
+    if (typeof colorObj === 'object' && 'DEFAULT' in colorObj) {
+      colorValue = colorObj.DEFAULT;
+    } else {
+      // Fallback to the color string itself if no DEFAULT
+      colorValue = color;
+    }
+  } else {
+    colorValue = color as string;
+  }
   
   return `${type}-${colorValue}`;
 };
