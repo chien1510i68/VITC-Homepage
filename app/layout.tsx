@@ -1,5 +1,15 @@
+/**
+ * GLOBAL UI RULES
+ * - Follow docs/ui-ux-pro-max.prompt.md
+
+ * - TailwindCSS only
+ * - No emoji icons
+ * - Use SVG icons (Lucide / Heroicons)
+ * - Accessibility is mandatory
+ */
+
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import FloatingRegisterButton from "./components/ui/FloatingRegisterButton";
 
@@ -7,6 +17,18 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin", "vietnamese"],
   weight: ["300", "400", "500", "600", "700", "800"],
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin", "vietnamese"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -36,7 +58,7 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning>
       <body
-        className={`${montserrat.variable} font-sans antialiased`}
+        className={`${montserrat.variable} ${playfairDisplay.variable} ${inter.variable} font-sans antialiased`}
       >
         {children}
         <FloatingRegisterButton />

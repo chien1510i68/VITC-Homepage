@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'http',
+        hostname: 'trungtamkynangmem.vnua.edu.vn',
+        pathname: '/wp-content/uploads/**',
+      },
     ],
   },
 };

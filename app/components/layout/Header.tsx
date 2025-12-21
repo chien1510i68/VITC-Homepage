@@ -6,12 +6,51 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';
+import { getCourseSchedules } from '@/lib/api';
+import type { CourseSchedule } from '@/lib/api/types';
+import { MegaMenu } from './MegaMenu';
+import SoftSkillsMenu from './SoftSkillsMenu';
+import { useRef } from 'react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const [showSoftSkillsMenu, setShowSoftSkillsMenu] = useState(false);
+  const [isSoftSkillsMounted, setIsSoftSkillsMounted] = useState(false);
+  const [softSkillsPos, setSoftSkillsPos] = useState<{ left: number; top: number } | null>(null);
+  const softSkillsAnchorRef = useRef<HTMLDivElement | null>(null);
+  const [courses, setCourses] = useState<CourseSchedule[]>([]);
   const pathname = usePathname();
+
+  // Keep submenu mounted for animation when closing
+  useEffect(() => {
+    let t: any;
+    if (showSoftSkillsMenu && !isSoftSkillsMounted) {
+      setIsSoftSkillsMounted(true);
+    }
+    if (!showSoftSkillsMenu && isSoftSkillsMounted) {
+      // wait for animation duration before unmount
+      t = setTimeout(() => setIsSoftSkillsMounted(false), 340);
+    }
+
+    return () => clearTimeout(t);
+  }, [showSoftSkillsMenu, isSoftSkillsMounted]);
+
+  useEffect(() => {
+    // Fetch courses for mega menu
+    const fetchCourses = async () => {
+      try {
+        const data = await getCourseSchedules();
+        setCourses(data);
+      } catch (error) {
+        console.error('Failed to fetch courses:', error);
+      }
+    };
+    
+    fetchCourses();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +62,7 @@ export default function Header() {
       } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
         setIsMenuOpen(false); // Close mobile menu when hiding
+        setShowMegaMenu(false); // Close mega menu when hiding
       }
       
       setLastScrollY(currentScrollY);
@@ -37,10 +77,12 @@ export default function Header() {
 
   const navItems = [
     { name: 'Trang chủ', href: '/' },
-    { name: 'Chương trình Đào tạo', href: '/khoa-hoc' },
-    { name: 'Tiện ích - Dịch vụ', href: '/tien-ich-dich-vu' },
-    { name: 'Tin tức - Thông báo', href: '/tin-tuc-thong-bao' },
-    { name: 'Thư viện', href: '/thu-vien' },
+    // { name: 'Giới thiệu', href: '/gioi-thieu' },
+    { name: 'Tin học', href: '/tin-hoc', hasMegaMenu: true },
+    { name: 'Kỹ năng mềm', href: '/ky-nang-mem', hasSoftSkillsMenu: true },
+    { name: 'Tin tức', href: '/tin-tuc-thong-bao' },
+    { name: 'Tra cứu chứng chỉ', href: '/tien-ich-dich-vu' },
+    { name: 'Liên hệ', href: '/lien-he' },
   ];
 
   return (
@@ -67,6 +109,73 @@ export default function Header() {
               const isActive = pathname === item.href || 
                 (item.href !== '/' && pathname.startsWith(item.href));
               
+              if (item.hasMegaMenu) {
+                return (
+                  <div
+                    key={item.name}
+                    className="relative h-16 flex items-center"
+                    onMouseEnter={() => setShowMegaMenu(true)}
+                    onMouseLeave={() => setShowMegaMenu(false)}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`text-sm font-medium transition-colors relative flex items-center gap-1 ${
+                        isActive || showMegaMenu
+                          ? `${TAILWIND_COLORS.textPrimary}` 
+                          : 'text-gray-700 hover:text-gray-900'
+                      }`}
+                    >
+                      {item.name}
+                      <svg 
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          showMegaMenu ? 'rotate-180' : ''
+                        }`} 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                      {(isActive || showMegaMenu) && (
+                        <span className={`absolute -bottom-[21px] left-0 right-0 h-0.5 ${TAILWIND_COLORS.bgPrimary}`}></span>
+                      )}
+                    </Link>
+                  </div>
+                );
+              }
+              if (item.hasSoftSkillsMenu) {
+                return (
+                  <div
+                    key={item.name}
+                    ref={softSkillsAnchorRef}
+                    className="relative h-16 flex items-center"
+                    onMouseEnter={() => {
+                      // compute position for the submenu
+                      if (softSkillsAnchorRef.current) {
+                        const rect = softSkillsAnchorRef.current.getBoundingClientRect();
+                        const menuWidth = window.innerWidth >= 768 ? 384 : 320; // md:w-96 -> 384px, w-80 -> 320px
+                        const centerLeft = rect.left + rect.width / 2 - menuWidth / 2;
+                        const leftClamped = Math.min(Math.max(centerLeft, 8), window.innerWidth - menuWidth - 8);
+                        const top = rect.bottom; // touch the border (no gap)
+                        setSoftSkillsPos({ left: leftClamped, top });
+                      }
+                      setShowSoftSkillsMenu(true);
+                      setShowMegaMenu(false);
+                    }}
+                    onMouseLeave={() => setShowSoftSkillsMenu(false)}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`text-sm font-medium transition-colors relative flex items-center gap-1 ${
+                        pathname === item.href ? 'text-sky-600' : 'text-gray-700 hover:text-gray-900'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={item.name}
@@ -158,6 +267,25 @@ export default function Header() {
           </div>
         )}
       </div>
+
+      {/* Mega Menu Dropdown */}
+      <MegaMenu 
+        isOpen={showMegaMenu}
+        onMouseEnter={() => setShowMegaMenu(true)}
+        onMouseLeave={() => setShowMegaMenu(false)}
+        courses={courses}
+      />
+      {/* Soft Skills Submenu (render as sibling so it can be fixed & full width) */}
+      {isSoftSkillsMounted && (
+        <div style={softSkillsPos ? { position: 'fixed', left: softSkillsPos.left, top: softSkillsPos.top, zIndex: 60 } : undefined} onMouseEnter={() => setShowSoftSkillsMenu(true)} onMouseLeave={() => setShowSoftSkillsMenu(false)}>
+          <SoftSkillsMenu
+            courses={courses}
+            onMouseEnter={() => setShowSoftSkillsMenu(true)}
+            onMouseLeave={() => setShowSoftSkillsMenu(false)}
+            isOpen={showSoftSkillsMenu && !isMenuOpen}
+          />
+        </div>
+      )}
     </header>
   );
 }

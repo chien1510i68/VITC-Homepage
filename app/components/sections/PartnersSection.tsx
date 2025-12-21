@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import PARTNERS from '../../../lib/partnersData';
 
 interface Partner {
   id: number;
@@ -9,15 +10,7 @@ interface Partner {
   logo: string;
 }
 
-// Mock data - replace with real partner logos
-const partners: Partner[] = [
-  { id: 1, name: 'FPT Software', logo: '/partners/fpt.png' },
-  { id: 6, name: 'Viettel', logo: '/partners/viettel.png' },
-  { id: 7, name: 'VNPT', logo: '/partners/vnpt.png' },
-  { id: 8, name: 'MB Bank', logo: '/partners/mbbank.png' },
-  { id: 9, name: 'Techcombank', logo: '/partners/techcombank.png' },
-  { id: 10, name: 'Vingroup', logo: '/partners/vingroup.png' },
-];
+const partners = PARTNERS;
 
 export default function PartnersSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -25,42 +18,37 @@ export default function PartnersSection() {
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
+    // If the user prefers reduced motion, don't start the automatic scrolling
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
 
     let animationFrameId: number;
     let scrollPosition = 0;
-    const scrollSpeed = 0.5; // pixels per frame
+    const scrollSpeed = 0.6; // pixels per frame - tweak for comfortable speed
 
     const scroll = () => {
       scrollPosition += scrollSpeed;
-      
-      // Reset scroll position when reaching the middle (since we duplicated items)
-      if (scrollPosition >= scrollContainer.scrollWidth / 2) {
-        scrollPosition = 0;
-      }
-      
+      if (scrollPosition >= scrollContainer.scrollWidth / 2) scrollPosition = 0;
       scrollContainer.scrollLeft = scrollPosition;
       animationFrameId = requestAnimationFrame(scroll);
     };
 
-    // Start the animation
     animationFrameId = requestAnimationFrame(scroll);
 
-    // Pause on hover
-    const handleMouseEnter = () => {
-      cancelAnimationFrame(animationFrameId);
-    };
+    const pause = () => cancelAnimationFrame(animationFrameId);
+    const resume = () => { animationFrameId = requestAnimationFrame(scroll); };
 
-    const handleMouseLeave = () => {
-      animationFrameId = requestAnimationFrame(scroll);
-    };
-
-    scrollContainer.addEventListener('mouseenter', handleMouseEnter);
-    scrollContainer.addEventListener('mouseleave', handleMouseLeave);
+    scrollContainer.addEventListener('mouseenter', pause);
+    scrollContainer.addEventListener('mouseleave', resume);
+    scrollContainer.addEventListener('pointerdown', pause);
+    scrollContainer.addEventListener('pointerup', resume);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
-      scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
+      scrollContainer.removeEventListener('mouseenter', pause);
+      scrollContainer.removeEventListener('mouseleave', resume);
+      scrollContainer.removeEventListener('pointerdown', pause);
+      scrollContainer.removeEventListener('pointerup', resume);
     };
   }, []);
 
@@ -79,7 +67,7 @@ export default function PartnersSection() {
             Đồng hành cùng các đối tác hàng đầu
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            VITC tự hào được hợp tác với các doanh nghiệp và tổ chức uy tín trong và ngoài nước
+            Chúng tôi tự hào được hợp tác với các doanh nghiệp và tổ chức uy tín trong và ngoài nước
           </p>
         </div>
 
@@ -97,32 +85,23 @@ export default function PartnersSection() {
           >
             <div className="inline-flex gap-8 py-8">
               {duplicatedPartners.map((partner, index) => (
-                <div
-                  key={`${partner.id}-${index}`}
-                  className="inline-block"
-                >
-                  <div className="w-48 h-32 bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-xl hover:border-blue-200 transition-all duration-300 hover:scale-110 flex items-center justify-center p-6 group cursor-pointer">
+                <div key={`${partner.id}-${index}`} className="inline-block">
+                  <div className="w-44 h-24 bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-xl hover:border-blue-200 transition-all duration-300 hover:scale-105 flex items-center justify-center p-4 group cursor-pointer">
                     <div className="relative w-full h-full flex items-center justify-center">
-                      {/* Placeholder for logo - replace with actual Image component when logos are available */}
                       <div className="text-center">
-                        <div className="w-20 h-20 mx-auto mb-2 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                          </svg>
+                        <div className="w-full h-14 mx-auto mb-1 flex items-center justify-center">
+                          <Image
+                            src={partner.logo}
+                            alt={partner.name}
+                            width={160}
+                            height={56}
+                            className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                          />
                         </div>
-                        <p className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">
+                        <p className="text-xs font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">
                           {partner.name}
                         </p>
                       </div>
-                      {/* 
-                      Uncomment when you have real logos:
-                      <Image
-                        src={partner.logo}
-                        alt={partner.name}
-                        fill
-                        className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
-                      />
-                      */}
                     </div>
                   </div>
                 </div>
