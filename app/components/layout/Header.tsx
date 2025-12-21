@@ -23,6 +23,7 @@ export default function Header() {
   const softSkillsAnchorRef = useRef<HTMLDivElement | null>(null);
   const [courses, setCourses] = useState<CourseSchedule[]>([]);
   const pathname = usePathname();
+  const currentPath = pathname ?? '/';
 
   // Keep submenu mounted for animation when closing
   useEffect(() => {
@@ -106,8 +107,8 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => {
-              const isActive = pathname === item.href || 
-                (item.href !== '/' && pathname.startsWith(item.href));
+              const isActive = currentPath === item.href || 
+                (item.href !== '/' && currentPath.startsWith(item.href));
               
               if (item.hasMegaMenu) {
                 return (
@@ -167,8 +168,8 @@ export default function Header() {
                     <Link
                       href={item.href}
                       className={`text-sm font-medium transition-colors relative flex items-center gap-1 ${
-                        pathname === item.href ? 'text-sky-600' : 'text-gray-700 hover:text-gray-900'
-                      }`}
+                          currentPath === item.href ? 'text-sky-600' : 'text-gray-700 hover:text-gray-900'
+                        }`}
                     >
                       {item.name}
                     </Link>
@@ -239,8 +240,8 @@ export default function Header() {
         {isMenuOpen && (
           <div className="md:hidden pb-4 space-y-2">
             {navItems.map((item) => {
-              const isActive = pathname === item.href || 
-                (item.href !== '/' && pathname.startsWith(item.href));
+              const isActive = currentPath === item.href || 
+                (item.href !== '/' && currentPath.startsWith(item.href));
               
               return (
                 <Link
