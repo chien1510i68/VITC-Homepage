@@ -76,8 +76,9 @@ export interface StatusBadgeProps {
 }
 
 export interface EmptyStateProps {
+  variant?: 'no-results' | 'no-data' | 'error' | 'coming-soon';
   icon?: ReactNode;
-  title: string;
+  title?: string;
   description?: string;
   action?: {
     label: string;

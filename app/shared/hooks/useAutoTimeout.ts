@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 export function useAutoTimeout(callback: () => void, delay: number, deps: any[] = []) {
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     if (delay > 0) {

@@ -11,7 +11,7 @@ export function Carousel<T>({
   renderItem,
   autoPlay = true,
   interval = 5000,
-  showControls = true,
+  showNavigation = true,
   showIndicators = true,
   className,
 }: CarouselProps<T>) {
@@ -69,14 +69,14 @@ export function Carousel<T>({
               className="flex-shrink-0 w-full"
               style={{ width: '100%' }}
             >
-              {renderItem(item, index)}
+              {renderItem(item, index, index === currentIndex)}
             </div>
           ))}
         </div>
       </div>
 
       {/* Navigation controls */}
-      {showControls && items.length > 1 && (
+      {showNavigation && items.length > 1 && (
         <>
           {/* Previous button */}
           <button

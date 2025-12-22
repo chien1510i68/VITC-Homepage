@@ -55,9 +55,12 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       </p>
       
       {action && (
-        <div className="mt-2">
-          {action}
-        </div>
+        <button
+          onClick={action.onClick}
+          className="px-6 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
+        >
+          {action.label}
+        </button>
       )}
     </div>
   );

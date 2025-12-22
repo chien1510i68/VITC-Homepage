@@ -9,7 +9,7 @@ export function formatDate(dateString: string | Date, format: 'short' | 'long' |
     return dateString.toString();
   }
 
-  const options: Intl.DateTimeFormatOptions = {
+  const optionsMap: Record<string, Intl.DateTimeFormatOptions> = {
     short: {
       day: '2-digit',
       month: '2-digit',
@@ -26,9 +26,9 @@ export function formatDate(dateString: string | Date, format: 'short' | 'long' |
       month: 'long',
       year: 'numeric',
     },
-  }[format];
+  };
 
-  return date.toLocaleDateString('vi-VN', options);
+  return date.toLocaleDateString('vi-VN', optionsMap[format]);
 }
 
 export function formatTime(dateString: string | Date): string {
