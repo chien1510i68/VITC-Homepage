@@ -95,8 +95,8 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image 
-              src="https://vitc.edu.vn/Frond_end/images/logo.png"
-              alt="VITC Logo"
+              src="/images/logo.jpg"
+              alt="VISC Logo"
               width={120}
               height={40}
               className="h-10 w-auto"
@@ -123,7 +123,7 @@ export default function Header() {
                       className={`text-sm font-medium transition-colors relative flex items-center gap-1 ${
                         isActive || showMegaMenu
                           ? `${TAILWIND_COLORS.textPrimary}` 
-                          : 'text-gray-700 hover:text-gray-900'
+                          : 'text-gray-700 '
                       }`}
                     >
                       {item.name}
@@ -149,7 +149,7 @@ export default function Header() {
                   <div
                     key={item.name}
                     ref={softSkillsAnchorRef}
-                    className="relative h-16 flex items-center"
+                    className="relative h-16 flex items-center px-3 rounded-lg transition-colors"
                     onMouseEnter={() => {
                       // compute position for the submenu
                       if (softSkillsAnchorRef.current) {
@@ -168,7 +168,7 @@ export default function Header() {
                     <Link
                       href={item.href}
                       className={`text-sm font-medium transition-colors relative flex items-center gap-1 ${
-                          currentPath === item.href ? 'text-sky-600' : 'text-gray-700 hover:text-gray-900'
+                          currentPath === item.href ? TAILWIND_COLORS.textPrimary : 'text-gray-700 hover:text-green-600'
                         }`}
                     >
                       {item.name}

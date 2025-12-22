@@ -9,8 +9,8 @@ import LookupSection from "./sections/LookupSection";
 import ConsultationForm from "../components/sections/ConsultationForm";
 
 export const metadata = {
-  title: "Tin học - VITC",
-  description: "Trung tâm đào tạo tin học VITC",
+  title: "Tin học - VISC",
+  description: "Trung tâm đào tạo tin học VISC",
 };
 
 export default function TinHocPage() {

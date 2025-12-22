@@ -1,18 +1,12 @@
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
+import type { Course } from '../types';
 
-type Course = {
-  id: number;
-  title: string;
-  category: string;
-  excerpt?: string;
-  image?: string;
-  duration?: string;
-  level?: string;
-  audience?: string[]; // e.g. ['Sinh viên chính quy', 'Cán bộ']
-};
+interface CourseCardProps {
+  course: Course;
+}
 
-export default function CourseCard({ course }: { course: Course }) {
+export default function CourseCard({ course }: CourseCardProps) {
   return (
     <article
       role="article"

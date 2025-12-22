@@ -33,22 +33,22 @@ export default function SoftSkillsMenu({ courses = [], onMouseEnter, onMouseLeav
   return (
     <div onMouseEnter={propsOnMouseEnter} onMouseLeave={propsOnMouseLeave} className="pointer-events-auto">
       <div className="w-80 md:w-96">
-        <div className={`rounded-2xl overflow-hidden shadow-2xl border border-slate-700/20 transform transition-all duration-300 ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
-          <div className={`bg-gradient-to-b from-slate-900 via-slate-800 to-slate-700 text-white p-4 ${isOpen ? 'animate-in fade-in slide-in-from-top-4 duration-300' : ''}`}> 
+        <div className={`rounded-2xl overflow-hidden shadow-2xl border border-gray-200 transform transition-all duration-300 ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
+          <div className={`bg-white text-gray-900 p-4 ${isOpen ? 'animate-in fade-in slide-in-from-top-4 duration-300' : ''}`}> 
             <div className="flex flex-col gap-2">
               <nav aria-label="Kỹ năng mềm menu" className="py-2">
                 <ul className="space-y-2">
                   <li>
-                    <Link href="/ky-nang-mem#courses" className="block px-6 py-4 rounded-lg text-sm font-semibold text-slate-200 hover:text-white hover:bg-white/5 transition">Danh sách khóa học</Link>
+                    <Link href="/ky-nang-mem#courses" className="block px-6 py-4 rounded-lg text-sm font-semibold text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition">Danh sách khóa học</Link>
                   </li>
                   <li>
-                    <Link href="/ky-nang-mem#news" className="block px-6 py-4 rounded-lg text-sm font-semibold text-slate-200 hover:text-white hover:bg-white/5 transition">Tin tức</Link>
+                    <Link href="/ky-nang-mem#news" className="block px-6 py-4 rounded-lg text-sm font-semibold text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition">Tin tức</Link>
                   </li>
                   <li>
-                    <Link href="/ky-nang-mem#resources" className="block px-6 py-4 rounded-lg text-sm font-semibold text-slate-200 hover:text-white hover:bg-white/5 transition">Tài liệu</Link>
+                    <Link href="/ky-nang-mem#resources" className="block px-6 py-4 rounded-lg text-sm font-semibold text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition">Tài liệu</Link>
                   </li>
                   <li>
-                    <Link href="/ky-nang-mem#contact" className="block px-6 py-4 rounded-lg text-sm font-semibold text-slate-200 hover:text-white hover:bg-white/5 transition">Liên hệ</Link>
+                    <Link href="/ky-nang-mem#contact" className="block px-6 py-4 rounded-lg text-sm font-semibold text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition">Liên hệ</Link>
                   </li>
                 </ul>
               </nav>

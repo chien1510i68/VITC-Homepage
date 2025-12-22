@@ -1,111 +1,19 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { MapPin, Award, Star } from 'lucide-react';
-
-interface Feature {
-  icon: 'location' | 'certificate' | 'rating';
-  number: string;
-  target: number;
-  title: string;
-  description: string;
-}
-
-const FEATURES: Feature[] = [
-  {
-    icon: 'location',
-    number: '50+',
-    target: 50,
-    title: 'Địa điểm đào tạo',
-    description: 'Hệ thống phòng học hiện đại trên toàn quốc',
-  },
-  {
-    icon: 'certificate',
-    number: '10,000+',
-    target: 10000,
-    title: 'Học viên đã đào tạo',
-    description: 'Tin tưởng và lựa chọn các khóa học của chúng tôi',
-  },
-  {
-    icon: 'rating',
-    number: '95%',
-    target: 95,
-    title: 'Hài lòng với khóa học',
-    description: 'Đánh giá tích cực từ học viên sau khóa học',
-  },
-];
-
-const IconComponent = ({ type }: { type: 'location' | 'certificate' | 'rating' }) => {
-  const className = "w-12 h-12 text-gray-900";
-  
-  switch (type) {
-    case 'location':
-      return <MapPin className={className} strokeWidth={1} />;
-    case 'certificate':
-      return <Award className={className} strokeWidth={1} />;
-    case 'rating':
-      return <Star className={className} strokeWidth={1} />;
-    default:
-      return null;
-  }
-};
+import { useRef } from 'react';
+import { useIntersectionObserver, useCountUp } from '../hooks';
+import { FeatureIcon } from '../components';
+import { FEATURES } from '../constants/features';
 
 export default function FeaturesSoftSkills() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [animatedNumbers, setAnimatedNumbers] = useState<number[]>([0, 0, 0]);
-  const [hasAnimated, setHasAnimated] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.2 });
 
-  // Intersection Observer for scroll animation
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
-            setIsVisible(true);
-            setHasAnimated(true);
-            animateCounters();
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasAnimated]);
-
-  // Counter animation with easing
-  const animateCounters = () => {
-    const duration = 1500;
-    const frameRate = 60;
-    const totalFrames = (duration / 1000) * frameRate;
-    let frame = 0;
-
-    const easeOutQuart = (t: number): number => {
-      return 1 - Math.pow(1 - t, 4);
-    };
-
-    const animate = () => {
-      frame++;
-      const progress = easeOutQuart(frame / totalFrames);
-
-      setAnimatedNumbers(
-        FEATURES.map((feature) => Math.floor(feature.target * progress))
-      );
-
-      if (frame < totalFrames) {
-        requestAnimationFrame(animate);
-      } else {
-        setAnimatedNumbers(FEATURES.map((f) => f.target));
-      }
-    };
-
-    requestAnimationFrame(animate);
-  };
+  const { counts } = useCountUp({
+    targets: FEATURES.map((f) => f.target),
+    duration: 1500,
+    startOnMount: isVisible,
+  });
 
   const formatNumber = (num: number, index: number): string => {
     if (index === 1) {
@@ -144,13 +52,13 @@ export default function FeaturesSoftSkills() {
             >
               {/* Icon - minimal outline */}
               <div className="mb-8 flex justify-center">
-                <IconComponent type={feature.icon} />
+                <FeatureIcon type={feature.icon} />
               </div>
 
               {/* Number - large and light */}
               <div className="mb-4">
                 <span className="text-6xl lg:text-7xl font-light text-gray-900 tabular-nums tracking-tight">
-                  {formatNumber(animatedNumbers[index], index)}
+                  {formatNumber(counts[index], index)}
                 </span>
               </div>
 

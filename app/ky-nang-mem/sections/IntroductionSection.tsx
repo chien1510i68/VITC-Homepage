@@ -1,49 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
-
-const SECTIONS = [
-  {
-    id: 1,
-    title: 'Cơ sở vật chất hiện đại',
-    description: 'Trung tâm được đặt tại Khu làm việc của các Khoa, Viện, Trung tâm – Học viện Nông nghiệp Việt Nam – Trâu Quỳ, Gia Lâm, Hà Nội với các phòng học, hội trường đào tạo đầy đủ tiện nghi học tập và các trang thiết bị hiện đại.',
-    fullContent: 'Hiện nay, Trung tâm có 4 phòng học chuyên biệt về đào tạo kỹ năng mềm, được trang bị đầy đủ các thiết bị: bàn ghế dễ di chuyển, điều hòa, wifi, học liệu phục vụ học tập. Ngoài ra Trung tâm còn có phòng học đặt ngay tại khu Trung tâm phục vụ những khóa học đặc biệt với số lượng ít, đáp ứng nhu cầu của người học.',
-    image: 'http://trungtamkynangmem.vnua.edu.vn/wp-content/uploads/2018/12/20181202_093130.jpg',
-    imagePosition: 'left'
-  },
-  {
-    id: 2,
-    title: 'Đội ngũ giảng viên',
-    description: 'Với nguồn giảng viên có nhiều kinh nghiệm đào tạo kỹ năng mềm, Trung tâm luôn đảm bảo chất lượng về chuẩn đầu ra về kỹ năng mềm và cấp chứng chỉ cho học viên sau khi hoàn thành khóa học.',
-    fullContent: 'Đội ngũ giảng viên của Trung tâm được tuyển chọn kỹ lưỡng, có chuyên môn cao và kinh nghiệm thực tế phong phú. Các giảng viên không chỉ am hiểu sâu sắc về lý thuyết mà còn có khả năng truyền đạt hiệu quả, giúp học viên tiếp thu kiến thức một cách tốt nhất.',
-    image: 'http://trungtamkynangmem.vnua.edu.vn/wp-content/uploads/2016/10/IMG_4424.jpg',
-    imagePosition: 'right'
-  }
-];
+import { useIntersectionObserver } from '../hooks';
+import { SectionHeader } from '../components';
+import { INTRODUCTION_SECTIONS } from '../constants/introduction';
 
 export default function IntroductionSection() {
-  const [isVisible, setIsVisible] = useState(false);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1 });
 
   const toggleExpand = (id: number) => {
     setExpandedId(expandedId === id ? null : id);
@@ -58,27 +25,23 @@ export default function IntroductionSection() {
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
         
         {/* Header */}
-        <div className="mb-32 text-center">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="w-12 h-px bg-slate-900"></div>
-            <span className="text-xs tracking-[0.25em] uppercase text-slate-500 font-medium">
-              Giới thiệu
-            </span>
-            <div className="w-12 h-px bg-slate-900"></div>
-          </div>
-          <h2 className="text-5xl lg:text-6xl font-black leading-tight tracking-tight text-slate-900 mb-6">
-            Trung tâm đào tạo<br />
-            <span className="text-sky-600">Kỹ năng mềm</span>
-          </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Trung tâm đào tạo kỹ năng mềm (CSST) là đơn vị đào tạo trực thuộc 
-            Học Viện Nông nghiệp Việt Nam, có tài khoản, con dấu riêng.
-          </p>
+        <div className="mb-32">
+          <SectionHeader
+            label="Giới thiệu"
+            title={
+              <>
+                Trung tâm đào tạo<br />
+                <span className="text-sky-600">Kỹ năng mềm</span>
+              </>
+            }
+            description="Trung tâm đào tạo kỹ năng mềm (CSST) là đơn vị đào tạo trực thuộc Học Viện Nông nghiệp Việt Nam, có tài khoản, con dấu riêng."
+            align="center"
+          />
         </div>
 
         {/* Alternating Sections */}
         <div className="space-y-32">
-          {SECTIONS.map((section, index) => {
+          {INTRODUCTION_SECTIONS.map((section, index) => {
             const isExpanded = expandedId === section.id;
             const isLeft = section.imagePosition === 'left';
             const delay = index * 100;

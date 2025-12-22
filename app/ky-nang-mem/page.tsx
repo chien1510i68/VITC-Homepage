@@ -10,8 +10,8 @@ import PartnersSection from './sections/PartnersSection';
 import ThuVienSection from './sections/ThuVienSection';
 
 export const metadata: Metadata = {
-    title: 'Kỹ năng mềm - VITC',
-    description: 'Phát triển kỹ năng mềm, nâng tầm sự nghiệp cùng VITC. Đào tạo chất lượng cao với giảng viên giàu kinh nghiệm.',
+    title: 'Kỹ năng mềm - VISC',
+    description: 'Phát triển kỹ năng mềm, nâng tầm sự nghiệp cùng VISC. Đào tạo chất lượng cao với giảng viên giàu kinh nghiệm.',
 };
 
 export default function KyNangMemPage() {

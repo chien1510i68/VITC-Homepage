@@ -1,47 +1,121 @@
-import React from 'react'
-import SAMPLE_THU_VIEN from '../../../lib/thuVienData'
+'use client';
+
+import { useRef } from 'react';
+import { useIntersectionObserver } from '../hooks';
+import { 
+  SectionHeader, 
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  AnimatedSection,
+  Container,
+  ImageWithFallback,
+  Badge,
+  Button
+} from '../components';
+import { SAMPLE_LIBRARY } from '../constants/library';
+import { SECTION_PADDING, GRID_3, TEXT_BODY, TEXT_MUTED } from '../constants/classNames';
+import { formatDate } from '../utils/formatters';
+
+const TYPE_LABELS = {
+  document: 'Tài liệu',
+  slide: 'Slide',
+  video: 'Video'
+} as const;
+
+const TYPE_COLORS = {
+  document: 'bg-sky-100 text-sky-700',
+  slide: 'bg-emerald-100 text-emerald-700',
+  video: 'bg-violet-100 text-violet-700'
+} as const;
 
 export default function ThuVienSection() {
-  const items = SAMPLE_THU_VIEN.slice(0, 6)
+  const sectionRef = useRef<HTMLElement>(null);
+  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1 });
+  const items = SAMPLE_LIBRARY.slice(0, 6);
 
   return (
-    <section className="py-12">
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Tài liệu & Thư viện</h2>
-        <p className="text-sm text-gray-600 mb-6 text-center">Tổng hợp tài liệu, slide, và video hỗ trợ học tập kỹ năng mềm.</p>
+    <section ref={sectionRef} className={SECTION_PADDING}>
+      <Container>
+        <AnimatedSection isVisible={isVisible} className="mb-12">
+          <SectionHeader
+            label="Thư viện"
+            title="Tài liệu & Thư viện"
+            description="Tổng hợp tài liệu, slide, và video hỗ trợ học tập kỹ năng mềm"
+            align="center"
+          />
+        </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {items.map(item => (
-            <article key={item.id} className="bg-white shadow-sm rounded-md overflow-hidden hover:shadow-md transition">
-              <div>
+        <div className={GRID_3}>
+          {items.map((item, idx) => (
+            <AnimatedSection key={item.id} isVisible={isVisible} delay={idx * 100}>
+              <Card hover className="h-full flex flex-col">
                 <a href={item.url} target="_blank" rel="noreferrer" className="block">
-                  <div className="h-44 bg-gray-100 w-full overflow-hidden">
-                    {item.image ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">No image</div>
+                  <div className="relative h-44 bg-slate-100 overflow-hidden">
+                    <ImageWithFallback
+                      src={item.image || ''}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    {item.type && (
+                      <div className="absolute top-3 right-3">
+                        <Badge className={TYPE_COLORS[item.type]}>
+                          {TYPE_LABELS[item.type]}
+                        </Badge>
+                      </div>
                     )}
                   </div>
                 </a>
 
-                <div className="p-4">
-                  <a href={item.url} target="_blank" rel="noreferrer" className="text-lg font-semibold mb-2 block hover:underline">{item.title}</a>
-                  {item.excerpt && <p className="text-sm text-gray-600 mb-3">{item.excerpt}</p>}
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">{item.date || ''}</span>
+                <div className="p-4 flex-1 flex flex-col">
+                  <CardHeader>
+                    <a 
+                      href={item.url} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="text-lg font-semibold text-slate-900 hover:text-sky-600 line-clamp-2"
+                    >
+                      {item.title}
+                    </a>
+                  </CardHeader>
+
+                  {item.excerpt && (
+                    <CardBody className="flex-1">
+                      <p className={`${TEXT_BODY} line-clamp-3`}>{item.excerpt}</p>
+                    </CardBody>
+                  )}
+
+                  <CardFooter className="flex items-center justify-between">
+                    <span className={TEXT_MUTED}>{formatDate(item.date || '')}</span>
                     {item.fileUrl ? (
-                      <a href={item.fileUrl} target="_blank" rel="noreferrer" className="text-xs text-blue-600">Tải xuống</a>
+                      <a 
+                        href={item.fileUrl} 
+                        target="_blank" 
+                        rel="noreferrer"
+                      >
+                        <Button variant="ghost" size="sm">
+                          Tải xuống
+                        </Button>
+                      </a>
                     ) : (
-                      <a href={item.url} target="_blank" rel="noreferrer" className="text-xs text-blue-600">Xem chi tiết</a>
+                      <a 
+                        href={item.url} 
+                        target="_blank" 
+                        rel="noreferrer"
+                      >
+                        <Button variant="ghost" size="sm">
+                          Xem chi tiết
+                        </Button>
+                      </a>
                     )}
-                  </div>
+                  </CardFooter>
                 </div>
-              </div>
-            </article>
+              </Card>
+            </AnimatedSection>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
-  )
+  );
 }

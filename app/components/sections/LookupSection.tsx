@@ -305,7 +305,7 @@ export default function LookupSection() {
         {/* Help Section */}
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600">
-            Bạn cần hỗ trợ? Liên hệ hotline: <a href="tel:0123456789" className={`font-semibold ${TAILWIND_COLORS.textPrimary}`}>0123 456 789</a> hoặc email: <a href="mailto:support@vitc.edu.vn" className={`font-semibold ${TAILWIND_COLORS.textPrimary}`}>support@vitc.edu.vn</a>
+            Bạn cần hỗ trợ? Liên hệ hotline: <a href="tel:0123456789" className={`font-semibold ${TAILWIND_COLORS.textPrimary}`}>0123 456 789</a> hoặc email: <a href="mailto:support@visc.edu.vn" className={`font-semibold ${TAILWIND_COLORS.textPrimary}`}>support@visc.edu.vn</a>
           </p>
         </div>
       </div>

@@ -32,21 +32,28 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "VITC - Giải pháp công nghệ cho doanh nghiệp",
-  description: "VITC cung cấp dịch vụ phát triển phần mềm, thiết kế website và giải pháp chuyển đổi số toàn diện cho doanh nghiệp. Chúng tôi chuyên về phát triển web, mobile app, UI/UX design và cloud solutions.",
-  keywords: ["phát triển phần mềm", "thiết kế website", "ứng dụng mobile", "chuyển đổi số", "cloud solutions", "UI/UX design"],
-  authors: [{ name: "VITC Team" }],
+  title: "VISC - Trung tâm Tin học và Kỹ năng mềm",
+  description: "VISC - Trung tâm đào tạo tin học và kỹ năng mềm chuyên nghiệp. Cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm, chương trình đào tạo chuẩn quốc tế.",
+  keywords: ["đào tạo tin học", "kỹ năng mềm", "tin học văn phòng", "chứng chỉ tin học", "soft skills", "khóa học tin học"],
+  authors: [{ name: "VISC Team" }],
+  icons: {
+    icon: '/images/logo.jpg',
+    shortcut: '/images/logo.jpg',
+    apple: '/images/logo.jpg',
+  },
   openGraph: {
-    title: "VITC - Giải pháp công nghệ cho doanh nghiệp",
-    description: "Cung cấp dịch vụ phát triển phần mềm, thiết kế website và giải pháp chuyển đổi số toàn diện",
+    title: "VISC - Trung tâm Tin học và Kỹ năng mềm",
+    description: "Trung tâm đào tạo tin học và kỹ năng mềm chuyên nghiệp với các khóa học chất lượng cao",
     type: "website",
     locale: "vi_VN",
-    siteName: "VITC",
+    siteName: "VISC",
+    images: ['/images/logo.jpg'],
   },
   twitter: {
     card: "summary_large_image",
-    title: "VITC - Giải pháp công nghệ cho doanh nghiệp",
-    description: "Cung cấp dịch vụ phát triển phần mềm, thiết kế website và giải pháp chuyển đổi số toàn diện",
+    title: "VISC - Trung tâm Tin học và Kỹ năng mềm",
+    description: "Trung tâm đào tạo tin học và kỹ năng mềm chuyên nghiệp với các khóa học chất lượng cao",
+    images: ['/images/logo.jpg'],
   },
 };
 

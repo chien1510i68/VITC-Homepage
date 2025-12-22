@@ -42,15 +42,15 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="mb-4">
               <Image 
-                src="https://vitc.edu.vn/Frond_end/images/logo.png"
-                alt="VITC Logo"
+                src="/images/logo.jpg"
+                alt="VISC Logo"
                 width={150}
                 height={50}
                 className="h-12 w-auto brightness-0 invert"
               />
             </div>
             <p className="text-sm leading-relaxed">
-              Trung tâm đào tạo Tin học và Công nghệ thông tin hàng đầu, cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm.
+              Trung tâm đào tạo tin học và kỹ năng mềm chuyên nghiệp, cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm.
             </p>
             
             {/* Contact Info */}
@@ -69,8 +69,8 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3 group">
                 <Mail className={`w-5 h-5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
-                <a href="mailto:contact@vitc.edu.vn" className="text-sm group-hover:text-white transition-colors">
-                  contact@vitc.edu.vn
+                <a href="mailto:contact@visc.edu.vn" className="text-sm group-hover:text-white transition-colors">
+                  contact@visc.edu.vn
                 </a>
               </div>
               <div className="flex items-center gap-3 group">
@@ -180,7 +180,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-400">
-              © 2024 <span className="text-white font-semibold">VITC</span>. All rights reserved.
+              © 2024 <span className="text-white font-semibold">VISC</span>. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
               <Link href="#" className={`hover:${TAILWIND_COLORS.textPrimary} transition-colors`}>

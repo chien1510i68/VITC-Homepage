@@ -2,44 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-const CAROUSEL_IMAGES = [
-  'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=1920&h=1080&fit=crop',
-  'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&h=1080&fit=crop',
-];
+import { useCarousel } from '../hooks';
+import { CarouselNavigation, CarouselIndicators, StatGrid } from '../components';
+import { CAROUSEL_IMAGES, HERO_STATS } from '../constants/hero';
 
 export default function HeroSoftSkills() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % CAROUSEL_IMAGES.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  const { currentSlide, nextSlide, prevSlide, goToSlide } = useCarousel({
+    totalSlides: CAROUSEL_IMAGES.length,
+    autoPlayInterval: 5000,
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
-
-  const handlePrevious = () => {
-    setCurrentSlide((prev) => (prev - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length);
-  };
-
-  const handleNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % CAROUSEL_IMAGES.length);
-  };
 
   return (
     <section className="relative w-full min-h-screen bg-white">
@@ -104,23 +81,12 @@ export default function HeroSoftSkills() {
 
               {/* Stats - Simple minimal */}
               <div 
-                className={`mt-16 pt-8 border-t border-gray-200 grid grid-cols-3 gap-8 transition-all duration-700 ${
+                className={`mt-16 pt-8 border-t border-gray-200 transition-all duration-700 ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}
                 style={{ transitionDelay: '400ms' }}
               >
-                <div>
-                  <div className="text-2xl font-light text-gray-900 mb-1">10K+</div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider">Học viên</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-light text-gray-900 mb-1">50+</div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider">Khóa học</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-light text-gray-900 mb-1">95%</div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider">Hài lòng</div>
-                </div>
+                <StatGrid stats={HERO_STATS} />
               </div>
             </div>
           </div>
@@ -149,42 +115,20 @@ export default function HeroSoftSkills() {
 
               {/* Minimal Navigation - Bottom */}
               <div className="absolute bottom-6 left-0 right-0 flex items-center justify-center gap-4 z-10">
-                {/* Arrow buttons - minimal */}
-                <button
-                  onClick={handlePrevious}
-                  aria-label="Previous"
-                  className="w-10 h-10 flex items-center justify-center bg-white/90 backdrop-blur-sm hover:bg-white transition-colors duration-200"
-                >
-                  <ChevronLeft className="w-4 h-4 text-gray-900" strokeWidth={1.5} />
-                </button>
+                <CarouselNavigation
+                  onPrevious={prevSlide}
+                  onNext={nextSlide}
+                  canScrollLeft={true}
+                  canScrollRight={true}
+                  variant="minimal"
+                />
 
-                {/* Dot indicators */}
-                <div className="flex gap-2">
-                  {CAROUSEL_IMAGES.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentSlide(index)}
-                      aria-label={`Go to slide ${index + 1}`}
-                      className="group p-1"
-                    >
-                      <div 
-                        className={`h-0.5 transition-all duration-300 ${
-                          index === currentSlide 
-                            ? 'w-8 bg-white' 
-                            : 'w-4 bg-white/50 group-hover:bg-white/80'
-                        }`}
-                      />
-                    </button>
-                  ))}
-                </div>
-
-                <button
-                  onClick={handleNext}
-                  aria-label="Next"
-                  className="w-10 h-10 flex items-center justify-center bg-white/90 backdrop-blur-sm hover:bg-white transition-colors duration-200"
-                >
-                  <ChevronRight className="w-4 h-4 text-gray-900" strokeWidth={1.5} />
-                </button>
+                <CarouselIndicators
+                  total={CAROUSEL_IMAGES.length}
+                  current={currentSlide}
+                  onSelect={goToSlide}
+                  variant="lines"
+                />
               </div>
             </div>
           </div>
