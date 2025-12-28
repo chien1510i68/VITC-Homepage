@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useCarousel } from '../hooks';
-import { CarouselNavigation, CarouselIndicators, StatGrid } from '../components';
+import { CarouselIndicators, StatGrid } from '../components';
+import { CarouselNavigation } from '@/app/shared/components';
+import { Button } from '@/components/ui/button';
 import { CAROUSEL_IMAGES, HERO_STATS } from '../constants/hero';
 
 export default function HeroSoftSkills() {
@@ -70,13 +72,16 @@ export default function HeroSoftSkills() {
                 }`}
                 style={{ transitionDelay: '300ms' }}
               >
-                <button className="px-8 py-3 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors duration-200">
+                <Button className="px-8 py-3 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800">
                   Tìm hiểu thêm
-                </button>
-                <button className="text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-2">
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2"
+                >
                   Đăng ký ngay
                   <span className="text-lg">→</span>
-                </button>
+                </Button>
               </div>
 
               {/* Stats - Simple minimal */}

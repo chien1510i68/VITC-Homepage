@@ -16,7 +16,7 @@ export const SAMPLE_NEWS: NewsItem[] = [
     url: '#',
     excerpt: 'Hội thảo giới thiệu các kỹ năng cần thiết cho sinh viên trong môi trường đại học: giao tiếp, quản lý thời gian, và làm việc nhóm.',
     date: '2025-05-10',
-    image: 'https://images.unsplash.com/photo-1554774853-d9cbf5a7c0f1?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=abcd',
+    image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1600&q=80&auto=format&fit=crop',
     contentHtml: '<p>Chúng tôi chào mừng các sinh viên mới tham gia hội thảo <strong>Kỹ năng mềm</strong>. Buổi hội thảo bao gồm các phần: <ul><li>Giao tiếp hiệu quả</li><li>Quản lý thời gian</li><li>Làm việc nhóm</li></ul><p>Thời gian: 9:00 - 12:00. Đăng ký tại trung tâm.</p>',
     slug: 'hoi-thao-ky-nang-mem-sinh-vien-moi'
   },

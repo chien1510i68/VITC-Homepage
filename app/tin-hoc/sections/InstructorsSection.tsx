@@ -93,21 +93,27 @@ export default function InstructorsSection() {
         {/* Carousel */}
         <div className="relative mb-8">
           {/* Navigation Buttons */}
-          <button
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
             onClick={handlePrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-green-600 text-gray-800 hover:text-white p-2 rounded-full transition-all duration-300 border border-gray-200"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white text-gray-800 hover:bg-green-600 hover:text-white border-gray-200"
             aria-label="Previous"
           >
             <ChevronLeft className="w-5 h-5" />
-          </button>
+          </Button>
 
-          <button
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
             onClick={handleNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-green-600 text-gray-800 hover:text-white p-2 rounded-full transition-all duration-300 border border-gray-200"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white text-gray-800 hover:bg-green-600 hover:text-white border-gray-200"
             aria-label="Next"
           >
             <ChevronRight className="w-5 h-5" />
-          </button>
+          </Button>
 
           {/* Cards Container */}
           <div className="relative flex items-center justify-center h-[350px] md:h-[400px]">

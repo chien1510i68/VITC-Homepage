@@ -44,37 +44,35 @@ export type {
 
 // Layout Components
 export { SectionHeader } from './components/SectionHeader';
-export { Container } from './components/Container';
+export { Container } from '@/app/shared/components';
 export { AnimatedSection } from './components/AnimatedSection';
 
 // UI Components
-export { Button } from './components/Button';
-export type { ButtonProps } from './components/Button';
+export { Button } from '@/app/shared/components';
+export type { ButtonProps } from '@/app/shared/components';
 
-export { Card, CardHeader, CardBody, CardFooter } from './components/Card';
-export type { CardProps } from './components/Card';
+export { Card, CardHeader, CardBody, CardFooter } from '@/app/shared/components';
+export type { CardProps } from '@/app/shared/components';
 
-export { Badge } from './components/Badge';
-export type { BadgeProps } from './components/Badge';
+export { Badge } from '@/app/shared/components';
+export type { BadgeProps } from '@/app/shared/components';
 
-export { EmptyState } from './components/EmptyState';
-export type { EmptyStateProps } from './components/EmptyState';
+export { EmptyState } from '@/app/shared/components';
 
-export { ImageWithFallback } from './components/ImageWithFallback';
-export type { ImageWithFallbackProps } from './components/ImageWithFallback';
+export { ImageWithFallback } from '@/app/shared/components';
+export type { ImageWithFallbackProps } from '@/app/shared/components';
 
 // Interactive Components
-export { CarouselNavigation } from './components/CarouselNavigation';
-export { CarouselIndicators } from './components/CarouselIndicators';
-export { FilterButtons } from './components/FilterButtons';
-export type { FilterButtonsProps } from './components/FilterButtons';
+export { CarouselNavigation, CarouselIndicators } from '@/app/shared/components';
+export { FilterButtons } from '@/app/shared/components';
+export type { FilterButtonsProps } from '@/app/shared/components';
 
 // Display Components
-export { StatGrid, StatItem } from './components/StatGrid';
+export { StatGrid, StatItem } from '@/app/shared/components';
 export { FeatureIcon } from './components/FeatureIcon';
 
 // Domain Components
-export { InstructorCard } from './components/InstructorCard';
+export { InstructorCard } from '@/app/shared/components';
 export { LeaderCard } from './components/LeaderCard';
 export { InstructorCarousel } from './components/InstructorCarousel';
 

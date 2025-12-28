@@ -1,0 +1,639 @@
+﻿export interface Instructor {
+  id: string;
+  username: string;
+  email: string;
+  avatarUrl: string;
+  description: string;
+}
+
+export interface Course {
+  id: string;
+  courseCode: string;
+  title: string;
+  slug: string;
+  categoryCode?: string;
+  thumbnailUrl?: string;
+  price: number;
+  duration?: number;
+  level?: string;
+  descriptionHtml?: string;
+  subject?: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  instructor?: Instructor;
+  benefitsHtml?: string;
+}
+
+export interface CourseCardData {
+  id: string;
+  title: string;
+  thumbnail: string;
+  badge: {
+    text: string;
+    type: 'hot' | 'upcoming' | 'new';
+  };
+  duration: string;
+  price: string;
+  originalPrice?: string;
+  studentCount: number;
+  description: string;
+  category: string;
+}
+
+// Mock data for fallback - Backend Course model structure
+// Dữ liệu khóa học thực tế từ Trung tâm Tin học VNUA (https://vitc.edu.vn/)
+export const mockFeaturedCourses: Course[] = [
+  // ===== KHÓA HỌC CHỨNG CHỈ QUỐC TẾ =====
+  {
+    id: '1',
+    courseCode: 'ICDL-2025',
+    title: 'Chứng chỉ Tin học Quốc tế ICDL',
+    slug: 'chung-chi-quoc-te-icdl',
+    categoryCode: 'OFFICE',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=300&fit=crop&crop=center',
+    price: 1850000,
+    duration: 12.5,
+    level: 'Cơ bản',
+    descriptionHtml: '<div style="max-width: 800px;"><h3 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 20px;">Chứng chỉ Tin học Quốc tế ICDL</h3><p style="line-height: 1.8;"><strong>ICDL</strong> (International Computer Driving Licence) là bộ chứng chỉ kỹ năng sử dụng máy tính chuẩn quốc tế do Tổ chức ICDL Foundation cấp. Được công nhận tại hơn 100 quốc gia với 15 triệu thí sinh.</p><div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">Nội dung khóa học (2 mô-đun - 5 kỹ năng)</h4><ul style="line-height: 1.8;"><li>Cơ bản về CNTT và Truyền thông</li><li>Cơ bản về mạng trực tuyến</li><li>Xử lý văn bản cơ bản (Word)</li><li>Sử dụng bảng tính cơ bản (Excel)</li><li>Sử dụng trình chiếu cơ bản (PowerPoint)</li></ul></div><div style="background: #f5f5f5; padding: 20px; border-left: 4px solid #4caf50; margin: 20px 0;"><h4 style="color: #2e7d32; margin-top: 0;">Ưu điểm nổi bật</h4><ul style="line-height: 1.8;"><li>Chứng chỉ có giá trị vĩnh viễn, công nhận toàn cầu</li><li>Đạt chuẩn đầu ra Tin học cơ bản VNUA (K62+)</li><li>Miễn học, miễn thi và đổi điểm 10 học phần Tin học cơ bản</li><li>Điểm đạt: 75% tổng số điểm</li></ul></div><p style="background: #fff3e0; padding: 15px; border-radius: 5px; margin-top: 20px;"><strong>Thời lượng:</strong> 5 buổi (2.5 giờ/buổi) | <strong>Lưu ý:</strong> Học phí bao gồm lệ phí thi</p></div>',
+    subject: 'Tin học văn phòng',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-001",
+      username: "nguyen_van_tuan",
+      email: "nvtuan@vitc.edu.vn",
+      avatarUrl: "/instructors/nguyen-van-tuan.jpg",
+      description: `<div style="line-height: 1.8;">
+        <p style="margin-bottom: 12px;"><strong style="color: #1976d2;">Thạc sĩ Công nghệ Thông tin</strong> - Đại học Bách Khoa Hà Nội</p>
+        <p style="margin-bottom: 12px;">Giảng viên chính khoa Tin học với <strong>hơn 10 năm kinh nghiệm</strong> đào tạo tin học văn phòng và chứng chỉ quốc tế.</p>
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px; margin: 15px 0;">
+          <p style="margin: 0; font-size: 14px;"><strong>Chuyên môn:</strong> Chứng chỉ IC3, ICDL, MOS</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px;"><strong>Thành tích:</strong> Hơn 3000+ học viên đã đạt chứng chỉ quốc tế</p>
+        </div>
+        <p style="color: #666; font-style: italic;">"Tôi tin rằng mỗi học viên đều có thể thành công khi được hướng dẫn đúng phương pháp và tận tâm."</p>
+      </div>`
+    },
+    benefitsHtml: `<div style="line-height: 1.6;">
+      <div style="background: linear-gradient(to right, #f0f9ff, #e0f2fe); padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #0284c7;">
+        <p style="margin: 0; font-size: 13px; color: #0c4a6e;"><strong>Chứng chỉ quốc tế:</strong> Được công nhận tại 150+ quốc gia</p>
+      </div>
+      <div style="background: linear-gradient(to right, #f0fdf4, #dcfce7); padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #16a34a;">
+        <p style="margin: 0; font-size: 13px; color: #14532d;"><strong>Học phí ưu đãi:</strong> Bao gồm lệ phí thi ICDL</p>
+      </div>
+      <div style="background: linear-gradient(to right, #fef3c7, #fde68a); padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #ca8a04;">
+        <p style="margin: 0; font-size: 13px; color: #713f12;"><strong>Tài liệu:</strong> Giáo trình chuẩn quốc tế</p>
+      </div>
+      <div style="background: linear-gradient(to right, #fce7f3, #fbcfe8); padding: 12px; border-radius: 8px; border-left: 3px solid #be185d;">
+        <p style="margin: 0; font-size: 13px; color: #831843;"><strong>Hỗ trợ:</strong> Tư vấn miễn phí sau khóa học</p>
+      </div>
+    </div>`
+  },
+  {
+    id: '2',
+    courseCode: 'UDCNTT-COBAN-2025',
+    title: 'Ứng dụng CNTT Cơ bản (Thông tư 03)',
+    slug: 'ung-dung-cntt-co-ban',
+    categoryCode: 'OFFICE',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400&h=300&fit=crop&crop=center',
+    price: 700000,
+    duration: 7,
+    level: 'Cơ bản',
+    descriptionHtml: '<h3>Chứng chỉ Ứng dụng CNTT Cơ bản</h3><p>Chứng chỉ theo <strong>Thông tư 03/2014/TT-BTTTT</strong> của Bộ Thông tin và Truyền thông - Thay thế Chứng chỉ A/B/C trước đây.</p><div style="background: #f3e5f5; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Kiến thức cơ bản về máy tính</li><li>Xử lý văn bản - Microsoft Word</li><li>Bảng tính - Microsoft Excel</li><li>Trình chiếu - Microsoft PowerPoint</li><li>Kiến thức cơ bản về Internet</li></ul></div><p><strong>Cấu trúc bài thi:</strong></p><ul><li><strong>Trắc nghiệm:</strong> Thi trực tiếp trên máy, chấm tự động</li><li><strong>Thực hành:</strong> Làm bài và lưu file trên máy tính</li><li><em>Điều kiện đạt: Cả 2 phần phải ≥ 5 điểm</em></li></ul><p><strong>Đối tượng:</strong></p><ul><li>Sinh viên cần hoàn thiện chứng chỉ tốt nghiệp</li><li>Cán bộ, viên chức cơ quan Nhà nước</li></ul><p><em>Số buổi: 2 buổi (3.5 giờ/buổi) | Bao gồm học phí + lệ phí thi</em></p>',
+    subject: 'Tin học văn phòng',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-002",
+      username: "tran_thi_lan",
+      email: "ttlan@vitc.edu.vn",
+      avatarUrl: "/instructors/tran-thi-lan.jpg",
+  {
+    id: '3',
+    courseCode: 'UDCNTT-NANGCAO-2025',
+    title: 'Ứng dụng CNTT Nâng cao (Thông tư 03)',
+    slug: 'ung-dung-cntt-nang-cao',
+    categoryCode: 'OFFICE',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop&crop=center',
+    price: 1000000,
+    duration: 7,
+    level: 'Nâng cao',
+    descriptionHtml: '<h3>Chứng chỉ Ứng dụng CNTT Nâng cao</h3><p>Chứng chỉ theo <strong>Thông tư 03/2014/TT-BTTTT</strong> của Bộ Thông tin và Truyền thông - Chuẩn kỹ năng CNTT nâng cao.</p><div style="background: #fff3e0; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học nâng cao:</h4><ul><li>Microsoft Word nâng cao (Mail Merge, Macro)</li><li>Microsoft Excel nâng cao (Hàm phức tạp, Pivot Table, VBA)</li><li>Microsoft PowerPoint nâng cao</li><li>Quản lý cơ sở dữ liệu - Access</li><li>Ứng dụng Internet và Email chuyên nghiệp</li></ul></div><p><strong>Cấu trúc bài thi:</strong></p><ul><li><strong>Trắc nghiệm:</strong> Kiểm tra kiến thức lý thuyết nâng cao</li><li><strong>Thực hành:</strong> Bài tập thực tế phức tạp</li><li><em>Điều kiện đạt: Cả 2 phần phải ≥ 5 điểm</em></li></ul><p><strong>Lợi ích:</strong></p><ul><li>Nâng cao năng suất làm việc</li><li>Đáp ứng yêu cầu công việc chuyên môn</li><li>Chứng chỉ được Nhà nước công nhận</li></ul><p><em>Số buổi: 2 buổi (3.5 giờ/buổi) | Bao gồm học phí + lệ phí thi</em></p>',
+    subject: 'Tin học văn phòng',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-002",
+      username: "tran_thi_lan",
+      email: "ttlan@vitc.edu.vn",
+      avatarUrl: "/instructors/tran-thi-lan.jpg",
+  {
+    id: '4',
+    courseCode: 'IC3-2025',
+    title: 'Chứng chỉ IC3 Quốc tế',
+    slug: 'chung-chi-ic3-quoc-te',
+    categoryCode: 'OFFICE',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop&crop=center',
+    price: 1200000,
+    duration: 30,
+    level: 'Trung bình',
+    descriptionHtml: '<div style="max-width: 800px;"><h3 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 20px;">Chứng chỉ IC3 Quốc tế</h3><p style="line-height: 1.8;"><strong>IC3</strong> (Internet and Computing Core Certification) - Chứng chỉ quốc tế do Certiport (Hoa Kỳ) cung cấp. Được phổ biến tại 150 quốc gia với 2 triệu lượt thi/năm.</p><div style="background: linear-gradient(to right, #00b09b, #96c93d); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">Cấu trúc IC3 GS6 (3 cấp độ)</h4><p><strong>LEVEL 1:</strong> Các khái niệm cơ bản và thành phần thiết yếu</p><p><strong>LEVEL 2:</strong> Kiến thức thực hành kỹ năng cốt lõi</p><p><strong>LEVEL 3:</strong> Hiểu biết nâng cao về năng lực kỹ thuật số</p></div><div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: #424242; margin-top: 0;">7 Chuyên đề mỗi cấp độ</h4><ul style="line-height: 1.8; color: #616161;"><li>Công nghệ thông tin cơ bản</li><li>Công dân kỷ nguyên số</li><li>Quản lý thông tin</li><li>Sáng tạo nội dung</li><li>Giao tiếp/Truyền thông</li><li>Cộng tác</li><li>An toàn bảo mật</li></ul></div><div style="background: #e8f5e9; padding: 20px; border-left: 4px solid #4caf50; margin: 20px 0;"><h4 style="color: #2e7d32; margin-top: 0;">Ưu điểm cho Sinh viên VNUA</h4><ul style="line-height: 1.8;"><li>Quy đổi điểm 10 cho 3 môn Tin chuẩn đầu ra mức cơ bản</li><li>Chứng chỉ vĩnh viễn, công nhận toàn cầu</li><li>Được Bộ TTTT công nhận tương đương Thông tư 03</li><li>Điểm đạt: 70% tổng số điểm</li></ul></div><p style="background: #fff3e0; padding: 15px; border-radius: 5px;"><strong>Thời lượng:</strong> 12 buổi (2.5 giờ/buổi) | <strong>Lệ phí thi:</strong> 700.000đ/module</p></div>',
+    subject: 'Tin học văn phòng',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-001",
+      username: "nguyen_van_tuan",
+      email: "nvtuan@vitc.edu.vn",
+      avatarUrl: "/instructors/nguyen-van-tuan.jpg",
+  {
+    id: '5',
+    courseCode: 'MOS-2025',
+    title: 'Tin học Văn phòng MOS (Microsoft Office Specialist)',
+    slug: 'tin-hoc-van-phong-mos',
+    categoryCode: 'OFFICE',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&h=300&fit=crop&crop=center',
+    price: 1200000,
+    duration: 40,
+    level: 'Trung bình',
+    descriptionHtml: '<h3>Tin học Văn phòng MOS</h3><p><strong>MOS</strong> (Microsoft Office Specialist) - Chứng chỉ chuyên môn về Microsoft Office chuẩn quốc tế. Công cụ không thể thiếu trong công việc và học tập thời đại 4.0.</p><div style="background: #e1f5fe; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><p><strong>Microsoft Word:</strong> 6 buổi (2.5 giờ/buổi)</p><ul><li>Tạo và quản lý tài liệu chuyên nghiệp</li><li>Mail Merge và Template</li><li>Styles, References và Table of Contents</li></ul><p><strong>Microsoft Excel:</strong> 8 buổi (2.5 giờ/buổi)</p><ul><li>Hàm và công thức nâng cao</li><li>Pivot Table và Data Analysis</li><li>Charts và Conditional Formatting</li></ul><p><strong>Microsoft PowerPoint:</strong> 2 buổi (2.5 giờ/buổi)</p><ul><li>Thiết kế slide chuyên nghiệp</li><li>Animation và Transition</li><li>Presentation Skills</li></ul></div><p><strong>Lợi ích:</strong></p><ul><li>Tối ưu hóa quy trình làm việc</li><li>Nâng cao năng suất và hiệu quả công việc</li><li>Tạo ấn tượng với nhà tuyển dụng</li><li>Thành thạo công cụ thiết yếu mọi ngành nghề</li></ul><p><strong>Dành cho:</strong> Sinh viên, người đi làm, văn phòng</p><p><em>Tổng: 16 buổi (40 giờ) |  Lệ phí thi: 300.000đ</em></p>',
+    subject: 'Tin học văn phòng',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-003",
+      username: "pham_minh_duc",
+      email: "pmduc@vitc.edu.vn",
+      avatarUrl: "/instructors/pham-minh-duc.jpg",
+      description: "Microsoft Office Specialist với chứng chỉ MOS Master. Chuyên sâu về Word, PowerPoint và Excel. Hơn 8 năm kinh nghiệm đào tạo MOS."
+    }
+  },
+  {
+    id: '6',
+    courseCode: 'MOS-QUOCTE-2025',
+    title: 'Luyện thi MOS Quốc tế',
+    slug: 'luyen-thi-mos-quoc-te',
+    categoryCode: 'OFFICE',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop&crop=center',
+    price: 400000,
+    duration: 5,
+    level: 'Trung bình',
+    descriptionHtml: '<div style="max-width: 800px;"><h3 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 20px;">Luyện thi MOS Quốc tế</h3><p style="line-height: 1.8;"><strong>MOS</strong> (Microsoft Office Specialist) là chứng chỉ quốc tế về kỹ năng Tin học Văn phòng được triển khai bởi Certiport (Hoa Kỳ), áp dụng tại 150 quốc gia với 280.000 bài thi/tháng.</p><div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">Cấp độ chứng chỉ MOS</h4><p><strong>Specialist:</strong> Kỹ năng cơ bản trong Word, Excel, PowerPoint, Access, Outlook</p><p><strong>Expert:</strong> Kỹ năng nâng cao trong Word Expert và Excel Expert</p><p><strong>Master:</strong> Kỹ năng toàn diện, chuyên sâu nhất (4 bài thi: Word Expert, Excel Expert, PowerPoint và Outlook/Access)</p></div><div style="background: #e3f2fd; padding: 20px; border-left: 4px solid #2196f3; margin: 20px 0;"><h4 style="color: #1565c0; margin-top: 0;">Ưu điểm nổi bật</h4><ul style="line-height: 1.8;"><li>Chứng chỉ do chính Tổng Giám đốc Microsoft ký tên</li><li>Có giá trị vô thời hạn trên toàn cầu</li><li>Được Bộ TTTT công nhận tương đương chuẩn CNTT nâng cao</li><li>Sinh viên VNUA được quy đổi điểm 10 cho 2 môn Tin cơ bản</li><li>Điểm đạt: 70% tổng số điểm</li></ul></div><p style="background: #fff3e0; padding: 15px; border-radius: 5px;"><strong>Thời lượng:</strong> 2 buổi (2.5 giờ/buổi) / module | <strong>Lệ phí thi:</strong> 842.000đ/module</p></div>',
+    subject: 'Tin học văn phòng',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-003",
+      username: "pham_minh_duc",
+      email: "pmduc@vitc.edu.vn",
+      avatarUrl: "/instructors/pham-minh-duc.jpg",
+      description: "Microsoft Office Specialist với chứng chỉ MOS Master. Chuyên sâu về Word, PowerPoint và Excel. Hơn 8 năm kinh nghiệm đào tạo MOS."
+    }
+  },
+  {
+    id: '7',
+    courseCode: 'CNTT-DAURA-2025',
+    title: 'Luyện thi Đầu ra CNTT VNUA',
+    slug: 'luyen-thi-dau-ra-cntt-vnua',
+    categoryCode: 'OFFICE',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop&crop=center',
+    price: 800000,
+    duration: 20,
+    level: 'Cơ bản',
+    descriptionHtml: '<h3>Luyện thi Đầu ra CNTT VNUA</h3><p>Khóa học ôn tập và luyện đề giúp sinh viên Học viện Nông nghiệp Việt Nam đạt chuẩn đầu ra Tin học.</p><div style="background: #fff9c4; padding: 15px; border-radius: 8px;"><h4>Nội dung ôn luyện:</h4><ul><li>Kiến thức cơ bản về CNTT</li><li>Thực hành Word, Excel, PowerPoint</li><li>Sử dụng Internet và Email</li><li>Giải đề thi các năm trước</li><li>Mẹo và kỹ thuật làm bài thi</li></ul></div><p><strong>Mục tiêu:</strong></p><ul><li>Nắm vững kiến thức chuẩn đầu ra CNTT VNUA</li><li>Tự tin trong kỳ thi chính thức</li><li>Tối ưu thời gian làm bài</li><li>Đạt điểm cao</li></ul><p><strong>Đối tượng:</strong> Sinh viên VNUA chuẩn bị thi đầu ra</p><p><em>Thời lượng: 8 buổi (2.5 giờ/buổi) |  Ôn tập trọng tâm và giải đề</em></p>',
+    subject: 'Tin học văn phòng',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-002",
+      username: "tran_thi_lan",
+      email: "ttlan@vitc.edu.vn",
+      avatarUrl: "/instructors/tran-thi-lan.jpg",
+  {
+    id: '8',
+    courseCode: 'SEO-MARKETING-2025',
+    title: 'SEO Digital & Marketing',
+    slug: 'seo-digital-marketing',
+    categoryCode: 'MARKETING',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop&crop=center',
+    price: 0,
+    duration: 0,
+    level: 'Trung bình',
+    descriptionHtml: '<div style="max-width: 800px;"><h3 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 20px;">SEO Digital & Marketing</h3><p style="line-height: 1.8;"><strong>SEO</strong> (Search Engine Optimization) - Tối ưu hóa công cụ tìm kiếm là tập hợp các phương pháp giúp cải thiện thứ hạng website trên trang kết quả tìm kiếm.</p><div style="background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); color: #1a237e; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="margin-top: 0;">Yếu tố quyết định thành công</h4><ul style="line-height: 1.8;"><li><strong>SEO Onpage:</strong> Tối ưu nội dung và cấu trúc website</li><li><strong>SEO Offpage:</strong> Xây dựng liên kết và uy tín</li><li><strong>Technical SEO:</strong> Tối ưu kỹ thuật website</li><li><strong>Entity SEO:</strong> Tối ưu thực thể và ngữ cảnh</li></ul></div><div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: #424242; margin-top: 0;">6 Loại hình SEO phổ biến</h4><ul style="line-height: 1.8; color: #616161;"><li><strong>SEO tổng thể:</strong> Tối ưu toàn bộ website</li><li><strong>SEO từ khóa:</strong> Tập trung vào từ khóa chính</li><li><strong>SEO Social:</strong> Kết hợp mạng xã hội</li><li><strong>SEO ảnh:</strong> Tối ưu hình ảnh</li><li><strong>SEO App:</strong> Tối ưu ứng dụng mobile</li><li><strong>SEO Local:</strong> Tối ưu địa phương</li></ul></div><div style="background: #e8f5e9; padding: 20px; border-left: 4px solid #4caf50; margin: 20px 0;"><h4 style="color: #2e7d32; margin-top: 0;">6 Giá trị bất biến từ SEO</h4><ol style="line-height: 1.8;"><li>Xây dựng cơ sở dữ liệu truyền thông vững chắc</li><li>Tạo dòng chảy khách hàng mạnh mẽ</li><li>Tối ưu chi phí tiếp thị bền vững</li><li>Hệ thống thông tin đo lường đa chiều</li><li>Chiến lược tiếp thị ngắn, trung và dài hạn</li><li>Bệ phóng tăng trưởng kinh doanh</li></ol></div></div>',
+    subject: 'Digital Marketing',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-006",
+      username: "nguyen_thi_huong",
+      email: "nthuong@vitc.edu.vn",
+      avatarUrl: "/instructors/nguyen-thi-huong.jpg",
+      description: "Chuyên gia SEO và Digital Marketing với hơn 12 năm kinh nghiệm. Đã tư vấn cho nhiều doanh nghiệp về chiến lược marketing online và tối ưu hóa công cụ tìm kiếm."
+    }
+  },
+  {
+    id: '9',
+    courseCode: 'EXCEL-SPSS-R-2025',
+    title: 'Phân tích Excel/SPSS/R',
+    slug: 'phan-tich-excel-spss-r',
+    categoryCode: 'ANALYSIS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop&crop=center',
+    price: 0,
+    duration: 0,
+    level: 'Nâng cao',
+    descriptionHtml: '<div style="max-width: 800px;"><h3 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 20px;">Phân tích Excel/SPSS/R</h3><div style="background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">SPSS (Statistical Package for the Social Sciences)</h4><p style="line-height: 1.8;">Chương trình máy tính phục vụ công tác phân tích thống kê, được tạo ra năm 1968 và mua lại bởi IBM năm 2009. Ứng dụng rộng rãi trong nghiên cứu khoa học xã hội và kinh tế lượng.</p></div><div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">R - Ngôn ngữ lập trình thống kê</h4><p style="line-height: 1.8;">Phần mềm mã nguồn mở được sử dụng rộng rãi cho tất cả các phân tích thống kê. Hầu hết các phương pháp thống kê mới nhất đều được triển khai trong R trước các phần mềm thương mại khác.</p></div><table style="width: 100%; border-collapse: collapse; margin: 20px 0;"><thead><tr style="background: #1976d2; color: white;"><th style="padding: 15px; text-align: left; border: 1px solid #ddd;">Công cụ</th><th style="padding: 15px; text-align: left; border: 1px solid #ddd;">Ưu điểm nổi bật</th></tr></thead><tbody><tr style="background: #f5f5f5;"><td style="padding: 15px; border: 1px solid #ddd;"><strong>SPSS</strong></td><td style="padding: 15px; border: 1px solid #ddd;">Giao diện đơn giản, phân tích phương sai và nhiều chiều mạnh mẽ, đồ thị chất lượng cao</td></tr><tr><td style="padding: 15px; border: 1px solid #ddd;"><strong>R</strong></td><td style="padding: 15px; border: 1px solid #ddd;">Khả năng phân tích biểu đồ tuyệt vời, mô hình thống kê mới nhất, miễn phí và đa nền tảng</td></tr></tbody></table></div>',
+    subject: 'Phân tích dữ liệu',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-009",
+      username: "tran_minh_chau",
+      email: "tmchau@vitc.edu.vn",
+      avatarUrl: "/instructors/tran-minh-chau.jpg",
+      description: "Chuyên gia phân tích dữ liệu với kinh nghiệm 15 năm trong nghiên cứu khoa học. Thành thạo SPSS, R, SAS và các công cụ thống kê. Tiến sĩ Thống kê ứng dụng."
+    }
+  },
+  {
+    id: '10',
+    courseCode: 'EXCEL-KETOAN-2025',
+    title: 'Ứng dụng Excel trong Kế toán',
+    slug: 'ud-excel-trong-ke-toan',
+    categoryCode: 'OFFICE',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop&crop=center',
+    price: 0,
+    duration: 0,
+    level: 'Trung bình',
+    descriptionHtml: '<div style="max-width: 800px;"><h3 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 20px;">Ứng dụng Excel trong Kế toán</h3><p style="line-height: 1.8;">Microsoft Excel là công cụ không thể thiếu cho công tác kế toán trong thời đại 4.0, giúp quản lý và phân tích dữ liệu tài chính một cách nhanh chóng và hiệu quả.</p><div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: #424242; margin-top: 0;">Ứng dụng Excel trong công tác kế toán</h4><ul style="line-height: 1.8; color: #616161;"><li>Ghi nhận và lưu trữ thông tin tài chính</li><li>Kiểm tra đối chiếu sổ sách</li><li>Tính toán và tổng hợp số liệu chính xác</li><li>Thiết lập sổ sách, chứng từ và báo cáo</li><li>Xây dựng phần mềm kế toán bằng Excel</li></ul></div><div style="background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">Lợi ích của khóa học</h4><ul style="line-height: 1.8;"><li>Hiểu và vận dụng chắc chắn các tính năng Excel vào kế toán</li><li>Tự tin xây dựng phần mềm kế toán chuyên nghiệp</li><li>Hiểu rõ bản chất kế toán qua thiết lập hàm Excel</li><li>Tự thiết kế hệ thống sổ sách phù hợp doanh nghiệp</li><li>Tiết kiệm chi phí so với phần mềm kế toán chuyên nghiệp</li></ul></div></div>',
+    subject: 'Kế toán',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-004",
+      username: "le_quang_huy",
+      email: "lqhuy@vitc.edu.vn",
+      avatarUrl: "/instructors/le-quang-huy.jpg",
+      description: "Excel chuyên gia với hơn 10 năm kinh nghiệm. Chuyên sâu về Excel VBA, Power BI, và ứng dụng Excel trong kế toán, tài chính. Chứng chỉ MOS Expert Excel."
+    }
+  },
+  {
+    id: '11',
+    courseCode: 'ARCGIS-WEBGIS-2025',
+    title: 'ArcGIS - WebGIS',
+    slug: 'arcgis-webgis',
+    categoryCode: 'GIS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=400&h=300&fit=crop&crop=center',
+    price: 0,
+    duration: 0,
+    level: 'Nâng cao',
+    descriptionHtml: '<div style="max-width: 800px;"><h3 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 20px;">ArcGIS - WebGIS</h3><div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">ArcGIS - Hệ thống GIS hàng đầu</h4><p style="line-height: 1.8;">ArcGIS (ESRI Inc.) cung cấp giải pháp toàn diện từ thu thập/nhập số liệu, chỉnh lý, phân tích đến phân phối thông tin trên Internet. Hỗ trợ từ CSDL địa lý cá nhân đến CSDL doanh nghiệp.</p></div><div style="background: linear-gradient(to right, #00b09b, #96c93d); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">WebGIS - Giải pháp Client-Server</h4><p style="line-height: 1.8;">Cho phép quản lý, phân tích, cập nhật, phân phối thông tin bản đồ và GIS trên Internet. Giảm thiểu chi phí đầu tư, giao diện thân thiện và đơn giản.</p></div><div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: #424242; margin-top: 0;">Ứng dụng trong Quản lý Đất đai</h4><ul style="line-height: 1.8; color: #616161;"><li>Phân tích và phân vùng các dạng đất</li><li>Quy hoạch sử dụng tài nguyên đất</li><li>Phân tích xu hướng xây dựng</li><li>Kiểm soát và quản lý tài nguyên đất</li><li>Mô phỏng 3D địa hình và quy hoạch</li></ul></div><p style="background: #e3f2fd; padding: 15px; border-radius: 5px; border-left: 4px solid #2196f3;"><strong>Đặc biệt:</strong> Công cụ hỗ trợ thiết yếu cho sinh viên Khoa Quản lý Đất đai VNUA</p></div>',
+    subject: 'GIS',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-007",
+      username: "vu_minh_quan",
+      email: "vmquan@vitc.edu.vn",
+      avatarUrl: "/instructors/vu-minh-quan.jpg",
+      description: "GIS chuyên gia với hơn 12 năm kinh nghiệm về ArcGIS, QGIS và WebGIS. Tham gia nhiều dự án quy hoạch đất đai và quản lý tài nguyên. Thạc sĩ GIS."
+    }
+  },
+  {
+    id: '12',
+    courseCode: 'MICROSTATION-2025',
+    title: 'MicroStation',
+    slug: 'microstation',
+    categoryCode: 'CAD',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop&crop=center',
+    price: 0,
+    duration: 0,
+    level: 'Nâng cao',
+    descriptionHtml: '<div style="max-width: 800px;"><h3 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 20px;">MicroStation</h3><p style="line-height: 1.8;">MicroStation là phần mềm thiết kế CAD được sản xuất và phân phối bởi Bentley Systems, có môi trường đồ họa mạnh mẽ cho phép xây dựng và quản lý các đối tượng đồ họa thể hiện yếu tố bản đồ.</p><div style="background: linear-gradient(120deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">Lợi ích của MicroStation</h4><ul style="line-height: 1.8;"><li><strong>Automated Deliverables:</strong> Tự động hóa tạo và chia sẻ sản phẩm dự án</li><li><strong>Reality Modeling:</strong> Tích hợp thông tin theo ngữ cảnh (lưới thực tế, ảnh, đám mây điểm)</li><li><strong>Geo-coordination:</strong> Làm việc trong môi trường phối hợp địa lý nội tại</li><li><strong>Functional Components:</strong> Thiết kế tham số 3D thực sự</li><li><strong>Hypermodeling:</strong> Trải nghiệm 3D trực quan, tích hợp tài liệu chú thích</li></ul></div><div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: #424242; margin-top: 0;">Ứng dụng phần mềm</h4><ul style="line-height: 1.8; color: #616161;"><li>Tạo các sản phẩm dự án chuyên nghiệp</li><li>Thiết kế với mô hình tham số 3D thực sự</li><li>Thực thi các tiêu chuẩn thiết kế</li><li>Bố trí và chú thích bản vẽ kỹ thuật</li><li>Sản xuất hình ảnh động và kết xuất</li><li>Hợp tác làm việc trên các thiết kế</li></ul></div><p style="background: #fff3e0; padding: 15px; border-radius: 5px;"><strong>Đặc điểm:</strong> Tương thích với các ứng dụng BIM của Bentley, dễ dàng chuyển đổi quy trình công việc</p></div>',
+    subject: 'Thiết kế kỹ thuật',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-008",
+      username: "do_thanh_tung",
+      email: "dttung@vitc.edu.vn",
+      avatarUrl: "/instructors/do-thanh-tung.jpg",
+      description: "Chuyên gia CAD/BIM với 15 năm kinh nghiệm trong thiết kế kỹ thuật. Thành thạo MicroStation, AutoCAD, Revit. Kỹ sư xây dựng cao cấp, tham gia nhiều dự án lớn."
+    }
+  },
+  {
+    id: '13',
+    courseCode: 'LAPTRINH-WEB-2025',
+    title: 'Lập trình Web',
+    slug: 'lap-trinh-web',
+    categoryCode: 'PROGRAMMING',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop&crop=center',
+    price: 0,
+    duration: 0,
+    level: 'Trung bình',
+    descriptionHtml: '<div style="max-width: 800px;"><h3 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px; margin-bottom: 20px;">Lập trình Web</h3><p style="line-height: 1.8;">Website là tập hợp trang web nằm trong một tên miền hoặc tên miền phụ trên World Wide Web. Có thể xây dựng từ HTML/XHTML (tĩnh) hoặc CMS trên máy chủ (động) với nhiều ngôn ngữ lập trình khác nhau.</p><div style="background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: white; margin-top: 0;">Tầm quan trọng của Website</h4><ul style="line-height: 1.8;"><li>Không bị giới hạn về thời gian và không gian</li><li>Tăng khả năng tiếp cận và phạm vi khách hàng</li><li>Xúc tiến kinh doanh hiệu quả</li><li>Cung cấp dịch vụ chăm sóc khách hàng nhanh chóng</li><li>Tăng năng lực cạnh tranh</li><li>Xây dựng và phát triển thương hiệu</li></ul></div><div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;"><h4 style="color: #424242; margin-top: 0;">Ngôn ngữ lập trình Web</h4><p style="line-height: 1.8; color: #616161;">Khóa học trang bị kiến thức về các ngôn ngữ lập trình web phổ biến như PHP, .NET, Java, Ruby on Rails cùng với các framework và công nghệ hiện đại để xây dựng website chuyên nghiệp.</p></div></div>',
+    subject: 'Lập trình',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-005",
+      username: "hoang_van_nam",
+      email: "hvnam@vitc.edu.vn",
+      avatarUrl: "/instructors/hoang-van-nam.jpg",
+      description: "Lập trình viên Full-stack với 10+ năm kinh nghiệm. Chuyên sâu HTML, CSS, JavaScript, React, Node.js. Từng làm việc tại các công ty công nghệ lớn."
+    }
+  },
+
+  // ===== KHÓA HỌC KỸ NĂNG MỀM - TRUNG TÂM KỸ NĂNG MỀM VNUA =====
+  // Các khóa học theo chuẩn đầu ra (https://trungtamkynangmem.vnua.edu.vn/)
+  {
+    id: '14',
+    courseCode: 'KNM-GIAOTIEP-2025',
+    title: 'Kỹ năng giao tiếp',
+    slug: 'ky-nang-giao-tiep',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=300&fit=crop&crop=center',
+    price: 1200000,
+    duration: 30,
+    level: 'Cơ bản',
+    descriptionHtml: '<h3>�️ Kỹ năng giao tiếp</h3><p>Khóa học theo <strong>chuẩn đầu ra</strong> của Học viện Nông nghiệp Việt Nam. Phát triển kỹ năng giao tiếp hiệu quả trong học tập và công việc.</p><div style="background: #e8f5e9; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Nguyên tắc giao tiếp hiệu quả</li><li>Giao tiếp ngôn ngữ và phi ngôn ngữ</li><li>Kỹ năng lắng nghe tích cực</li><li>Giao tiếp trong nhóm và tổ chức</li><li>Xử lý tình huống giao tiếp khó khăn</li></ul></div><p><strong>Mục tiêu:</strong></p><ul><li>Tự tin giao tiếp trong mọi tình huống</li><li>Xây dựng mối quan hệ tích cực</li><li>Nâng cao hiệu quả làm việc nhóm</li><li>Đạt chuẩn đầu ra kỹ năng mềm VNUA</li></ul><p><strong>Đối tượng:</strong> Sinh viên VNUA và người quan tâm</p><p><em>Thời lượng: 12 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-010",
+      username: "pham_thi_mai",
+      email: "ptmai@vitc.edu.vn",
+      avatarUrl: "/instructors/pham-thi-mai.jpg",
+      description: "Chuyên gia kỹ năng mềm với 12 năm kinh nghiệm đào tạo. Chuyên sâu về giao tiếp, thuyết trình và xây dựng mối quan hệ. Thạc sĩ Tâm lý học ứng dụng."
+    }
+  },
+  {
+    id: '15',
+    courseCode: 'KNM-TEAMWORK-2025',
+    title: 'Kỹ năng làm việc nhóm',
+    slug: 'ky-nang-lam-viec-nhom',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop&crop=center',
+    price: 1200000,
+    duration: 30,
+    level: 'Cơ bản',
+    descriptionHtml: '<h3>Kỹ năng làm việc nhóm</h3><p>Khóa học theo <strong>chuẩn đầu ra</strong> của VNUA. Phát triển kỹ năng hợp tác và làm việc nhóm hiệu quả.</p><div style="background: #fff3e0; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Bản chất và vai trò làm việc nhóm</li><li>Xây dựng và phát triển nhóm làm việc</li><li>Phân công và phối hợp công việc</li><li>Giải quyết xung đột trong nhóm</li><li>Đánh giá hiệu quả làm việc nhóm</li></ul></div><p><strong>Kỹ năng đạt được:</strong></p><ul><li>Làm việc hiệu quả trong môi trường nhóm</li><li>Xây dựng tinh thần đồng đội</li><li>Quản lý xung đột và tạo sự đồng thuận</li><li>Đóng góp tích cực vào thành công chung</li></ul><p><strong>Ứng dụng:</strong> Học tập, công việc, dự án</p><p><em>Thời lượng: 12 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-011",
+      username: "nguyen_duc_thanh",
+      email: "ndthanh@vitc.edu.vn",
+      avatarUrl: "/instructors/nguyen-duc-thanh.jpg",
+      description: "Chuyên gia về làm việc nhóm và team building với 10 năm kinh nghiệm. Đã đào tạo cho hàng trăm tổ chức và doanh nghiệp về kỹ năng làm việc nhóm hiệu quả."
+    }
+  },
+  {
+    id: '16',
+    courseCode: 'KNM-BANTHAN-2025',
+    title: 'Kỹ năng quản lý bản thân',
+    slug: 'ky-nang-quan-ly-ban-than',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=300&fit=crop&crop=center',
+    price: 1200000,
+    duration: 30,
+    level: 'Cơ bản',
+    descriptionHtml: '<h3>Kỹ năng quản lý bản thân</h3><p>Khóa học theo <strong>chuẩn đầu ra</strong> của VNUA. Phát triển kỹ năng tự quản lý và phát triển bản thân toàn diện.</p><div style="background: #f3e5f5; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Nhận thức về bản thân và mục tiêu</li><li>Quản lý thời gian hiệu quả</li><li>Quản lý cảm xúc và căng thẳng</li><li>Xây dựng thói quen tích cực</li><li>Phát triển tư duy và kỹ năng học tập</li></ul></div><p><strong>Lợi ích:</strong></p><ul><li>Nâng cao khả năng tự chủ và kỷ luật</li><li>Quản lý thời gian và công việc hiệu quả</li><li>Cân bằng cuộc sống và công việc</li><li>Phát triển bản thân bền vững</li></ul><p><strong>Kết quả:</strong> Tự tin kiểm soát cuộc sống và sự nghiệp</p><p><em>Thời lượng: 12 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-013",
+      username: "tran_van_khanh",
+      email: "tvkhanh@vitc.edu.vn",
+      avatarUrl: "/instructors/tran-van-khanh.jpg",
+      description: "Chuyên gia quản lý thời gian và năng suất cá nhân. Hơn 8 năm kinh nghiệm coaching và đào tạo về quản lý bản thân, tự kỷ luật và phát triển năng suất."
+    }
+  },
+  {
+    id: '17',
+    courseCode: 'KNM-VIECLAM-2025',
+    title: 'Kỹ năng tìm kiếm việc làm',
+    slug: 'ky-nang-tim-kiem-viec-lam',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&crop=center',
+    price: 1200000,
+    duration: 30,
+    level: 'Cơ bản',
+    descriptionHtml: '<h3>Kỹ năng tìm kiếm việc làm</h3><p>Khóa học theo <strong>chuẩn đầu ra</strong> của VNUA. Trang bị kỹ năng cần thiết để thành công trong quá trình tìm việc và phỏng vấn.</p><div style="background: #e3f2fd; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Xác định mục tiêu nghề nghiệp</li><li>Kỹ năng viết CV và thư xin việc</li><li>Tìm kiếm và ứng tuyển việc làm</li><li>Kỹ năng phỏng vấn xin việc</li><li>Thương lượng lương và quyền lợi</li></ul></div><p><strong>Kỹ năng đạt được:</strong></p><ul><li>Tạo hồ sơ ứng tuyển chuyên nghiệp</li><li>Tự tin trong buổi phỏng vấn</li><li>Nắm bắt cơ hội việc làm</li><li>Thương lượng hiệu quả</li></ul><p><strong>Cam kết:</strong> Hỗ trợ tìm việc sau khóa học</p><p><em>Thời lượng: 12 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-017",
+      username: "nguyen_thi_thao",
+      email: "ntthao@vitc.edu.vn",
+      avatarUrl: "/instructors/nguyen-thi-thao.jpg",
+      description: "Chuyên gia tư vấn nghề nghiệp với 10 năm kinh nghiệm HR. Hỗ trợ hàng ngàn sinh viên tìm kiếm và phát triển sự nghiệp. Từng làm HR Manager tại tập đoàn đa quốc gia."
+    }
+  },
+  {
+    id: '18',
+    courseCode: 'KNM-LANHDAO-2025',
+    title: 'Kỹ năng lãnh đạo',
+    slug: 'ky-nang-lanh-dao',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=300&fit=crop&crop=center',
+    price: 1500000,
+    duration: 35,
+    level: 'Nâng cao',
+    descriptionHtml: '<h3>� Kỹ năng lãnh đạo</h3><p>Khóa học theo <strong>chuẩn đầu ra</strong> của VNUA. Phát triển tư duy và kỹ năng lãnh đạo cho thế hệ trẻ.</p><div style="background: #fce4ec; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Bản chất và phong cách lãnh đạo</li><li>Kỹ năng ra quyết định và giải quyết vấn đề</li><li>Quản lý và phát triển đội nhóm</li><li>Truyền cảm hứng và tạo động lực</li><li>Xây dựng tầm nhìn và chiến lược</li></ul></div><p><strong>Phát triển:</strong></p><ul><li>Tư duy chiến lược và lãnh đạo</li><li>Kỹ năng quản lý người và công việc</li><li>Xây dựng uy tín và ảnh hưởng</li><li>Dẫn dắt thay đổi và đổi mới</li></ul><p><strong>Đối tượng:</strong> Sinh viên, cán bộ đoàn thể, quản lý tương lai</p><p><em>Thời lượng: 14 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-014",
+      username: "vu_thi_hong",
+      email: "vthong@vitc.edu.vn",
+      avatarUrl: "/instructors/vu-thi-hong.jpg",
+      description: "Chuyên gia Leadership & Management với 15 năm kinh nghiệm quản lý cấp cao. Executive Coach được chứng nhận quốc tế. MBA từ trường danh tiếng."
+    }
+  },
+
+  // ===== CÁC KHÓA HỌC KỸ NĂNG MỀM CHUYÊN SÂU =====
+  {
+    id: '19',
+    courseCode: 'KNM-QUOCTE-2025',
+    title: 'Kỹ năng hội nhập quốc tế',
+    slug: 'ky-nang-hoi-nhap-quoc-te',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400&h=300&fit=crop&crop=center',
+    price: 1500000,
+    duration: 35,
+    level: 'Trung bình',
+    descriptionHtml: '<h3>Kỹ năng hội nhập quốc tế</h3><p>Khóa học theo <strong>chuẩn đầu ra</strong> của VNUA. Trang bị kỹ năng cần thiết để làm việc trong môi trường quốc tế.</p><div style="background: #fff9c4; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Hiểu biết về văn hóa và giao tiếp đa văn hóa</li><li>Kỹ năng giao tiếp tiếng Anh chuyên nghiệp</li><li>Làm việc trong môi trường đa quốc gia</li><li>Nắm bắt xu hướng toàn cầu hóa</li><li>Phát triển tư duy toàn cầu</li></ul></div><p><strong>Kỹ năng đạt được:</strong></p><ul><li>Giao tiếp hiệu quả với đối tác quốc tế</li><li>Thích ứng với môi trường đa văn hóa</li><li>Nắm bắt cơ hội việc làm toàn cầu</li><li>Xây dựng mạng lưới quốc tế</li></ul><p><strong>Cơ hội:</strong> Học bổng, trao đổi sinh viên, việc làm quốc tế</p><p><em>Thời lượng: 14 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-010",
+      username: "pham_thi_mai",
+      email: "ptmai@vitc.edu.vn",
+      avatarUrl: "/instructors/pham-thi-mai.jpg",
+      description: "Chuyên gia kỹ năng mềm với 12 năm kinh nghiệm đào tạo. Chuyên sâu về giao tiếp, thuyết trình và xây dựng mối quan hệ. Thạc sĩ Tâm lý học ứng dụng."
+    }
+  },
+  {
+    id: '20',
+    courseCode: 'KNM-CV-2025',
+    title: 'Kỹ năng viết CV và phỏng vấn',
+    slug: 'ky-nang-viet-cv-va-phong-van',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&h=300&fit=crop&crop=center',
+    price: 900000,
+    duration: 20,
+    level: 'Cơ bản',
+    descriptionHtml: '<h3>� Kỹ năng viết CV và phỏng vấn</h3><p>Khóa học <strong>chuyên sâu</strong> giúp sinh viên tự tin trong quá trình xin việc.</p><div style="background: #e8f5e9; padding: 15px; border-radius: 8px;"><h4>Nội dung chi tiết:</h4><ul><li>Cấu trúc CV chuyên nghiệp và hấp dẫn</li><li>Thư xin việc (Cover Letter) ấn tượng</li><li>Chuẩn bị hồ sơ ứng tuyển hoàn chỉnh</li><li>Kỹ năng phỏng vấn và trả lời câu hỏi khó</li><li>Thể hiện bản thân tự tin và chuyên nghiệp</li></ul></div><p><strong>Bonus:</strong></p><ul><li>20+ Mẫu CV theo từng ngành nghề</li><li>Ngân hàng câu hỏi phỏng vấn phổ biến</li><li>Mock interview với chuyên gia</li></ul><p><strong>Đối tượng:</strong> Sinh viên năm cuối, người tìm việc</p><p><em>Thời lượng: 8 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-017",
+      username: "nguyen_thi_thao",
+      email: "ntthao@vitc.edu.vn",
+      avatarUrl: "/instructors/nguyen-thi-thao.jpg",
+      description: "Chuyên gia tư vấn nghề nghiệp với 10 năm kinh nghiệm HR. Hỗ trợ hàng ngàn sinh viên tìm kiếm và phát triển sự nghiệp. Từng làm HR Manager tại tập đoàn đa quốc gia."
+    }
+  },
+  {
+    id: '21',
+    courseCode: 'KNM-THUYETTRINH-2025',
+    title: 'Kỹ năng thuyết trình',
+    slug: 'ky-nang-thuyet-trinh',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&h=300&fit=crop&crop=center',
+    price: 1000000,
+    duration: 25,
+    level: 'Trung bình',
+    descriptionHtml: '<h3>� Kỹ năng thuyết trình</h3><p>Khóa học <strong>chuyên sâu</strong> về kỹ năng thuyết trình và trình bày công khai hiệu quả.</p><div style="background: #fff3e0; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Nguyên tắc thuyết trình hiệu quả</li><li>Chuẩn bị nội dung và cấu trúc bài thuyết trình</li><li>Sử dụng công cụ hỗ trợ (PowerPoint, Prezi)</li><li>Kỹ năng giao tiếp phi ngôn ngữ</li><li>Xử lý câu hỏi và tình huống khó</li></ul></div><p><strong>Kỹ năng đạt được:</strong></p><ul><li>Tự tin trình bày trước đám đông</li><li>Tạo slide chuyên nghiệp và hấp dẫn</li><li>Thu hút và tương tác với khán giả</li><li>Quản lý thời gian thuyết trình</li></ul><p><strong>Ứng dụng:</strong> Thuyết trình học thuật, dự án, bán hàng</p><p><em>Thời lượng: 10 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-010",
+      username: "pham_thi_mai",
+      email: "ptmai@vitc.edu.vn",
+      avatarUrl: "/instructors/pham-thi-mai.jpg",
+      description: "Chuyên gia kỹ năng mềm với 12 năm kinh nghiệm đào tạo. Chuyên sâu về giao tiếp, thuyết trình và xây dựng mối quan hệ. Thạc sĩ Tâm lý học ứng dụng."
+    }
+  },
+  {
+    id: '22',
+    courseCode: 'KNM-TUDUY-2025',
+    title: 'Tư duy logic và sáng tạo',
+    slug: 'tu-duy-logic-va-sang-tao',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=400&h=300&fit=crop&crop=center',
+    price: 1100000,
+    duration: 25,
+    level: 'Trung bình',
+    descriptionHtml: '<h3>� Phương pháp và kỹ thuật tư duy logic, sáng tạo</h3><p>Khóa học <strong>chuyên sâu</strong> phát triển tư duy logic và khả năng sáng tạo.</p><div style="background: #f3e5f5; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Nguyên lý tư duy logic và phân tích</li><li>Kỹ thuật tư duy sáng tạo (Design Thinking, Brainstorming)</li><li>Giải quyết vấn đề sáng tạo</li><li>Phát triển tư duy phản biện</li><li>Ứng dụng tư duy trong học tập và công việc</li></ul></div><p><strong>Lợi ích:</strong></p><ul><li>Nâng cao khả năng phân tích và đánh giá</li><li>Tìm ra giải pháp sáng tạo cho vấn đề</li><li>Phát triển tư duy đổi mới</li><li>Ra quyết định hiệu quả</li></ul><p><strong>Đặc biệt:</strong> Thực hành với các bài tập và dự án thực tế</p><p><em>Thời lượng: 10 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-012",
+      username: "le_hoang_anh",
+      email: "lhanh@vitc.edu.vn",
+      avatarUrl: "/instructors/le-hoang-anh.jpg",
+      description: "Chuyên gia tư duy sáng tạo và Design Thinking. Hơn 10 năm kinh nghiệm trong đào tạo và tư vấn đổi mới sáng tạo. Được chứng nhận Design Thinking Coach."
+    }
+  },
+  {
+    id: '23',
+    courseCode: 'KNM-LANGNGHE-2025',
+    title: 'Kỹ năng lắng nghe và phản hồi',
+    slug: 'ky-nang-lang-nghe-va-phan-hoi',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1573497161161-c3e73707e25c?w=400&h=300&fit=crop&crop=center',
+    price: 800000,
+    duration: 20,
+    level: 'Cơ bản',
+    descriptionHtml: '<h3>� Kỹ năng lắng nghe và phản hồi hiệu quả</h3><p>Khóa học <strong>chuyên sâu</strong> về nghệ thuật lắng nghe tích cực và phản hồi xây dựng.</p><div style="background: #e3f2fd; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Nguyên tắc lắng nghe tích cực</li><li>Kỹ thuật lắng nghe hiệu quả</li><li>Phản hồi xây dựng và tích cực</li><li>Thấu hiểu và đồng cảm</li><li>Xử lý thông tin và phản hồi phù hợp</li></ul></div><p><strong>Kỹ năng đạt được:</strong></p><ul><li>Lắng nghe để hiểu, không chỉ để trả lời</li><li>Xây dựng mối quan hệ tin cậy</li><li>Phản hồi hiệu quả và xây dựng</li><li>Cải thiện giao tiếp hai chiều</li></ul><p><strong>Ứng dụng:</strong> Học tập, công việc, quan hệ cá nhân</p><p><em>Thời lượng: 8 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-010",
+      username: "pham_thi_mai",
+      email: "ptmai@vitc.edu.vn",
+      avatarUrl: "/instructors/pham-thi-mai.jpg",
+      description: "Chuyên gia kỹ năng mềm với 12 năm kinh nghiệm đào tạo. Chuyên sâu về giao tiếp, thuyết trình và xây dựng mối quan hệ. Thạc sĩ Tâm lý học ứng dụng."
+    }
+  },
+  {
+    id: '24',
+    courseCode: 'KNM-GIAOTIEPHQ-2025',
+    title: 'Nghệ thuật giao tiếp hiệu quả',
+    slug: 'nghe-thuat-giao-tiep-hieu-qua',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop&crop=center',
+    price: 1200000,
+    duration: 30,
+    level: 'Trung bình',
+    descriptionHtml: '<h3>� Nghệ thuật giao tiếp hiệu quả</h3><p>Khóa học <strong>chuyên sâu</strong> về nghệ thuật giao tiếp trong các tình huống khác nhau.</p><div style="background: #fce4ec; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Nghệ thuật giao tiếp ngôn ngữ và phi ngôn ngữ</li><li>Giao tiếp trong các tình huống khác nhau</li><li>Xây dựng mối quan hệ hiệu quả</li><li>Xử lý xung đột và đàm phán</li><li>Giao tiếp thuyết phục và ảnh hưởng</li></ul></div><p><strong>Lợi ích:</strong></p><ul><li>Nắm vững nghệ thuật giao tiếp</li><li>Tạo ấn tượng tốt với mọi người</li><li>Xây dựng mạng lưới quan hệ rộng</li><li>Thành công trong công việc và cuộc sống</li></ul><p><strong>Đối tượng:</strong> Sinh viên, nhân viên, quản lý</p><p><em>Thời lượng: 12 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-010",
+      username: "pham_thi_mai",
+      email: "ptmai@vitc.edu.vn",
+      avatarUrl: "/instructors/pham-thi-mai.jpg",
+      description: "Chuyên gia kỹ năng mềm với 12 năm kinh nghiệm đào tạo. Chuyên sâu về giao tiếp, thuyết trình và xây dựng mối quan hệ. Thạc sĩ Tâm lý học ứng dụng."
+    }
+  },
+  {
+    id: '25',
+    courseCode: 'KNM-TRUYENTHONG-2025',
+    title: 'Phương pháp và kỹ năng trong truyền thông, giảng dạy',
+    slug: 'phuong-phap-ky-nang-truyen-thong-giang-day',
+    categoryCode: 'SOFTSKILLS',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop&crop=center',
+    price: 1300000,
+    duration: 30,
+    level: 'Nâng cao',
+    descriptionHtml: '<h3>Phương pháp và kỹ năng trong truyền thông, giảng dạy và tập huấn chuyển giao kỹ thuật</h3><p>Khóa học <strong>chuyên sâu</strong> dành cho giảng viên, chuyên gia tập huấn.</p><div style="background: #fff9c4; padding: 15px; border-radius: 8px;"><h4>Nội dung khóa học:</h4><ul><li>Phương pháp giảng dạy và tập huấn hiệu quả</li><li>Kỹ năng truyền đạt thông tin rõ ràng</li><li>Thiết kế chương trình đào tạo</li><li>Sử dụng công cụ hỗ trợ giảng dạy</li><li>Đánh giá và cải thiện hiệu quả đào tạo</li></ul></div><p><strong>Kỹ năng đạt được:</strong></p><ul><li>Truyền đạt kiến thức hiệu quả</li><li>Tạo môi trường học tập tích cực</li><li>Quản lý lớp học và tương tác</li><li>Chuyển giao kỹ thuật chuyên môn</li></ul><p><strong>Đối tượng:</strong> Giảng viên, chuyên gia kỹ thuật, trainer</p><p><em>Thời lượng: 12 buổi (2.5 giờ/buổi)</em></p>',
+    subject: 'Kỹ năng mềm',
+    status: 'ACTIVE',
+    createdAt: '2025-01-01T00:00:00Z',
+    updatedAt: '2025-12-27T00:00:00Z',
+    instructor: {
+      id: "inst-010",
+      username: "pham_thi_mai",
+      email: "ptmai@vitc.edu.vn",
+      avatarUrl: "/instructors/pham-thi-mai.jpg",
+      description: "Chuyên gia kỹ năng mềm với 12 năm kinh nghiệm đào tạo. Chuyên sâu về giao tiếp, thuyết trình và xây dựng mối quan hệ. Thạc sĩ Tâm lý học ứng dụng."
+    }
+  }
+];
+

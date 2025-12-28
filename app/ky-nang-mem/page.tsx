@@ -8,6 +8,7 @@ import InstructorsSection from './sections/InstructorsSection';
 import CoursesByTypeSection from './sections/CoursesByTypeSection';
 import PartnersSection from './sections/PartnersSection';
 import ThuVienSection from './sections/ThuVienSection';
+import ContactSection from './sections/ContactSection';
 
 export const metadata: Metadata = {
     title: 'Kỹ năng mềm - VISC',
@@ -26,6 +27,7 @@ export default function KyNangMemPage() {
                 <NewsSection />
                 <ThuVienSection />
                 <InstructorsSection />
+                <ContactSection />
                 <PartnersSection />
             </main>
 

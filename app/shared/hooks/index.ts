@@ -12,3 +12,12 @@ export { useAutoTimeout } from './useAutoTimeout';
 
 export { useSearch } from './useSearch';
 export type { UseSearchOptions, UseSearchReturn } from './useSearch';
+
+export { useIntersectionObserver } from './useIntersectionObserver';
+export type { UseIntersectionObserverOptions } from './useIntersectionObserver';
+
+export { useCountUp } from './useCountUp';
+export type { UseCountUpOptions, UseCountUpReturn } from './useCountUp';
+
+export { useScrollable } from './useScrollable';
+export type { UseScrollableReturn } from './useScrollable';

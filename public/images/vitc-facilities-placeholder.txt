@@ -1,0 +1,4 @@
+// This is a placeholder - in production, you would add an actual image of VITC facilities
+// Recommended image dimensions: 800x450px (16:9 aspect ratio)
+// Image should showcase: modern computer lab, clean environment, students learning
+// File should be named: vitc-facilities.jpg

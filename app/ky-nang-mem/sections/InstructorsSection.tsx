@@ -1,12 +1,12 @@
 'use client';
 
 import { useMemo, useRef, useState } from 'react';
-import { useIntersectionObserver } from '../hooks';
+import { useIntersectionObserver } from '@/app/shared/hooks';
+import { FilterButtons, InstructorCard } from '@/app/shared/components';
 import { 
   SectionHeader, 
   LeaderCard, 
   InstructorCarousel,
-  FilterButtons,
   AnimatedSection,
   Container
 } from '../components';
@@ -40,7 +40,7 @@ export default function InstructorsSection() {
       <Container maxWidth="7xl">
         
         {/* Hero Section */}
-        <AnimatedSection isVisible={isVisible} className="mb-24">
+        <AnimatedSection isVisible={isVisible} className="mb-12 sm:mb-16 md:mb-20 lg:mb-24">
           <SectionHeader
             label="Đội ngũ giảng viên"
             title={
@@ -57,9 +57,9 @@ export default function InstructorsSection() {
         </AnimatedSection>
 
         {/* Leadership Team */}
-        <AnimatedSection isVisible={isVisible} delay={100} className="mb-32">
-          <div className="text-center mb-12">
-            <h3 className={HEADING_3 + ' mb-4'}>Ban lãnh đạo</h3>
+        <AnimatedSection isVisible={isVisible} delay={100} className="mb-16 sm:mb-20 md:mb-24 lg:mb-32">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <h3 className={HEADING_3 + ' mb-3 sm:mb-4'}>Ban lãnh đạo</h3>
             <p className={TEXT_BODY}>
               Đội ngũ lãnh đạo giàu kinh nghiệm, tâm huyết với công tác đào tạo
             </p>
@@ -73,10 +73,10 @@ export default function InstructorsSection() {
         </AnimatedSection>
 
         {/* Filter Section */}
-        <AnimatedSection isVisible={isVisible} delay={200} className="mb-12">
+        <AnimatedSection isVisible={isVisible} delay={200} className="mb-8 sm:mb-10 md:mb-12">
           <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-3">
-              <div className="hidden md:block text-slate-500 text-sm">Lọc:</div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+              <div className="hidden sm:block text-slate-500 text-sm">Lọc:</div>
               <FilterButtons
                 filters={INSTRUCTOR_FILTERS}
                 activeFilter={activeFilter}

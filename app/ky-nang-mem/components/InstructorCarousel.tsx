@@ -1,7 +1,6 @@
 import React from 'react';
 import { useScrollable } from '../hooks';
-import { CarouselNavigation } from './CarouselNavigation';
-import { InstructorCard } from './InstructorCard';
+import { CarouselNavigation, InstructorCard } from '@/app/shared/components';
 import type { Instructor } from '../types';
 
 interface InstructorCarouselProps {

@@ -1,62 +1,62 @@
 import { Course, CourseCategory } from '../types';
 
-export const COURSE_CATEGORIES: CourseCategory[] = ['Tất cả', 'Bắt buộc', 'Theo nhu cầu'];
+export const COURSE_CATEGORIES: CourseCategory[] = ['Tất cả', 'Sinh viên HVNN', 'Theo nhu cầu'];
 
-// Core required courses (Bắt buộc)
+// Core required courses (Sinh viên HVNN)
 export const REQUIRED_COURSES: Course[] = [
   {
     id: 1,
     title: 'Kỹ năng giao tiếp',
-    category: 'Bắt buộc',
+    category: 'Sinh viên HVNN',
     excerpt: 'Các phương thức giao tiếp và thực hành lắng nghe',
     duration: '2 tín chỉ',
     audience: ['Sinh viên chính quy'],
-    image: 'http://trungtamkynangmem.vnua.edu.vn/wp-content/uploads/2016/09/kynanggiaotiep.png',
+    image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 2,
     title: 'Kỹ năng làm việc nhóm',
-    category: 'Bắt buộc',
+    category: 'Sinh viên HVNN',
     excerpt: 'Kỹ năng hợp tác, phân công và giải quyết xung đột',
     duration: '2 tín chỉ',
     audience: ['Sinh viên chính quy'],
-    image: 'http://trungtamkynangmem.vnua.edu.vn/wp-content/uploads/2016/09/kynanglamviecnhom.png',
+    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 3,
     title: 'Kỹ năng quản lý bản thân',
-    category: 'Bắt buộc',
+    category: 'Sinh viên HVNN',
     excerpt: 'Quản lý thời gian, tự học và phát triển năng lực cá nhân',
     duration: '2 tín chỉ',
     audience: ['Sinh viên chính quy'],
-    image: 'http://trungtamkynangmem.vnua.edu.vn/wp-content/uploads/2016/09/kynangquanlybanthan.png',
+    image: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 4,
     title: 'Kỹ năng tìm kiếm việc làm',
-    category: 'Bắt buộc',
+    category: 'Sinh viên HVNN',
     excerpt: 'Chuẩn hóa CV, hồ sơ và kỹ năng phỏng vấn',
     duration: '2 tín chỉ',
     audience: ['Sinh viên chính quy'],
-    image: 'http://trungtamkynangmem.vnua.edu.vn/wp-content/uploads/2016/09/kynangtimkiemvieclam.png',
+    image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 5,
     title: 'Kỹ năng hội nhập quốc tế',
-    category: 'Bắt buộc',
+    category: 'Sinh viên HVNN',
     excerpt: 'Chuẩn bị hành trang hội nhập và giao tiếp văn hóa',
     duration: '2 tín chỉ',
     audience: ['Sinh viên chính quy'],
-    image: 'http://trungtamkynangmem.vnua.edu.vn/wp-content/uploads/2016/09/kynanghoinhap.png',
+    image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 6,
     title: 'Kỹ năng giải quyết vấn đề',
-    category: 'Bắt buộc',
+    category: 'Sinh viên HVNN',
     excerpt: 'Phân tích và giải quyết vấn đề thực tế',
     duration: '2 tín chỉ',
     audience: ['Sinh viên chính quy'],
-    image: 'http://trungtamkynangmem.vnua.edu.vn/wp-content/uploads/2016/09/kynanggiaiquyetvande.png',
+    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80',
   },
 ];
 
@@ -68,6 +68,7 @@ export const ON_DEMAND_COURSES: Course[] = [
     category: 'Theo nhu cầu',
     excerpt: 'Kỹ thuật tư duy sáng tạo và brainstorming',
     duration: '1 buổi',
+    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 8,
@@ -75,7 +76,7 @@ export const ON_DEMAND_COURSES: Course[] = [
     category: 'Theo nhu cầu',
     excerpt: 'Kỹ năng kể chuyện và trình bày trước đám đông',
     duration: '1 buổi',
-    image: 'https://images.unsplash.com/photo-1529336953121-4b2d7a1e0d1d?w=1200&q=80&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1200&q=80&auto=format&fit=crop',
   },
   {
     id: 9,

@@ -136,23 +136,23 @@ const Skiper17 = () => {
   const defaultCards = [
     {
       id: 1,
-      image: "/images/lummi/img14.png",
+      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 2,
-      image: "/images/lummi/img15.png",
+      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 3,
-      image: "/images/lummi/img29.png",
+      image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 4,
-      image: "/images/lummi/img21.png",
+      image: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=1200&q=80",
     },
     {
       id: 5,
-      image: "/images/lummi/img27.png",
+      image: "https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=1200&q=80",
     },
   ];
 

@@ -1,9 +1,6 @@
 import { memo } from 'react';
-import { InstructorCard } from './InstructorCard';
+import { InstructorCard, Button, Badge, Card } from '@/app/shared/components';
 import { LeaderCard } from './LeaderCard';
-import { Button } from './Button';
-import { Badge } from './Badge';
-import { Card } from './Card';
 import type { Instructor, Leader } from '../types';
 
 // Memoized InstructorCard - prevents re-render when props don't change

@@ -2,34 +2,43 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';
 import type { CourseSchedule } from '@/lib/api/types';
+import { mockFeaturedCourses } from '@/app/data/courses';
 
 interface CourseCategoriesProps {
   groupedCourses: Record<string, CourseSchedule[]>;
 }
 
 export function CourseCategories({ groupedCourses }: CourseCategoriesProps) {
+  // Get 3 computer science courses from courses data
+  const computerCourses = mockFeaturedCourses
+    .filter(course => course.categoryCode === 'OFFICE' || course.categoryCode === 'PROGRAMMING')
+    .slice(0, 3);
+
   return (
     <div className="lg:col-span-1">
       <h3 className={`text-base font-bold ${TAILWIND_COLORS.textPrimary} mb-4 uppercase tracking-wide`}>
         Danh mục khóa học
       </h3>
       <div className="space-y-1">
-        {Object.entries(groupedCourses).map(([subject, subjectCourses]) => (
-          <div key={subject} className="group">
+        {computerCourses.map((course) => {
+          return (
             <Link
-              href={`/tin-hoc?category=${encodeURIComponent(subject)}`}
-              className={`block py-2.5 px-3 rounded-md text-sm font-medium transition-all hover:${TAILWIND_COLORS.bgPrimaryLight} hover:${TAILWIND_COLORS.textPrimary} text-gray-700`}
+              key={course.id}
+              href={`/khoa-hoc/${course.id}`}
+              className={`block py-2 px-3 rounded-md text-sm transition-all hover:${TAILWIND_COLORS.bgPrimaryLight} hover:${TAILWIND_COLORS.textPrimary} text-gray-700`}
             >
-              {subject}
-              <span className="ml-2 text-xs text-gray-400">({subjectCourses.length})</span>
+              <div className="font-medium line-clamp-1">{course.title}</div>
+              <div className="text-xs text-gray-500 mt-0.5">
+                {course.courseCode} • {course.duration} giờ
+              </div>
             </Link>
-          </div>
-        ))}
+          );
+        })}
       </div>
       
       {/* View All Link */}
       <Link
-        href="/tin-hoc"
+        href="/khoa-hoc"
         className={`mt-4 inline-flex items-center gap-2 text-sm font-semibold ${TAILWIND_COLORS.textPrimary} hover:underline`}
       >
         Xem tất cả khóa học

@@ -62,5 +62,5 @@ export interface IntroductionSection {
   imagePosition: 'left' | 'right';
 }
 
-export type CourseCategory = 'Tất cả' | 'Bắt buộc' | 'Theo nhu cầu';
+export type CourseCategory = 'Tất cả' | 'Sinh viên HVNN' | 'Theo nhu cầu';
 export type FilterType = 'all' | 'internal' | 'company' | 'expert';

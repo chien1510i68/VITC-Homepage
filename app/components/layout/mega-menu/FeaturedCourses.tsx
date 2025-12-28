@@ -6,6 +6,13 @@ interface FeaturedCoursesProps {
   courses: CourseSchedule[];
 }
 
+// Mapping className to course ID for navigation
+const classNameToCourseId: Record<string, string> = {
+  'ICDL2501': '1',
+  'WEB2501': '4',
+  // Add more mappings as needed
+};
+
 export function FeaturedCourses({ courses }: FeaturedCoursesProps) {
   return (
     <>
@@ -14,12 +21,15 @@ export function FeaturedCourses({ courses }: FeaturedCoursesProps) {
       </h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {courses.map((course) => (
-          <Link
-            key={course.id}
-            href={`/tin-hoc/${course.className}`}
-            className="group bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-green-500 hover:shadow-lg transition-all duration-300"
-          >
+        {courses.map((course) => {
+          const courseId = classNameToCourseId[course.className] || '1';
+          
+          return (
+            <Link
+              key={course.id}
+              href={`/khoa-hoc/${courseId}`}
+              className="group bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-green-500 hover:shadow-lg transition-all duration-300"
+            >
             {/* Course Image */}
             <div className="relative h-32 bg-gradient-to-br from-green-50 to-blue-50 overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center">
@@ -65,7 +75,8 @@ export function FeaturedCourses({ courses }: FeaturedCoursesProps) {
               </div>
             </div>
           </Link>
-        ))}
+        );
+        })}
       </div>
     </>
   );

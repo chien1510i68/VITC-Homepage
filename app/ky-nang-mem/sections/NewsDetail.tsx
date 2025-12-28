@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function NewsDetail({ title, contentHtml, label }: { title: string; contentHtml?: string; label?: string }) {
   const [open, setOpen] = useState(false);
@@ -29,13 +30,23 @@ export default function NewsDetail({ title, contentHtml, label }: { title: strin
   return (
     <>
       {label ? (
-        <button onClick={openModal} className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-white hover:bg-sky-600 px-3 py-1 rounded-md transition-colors">
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={openModal}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-white hover:bg-sky-600 px-3 py-1"
+        >
           {label}
-        </button>
+        </Button>
       ) : (
-        <button onClick={openModal} className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-white hover:bg-sky-600 px-3 py-1 rounded-md transition-colors">
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={openModal}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-white hover:bg-sky-600 px-3 py-1"
+        >
           Xem chi tiết
-        </button>
+        </Button>
       )}
 
       {open ? (
@@ -45,7 +56,14 @@ export default function NewsDetail({ title, contentHtml, label }: { title: strin
           <div className="relative bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-auto shadow-2xl">
             <div className="flex items-center justify-between p-4 border-b">
               <h3 className="text-lg font-bold">{title}</h3>
-              <button onClick={closeModal} className="text-slate-600 hover:text-slate-900">Đóng</button>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={closeModal}
+                className="text-slate-600 hover:text-slate-900 h-auto px-2 py-1"
+              >
+                Đóng
+              </Button>
             </div>
 
             <div className="p-6 prose max-w-none">

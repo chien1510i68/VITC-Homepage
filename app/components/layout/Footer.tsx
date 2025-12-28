@@ -5,12 +5,12 @@ import { TAILWIND_COLORS } from '@/lib/colors';
 
 export default function Footer() {
   const quickLinks = [
-    { title: 'Trang chủ', href: '#' },
-    { title: 'Giới thiệu', href: '#about' },
-    { title: 'Khóa học', href: '#programs' },
-    { title: 'Lịch khai giảng', href: '#schedule' },
-    { title: 'Tin tức', href: '#news' },
-    { title: 'Liên hệ', href: '#contact' },
+    { title: 'Trang chủ', href: '/' },
+    { title: 'Trung tâm tin học', href: '/tin-hoc' },
+    { title: 'Trung tâm kỹ năng mềm', href: '/ky-nang-mem' },
+    { title: 'Tin tức', href: '/tin-tuc-thong-bao' },
+    { title: 'Tiện ích - Dịch vụ', href: '/tien-ich-dich-vu' },
+    { title: 'Liên hệ', href: '/lien-he' },
   ];
 
   const courses = [
@@ -46,11 +46,11 @@ export default function Footer() {
                 alt="VISC Logo"
                 width={150}
                 height={50}
-                className="h-12 w-auto brightness-0 invert"
+                className="h-12 w-auto"
               />
             </div>
             <p className="text-sm leading-relaxed">
-              Trung tâm đào tạo tin học và kỹ năng mềm chuyên nghiệp, cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm.
+              Trung tâm Tin học và Kỹ năng mềm VNUA cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm.
             </p>
             
             {/* Contact Info */}
@@ -58,7 +58,7 @@ export default function Footer() {
               <div className="flex items-start gap-3 group">
                 <MapPin className={`w-5 h-5 mt-0.5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
                 <p className="text-sm group-hover:text-white transition-colors">
-                  Trường Đại học Nông nghiệp Hà Nội, Trâu Quỳ, Gia Lâm, Hà Nội
+                  Học viện Nông Nghiệp Việt Nam 
                 </p>
               </div>
               <div className="flex items-center gap-3 group">
@@ -180,7 +180,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-400">
-              © 2024 <span className="text-white font-semibold">VISC</span>. All rights reserved.
+              © 2026 <span className="text-white font-semibold">VISC</span>. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
               <Link href="#" className={`hover:${TAILWIND_COLORS.textPrimary} transition-colors`}>

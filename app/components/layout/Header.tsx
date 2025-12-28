@@ -99,7 +99,7 @@ export default function Header() {
               alt="VISC Logo"
               width={120}
               height={40}
-              className="h-10 w-auto"
+              className="h-10 w-auto rounded-md"
               priority
             />
           </Link>

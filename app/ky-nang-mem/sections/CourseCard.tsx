@@ -1,12 +1,34 @@
+import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import type { Course } from '../types';
 
 interface CourseCardProps {
   course: Course;
+  onRegisterClick?: () => void;
 }
 
-export default function CourseCard({ course }: CourseCardProps) {
+// Map ky-nang-mem course ID to actual course ID in courses.ts
+const courseIdMap: Record<number, string> = {
+  1: '101', // Kỹ năng giao tiếp
+  2: '102', // Kỹ năng làm việc nhóm
+  3: '103', // Kỹ năng quản lý bản thân
+  4: '104', // Kỹ năng tìm kiếm việc làm
+  5: '105', // Kỹ năng hội nhập quốc tế
+  6: '106', // Kỹ năng giải quyết vấn đề
+  7: '111', // Tư duy sáng tạo
+  8: '113', // Kỹ năng thuyết trình
+  9: '109', // Kỹ năng quản lý dự án
+  10: '108', // Kỹ năng quản lý thời gian
+  11: '114', // Kỹ năng bán hàng online
+  12: '116', // Kỹ năng tổ chức công việc hiệu quả
+};
+
+export default function CourseCard({ course, onRegisterClick }: CourseCardProps) {
+  const actualCourseId = courseIdMap[course.id] || course.id.toString();
+
   return (
     <article
       role="article"
@@ -34,14 +56,33 @@ export default function CourseCard({ course }: CourseCardProps) {
         <div className="mt-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <span className="text-xs text-slate-500">{course.duration || '2 buổi'}</span>
-            <span className="hidden sm:inline-block px-2 py-1 text-xs bg-slate-100 rounded-full text-slate-700">{course.category}</span>
+            {/* <span className="hidden sm:inline-block px-2 py-1 text-xs bg-slate-100 rounded-full text-slate-700">{course.category}</span> */}
           </div>
 
-          <div>
-            <button aria-label={`Đăng ký ${course.title}`} className="inline-flex items-center gap-2 text-sm font-medium text-sky-600 hover:text-white hover:bg-sky-600 px-3 py-1 rounded-md transition-colors duration-200">
+          <div className="flex items-center gap-2">
+            <Link href={`/khoa-hoc/${actualCourseId}`}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                aria-label={`Xem chi tiết ${course.title}`}
+                className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-sky-600 hover:border-sky-600 px-2 py-1"
+              >
+                <span>Chi tiết</span>
+                <ArrowRight className="w-3 h-3" />
+              </Button>
+            </Link>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={onRegisterClick}
+              aria-label={`Đăng ký ${course.title}`}
+              className="inline-flex items-center gap-2 text-sm font-medium text-sky-600 hover:text-white hover:bg-sky-600 px-3 py-1"
+            >
               <span>Đăng ký</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
         </div>
       </div>

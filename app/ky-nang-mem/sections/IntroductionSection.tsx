@@ -3,12 +3,15 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import ConsultationPopup from '@/app/components/ui/ConsultationPopup';
 import { useIntersectionObserver } from '../hooks';
 import { SectionHeader } from '../components';
 import { INTRODUCTION_SECTIONS } from '../constants/introduction';
 
 export default function IntroductionSection() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1 });
 
@@ -16,16 +19,24 @@ export default function IntroductionSection() {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  const handleRegisterClick = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
 
   return (
     <section 
       ref={sectionRef}
-      className="bg-white py-20 lg:py-32"
+      className="bg-white py-12 sm:py-16 md:py-20 lg:py-32"
     >
-      <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl">
         
         {/* Header */}
-        <div className="mb-32">
+        <div className="mb-12 sm:mb-16 md:mb-24 lg:mb-32">
           <SectionHeader
             label="Giới thiệu"
             title={
@@ -40,7 +51,7 @@ export default function IntroductionSection() {
         </div>
 
         {/* Alternating Sections */}
-        <div className="space-y-32">
+        <div className="space-y-12 sm:space-y-16 md:space-y-24 lg:space-y-32">
           {INTRODUCTION_SECTIONS.map((section, index) => {
             const isExpanded = expandedId === section.id;
             const isLeft = section.imagePosition === 'left';
@@ -49,7 +60,7 @@ export default function IntroductionSection() {
             return (
               <div
                 key={section.id}
-                className={`grid grid-cols-1 lg:grid-cols-20 gap-12 lg:gap-16 items-start transition-all duration-700 ${
+                className={`grid grid-cols-1 lg:grid-cols-20 gap-6 sm:gap-8 md:gap-10 lg:gap-16 items-start transition-all duration-700 ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
                 }`}
                 style={{ transitionDelay: `${delay}ms` }}
@@ -61,14 +72,14 @@ export default function IntroductionSection() {
                   }`}
                 >
                   <div className={`group relative overflow-hidden bg-slate-100 rounded-lg transition-all duration-700 ${
-                    isExpanded ? 'aspect-[4/5]' : 'h-[50vh]'
+                    isExpanded ? 'aspect-[4/5]' : 'h-[40vh] sm:h-[45vh] md:h-[50vh]'
                   }`}>
                     <Image
                       src={section.image}
                       alt={section.title}
                       fill
                       className="object-cover transition-all duration-500 group-hover:brightness-110"
-                      sizes="(max-width: 768px) 100vw, 55vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 55vw"
                     />
                     {/* Overlay gradient on hover */}
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -80,24 +91,24 @@ export default function IntroductionSection() {
                   className={`lg:col-span-9 ${
                     isLeft ? 'lg:order-2' : 'lg:order-1'
                   } flex flex-col justify-between ${
-                    isExpanded ? '' : 'max-h-[50vh] overflow-hidden'
+                    isExpanded ? '' : 'max-h-[40vh] sm:max-h-[45vh] md:max-h-[50vh] overflow-hidden'
                   }`}
                 >
                   {/* Title */}
-                  <div className="space-y-6">
-                    <div className="flex items-center gap-4">
-                      <span className="text-6xl font-black text-slate-200">
+                  <div className="space-y-4 sm:space-y-5 md:space-y-6">
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <span className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-200">
                         0{section.id}
                       </span>
                       <div className="h-px flex-1 bg-slate-200"></div>
                     </div>
                     
-                    <h3 className="text-2xl lg:text-3xl font-bold tracking-tight text-slate-900">
+                    <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight text-slate-900">
                       {section.title}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-slate-700 leading-relaxed text-base">
+                    <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
                       {section.description}
                     </p>
 
@@ -107,24 +118,26 @@ export default function IntroductionSection() {
                         isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                       }`}
                     >
-                      <p className="text-slate-600 leading-relaxed text-sm pt-4 border-t border-slate-200">
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-3 sm:pt-4 border-t border-slate-200">
                         {section.fullContent}
                       </p>
                     </div>
                   </div>
 
                   {/* Read More Button */}
-                  <button
+                  <Button
+                    type="button"
+                    variant="ghost"
                     onClick={() => toggleExpand(section.id)}
-                    className="group mt-8 inline-flex items-center gap-2 text-slate-900 font-semibold hover:text-sky-600 transition-colors duration-200 cursor-pointer"
+                    className="group mt-6 sm:mt-8 inline-flex items-center gap-2 text-slate-900 font-semibold hover:text-sky-600 min-h-[44px] cursor-pointer"
                   >
-                    <span>{isExpanded ? 'Thu gọn' : 'Xem thêm'}</span>
+                    <span className="text-sm sm:text-base">{isExpanded ? 'Thu gọn' : 'Xem thêm'}</span>
                     <ChevronDown 
-                      className={`w-5 h-5 transition-transform duration-300 ${
+                      className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 ${
                         isExpanded ? 'rotate-180' : 'rotate-0'
                       }`}
                     />
-                  </button>
+                  </Button>
                 </div>
               </div>
             );
@@ -133,13 +146,17 @@ export default function IntroductionSection() {
 
         {/* Bottom CTA */}
         <div 
-          className={`mt-32 text-center transition-all duration-700 delay-300 ${
+          className={`mt-12 sm:mt-16 md:mt-24 lg:mt-32 text-center transition-all duration-700 delay-300 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}
         >
-          <div className="inline-flex flex-col sm:flex-row gap-4">
-            <button className="group px-8 py-4 bg-slate-900 hover:bg-sky-600 text-white font-semibold transition-colors duration-200 cursor-pointer">
-              <span className="flex items-center gap-2">
+          <div className="inline-flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+            <Button
+              type="button"
+              onClick={handleRegisterClick}
+              className="group px-6 sm:px-8 py-3 sm:py-4 bg-slate-900 hover:bg-sky-600 text-white font-semibold min-h-[44px] cursor-pointer w-full sm:w-auto"
+            >
+              <span className="flex items-center justify-center gap-2 text-sm sm:text-base">
                 Đăng ký ngay
                 <svg 
                   className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" 
@@ -150,14 +167,23 @@ export default function IntroductionSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </span>
-            </button>
+            </Button>
             
-            <button className="px-8 py-4 border-2 border-slate-900 text-slate-900 font-semibold hover:bg-slate-900 hover:text-white transition-colors duration-200 cursor-pointer">
+            <Button
+              type="button"
+              variant="outline"
+              className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-slate-900 text-slate-900 font-semibold hover:bg-slate-900 hover:text-white min-h-[44px] cursor-pointer w-full sm:w-auto text-sm sm:text-base"
+            >
               Liên hệ tư vấn
-            </button>
+            </Button>
           </div>
         </div>
       </div>
+
+      <ConsultationPopup 
+        isVisible={showPopup}
+        onClose={handleClosePopup}
+      />
     </section>
   );
 }

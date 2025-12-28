@@ -1,152 +1,147 @@
 'use client';
 
-import { useRef } from 'react';
 import Link from 'next/link';
-import { useIntersectionObserver } from '../hooks';
-import { 
-  SectionHeader, 
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  AnimatedSection,
-  Container,
-  ImageWithFallback,
-  EmptyState,
-  Button
-} from '../components';
-import { SAMPLE_NEWS } from '../constants/news';
-import { SECTION_PADDING_LG, TEXT_MUTED, TEXT_BODY } from '../constants/classNames';
-import { formatDate } from '../utils/formatters';
+import Image from 'next/image';
+import { Calendar, ArrowRight, TrendingUp, Bell } from 'lucide-react';
+import { SAMPLE_NEWS as GLOBAL_NEWS } from '@/lib/newsData';
+
+function formatDate(dateString: string): string {
+  if (!dateString) return '';
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' });
+  } catch {
+    return dateString;
+  }
+}
 
 export default function NewsSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1 });
-
-  if (SAMPLE_NEWS.length === 0) {
-    return (
-      <section ref={sectionRef} className={SECTION_PADDING_LG}>
-        <Container>
-          <EmptyState
-            title="Không có tin tức"
-            description="Không thể tải danh sách tin tức. Vui lòng thử lại sau."
-          />
-        </Container>
-      </section>
-    );
-  }
+  // Lấy 4 tin tức đầu tiên cho phần thông báo quan trọng
+  const importantNews = GLOBAL_NEWS.slice(0, 4);
+  
+  // Lấy 4 tin tức tiếp theo cho phần đọc nhiều nhất
+  const popularNews = GLOBAL_NEWS.slice(4, 8);
 
   return (
-    <section ref={sectionRef} className={SECTION_PADDING_LG} aria-labelledby="news-heading">
-      <Container>
-        <AnimatedSection isVisible={isVisible} className="mb-12">
-          <SectionHeader
-            label="Tin tức"
-            title="Tin tức — Thông báo"
-            description="Danh sách sinh viên đủ điều kiện cấp chứng chỉ và các thông báo liên quan"
-            align="center"
-          />
-        </AnimatedSection>
+    <section id="news" className="py-16 bg-gradient-to-br from-slate-50 via-white to-blue-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Tin tức — Thông báo
+          </h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Danh sách sinh viên đủ điều kiện cấp chứng chỉ và các thông báo liên quan
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
-          {/* Left: Main News (70%) */}
-          <div className="lg:col-span-7 space-y-4">
-            {SAMPLE_NEWS.slice(0, 4).map((item, idx) => (
-              <AnimatedSection key={item.id} isVisible={isVisible} delay={idx * 100}>
-                <Card hover className="flex flex-col sm:flex-row overflow-hidden">
-                  <div className="relative w-full sm:w-44 h-44 sm:h-auto flex-shrink-0">
-                    <ImageWithFallback
-                      src={item.image || ''}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+        {/* Two Column Layout */}
+        <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          {/* Left Column - Important Announcements */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-6">
+              <Bell className="w-5 h-5 text-red-500" />
+              <h3 className="text-xl font-bold text-gray-900">Thông báo quan trọng</h3>
+            </div>
+            
+            <div className="space-y-4">
+              {importantNews.map((item, idx) => (
+                <Link 
+                  key={item.id} 
+                  href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
+                  className="block bg-white rounded-xl border border-slate-200 hover:border-emerald-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                >
+                  <div className="flex gap-4 p-4">
+                    {/* Image */}
+                    <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                      <Image
+                        src={item.image || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80'}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
 
-                  <div className="p-5 flex-1 flex flex-col">
-                    <CardHeader>
-                      <h4 className="text-lg font-bold text-slate-900 line-clamp-2">
-                        <a href={item.url} target="_blank" rel="noreferrer" className="hover:text-sky-600">
-                          {item.title}
-                        </a>
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-base font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-emerald-600 transition-colors">
+                        {item.title}
                       </h4>
-                    </CardHeader>
-
-                    {item.excerpt && (
-                      <CardBody>
-                        <p className={`${TEXT_BODY} line-clamp-3`}>{item.excerpt}</p>
-                      </CardBody>
-                    )}
-
-                    <CardFooter className="mt-auto flex items-center justify-between">
-                      <span className={TEXT_MUTED}>{formatDate(item.date || '')}</span>
-                      <Link href={`/tin-tuc-thong-bao/${item.id || item.slug}`}>
-                        <Button variant="ghost" size="sm">
-                          Xem chi tiết
-                        </Button>
-                      </Link>
-                    </CardFooter>
+                      <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                        {item.excerpt}
+                      </p>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        {formatDate(item.date || '')}
+                      </div>
+                    </div>
                   </div>
-                </Card>
-              </AnimatedSection>
-            ))}
-
-            <div className="mt-6 text-center sm:text-left">
-              <Link 
-                href="https://trungtamkynangmem.vnua.edu.vn/category/danh-sach-sinh-vien-du-dieu-kien-cap-chung-chi/" 
-                className="text-sm font-medium text-slate-700 hover:text-sky-600"
-              >
-                Xem thêm tin khác →
-              </Link>
+                </Link>
+              ))}
             </div>
           </div>
 
-          {/* Right: Most Read (30%) */}
-          <aside className="lg:col-span-3">
-            <AnimatedSection isVisible={isVisible} delay={200}>
-              <Card>
-                <CardHeader>
-                  <h5 className="text-sm font-semibold text-slate-900">Tin đọc nhiều</h5>
-                </CardHeader>
-                <CardBody className="space-y-3">
-                  {SAMPLE_NEWS.slice(4, 9).map((item, idx) => (
-                    <AnimatedSection key={item.id} isVisible={isVisible} delay={300 + idx * 80}>
-                      <div className="flex items-start gap-3">
-                        <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0">
-                          <ImageWithFallback
-                            src={item.image || ''}
-                            alt={item.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+          {/* Right Column - Most Read Articles */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-6">
+              <TrendingUp className="w-5 h-5 text-blue-500" />
+              <h3 className="text-xl font-bold text-gray-900">Tin tức đọc nhiều nhất</h3>
+            </div>
+            
+            <div className="space-y-4">
+              {popularNews.map((item, idx) => (
+                <Link 
+                  key={item.id} 
+                  href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
+                  className="block bg-white rounded-xl border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                >
+                  <div className="flex gap-4 p-4">
+                    {/* Ranking Number */}
+                    <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                      <span className="text-white font-bold text-lg">{idx + 1}</span>
+                    </div>
 
-                        <div className="flex-1">
-                          <a 
-                            href={item.url} 
-                            target="_blank" 
-                            rel="noreferrer" 
-                            className="text-sm font-medium text-slate-900 hover:text-sky-600 line-clamp-2"
-                          >
-                            {item.title}
-                          </a>
-                          <div className={`${TEXT_MUTED} mt-1`}>{formatDate(item.date || '')}</div>
-                        </div>
+                    {/* Image */}
+                    <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                      <Image
+                        src={item.image || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80'}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-base font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors">
+                        {item.title}
+                      </h4>
+                      <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                        {item.excerpt}
+                      </p>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        {formatDate(item.date || '')}
                       </div>
-                    </AnimatedSection>
-                  ))}
-                </CardBody>
-                <CardFooter>
-                  <Link 
-                    href="https://trungtamkynangmem.vnua.edu.vn/category/danh-sach-sinh-vien-du-dieu-kien-cap-chung-chi/" 
-                    className="text-sm font-medium text-sky-600 hover:underline w-full text-center block"
-                  >
-                    Xem tất cả
-                  </Link>
-                </CardFooter>
-              </Card>
-            </AnimatedSection>
-          </aside>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-      </Container>
+
+        {/* View More Button */}
+        <div className="text-center mt-12">
+          <Link 
+            href="/tin-tuc-thong-bao"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white font-semibold rounded-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+          >
+            Xem thêm tin tức
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }

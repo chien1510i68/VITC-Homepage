@@ -13,9 +13,9 @@ export function LeaderCard({ leader, delay = 0 }: LeaderCardProps) {
       className="transition-transform duration-700 opacity-0 translate-y-12 animate-fade-in"
       style={{ animationDelay: `${delay}ms`, animationFillMode: 'forwards' }}
     >
-      <div className="bg-white rounded-3xl shadow-md hover:shadow-2xl transition-transform duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 overflow-hidden border border-slate-100 cursor-pointer text-center p-6">
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-md hover:shadow-2xl transition-transform duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 overflow-hidden border border-slate-100 cursor-pointer text-center p-4 sm:p-5 md:p-6">
         <div className="flex justify-center">
-          <div className="w-32 h-32 rounded-full overflow-hidden ring-2 ring-slate-100">
+          <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-slate-100">
             <Image
               src={leader.image}
               alt={leader.name}
@@ -26,14 +26,14 @@ export function LeaderCard({ leader, delay = 0 }: LeaderCardProps) {
           </div>
         </div>
 
-        <div className="mt-4">
-          <h4 className="font-semibold text-lg text-slate-900">
+        <div className="mt-3 sm:mt-4">
+          <h4 className="font-semibold text-base sm:text-lg text-slate-900">
             {leader.name}
           </h4>
-          <div className="text-sm text-slate-600 mt-1 font-medium">
+          <div className="text-xs sm:text-sm text-slate-600 mt-1 font-medium">
             {leader.title}
           </div>
-          <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
             {leader.specialty}
           </p>
         </div>

@@ -1,31 +1,44 @@
-// Layout components
+/**
+ * Ky-nang-mem component exports
+ * Re-exports shared components from app/shared and local domain-specific components
+ */
+
+// Shared components from app/shared/components
+export { 
+  Card, 
+  CardHeader, 
+  CardBody, 
+  CardFooter,
+  Button,
+  Badge,
+  Container,
+  FilterButtons,
+  InstructorCard,
+  EmptyState
+} from '@/app/shared/components';
+
+export type {
+  CardProps,
+  CardHeaderProps,
+  CardBodyProps,
+  CardFooterProps,
+  ButtonProps,
+  BadgeProps,
+  ContainerProps,
+  FilterButtonsProps,
+  InstructorCardProps
+} from '@/app/shared/components';
+
+// Local domain-specific components
 export { SectionHeader } from './SectionHeader';
-export { Container } from './Container';
 export { AnimatedSection } from './AnimatedSection';
-
-// UI components
-export { Button } from './Button';
-export type { ButtonProps } from './Button';
-export { Card, CardHeader, CardBody, CardFooter } from './Card';
-export type { CardProps } from './Card';
-export { Badge } from './Badge';
-export type { BadgeProps } from './Badge';
-export { EmptyState } from './EmptyState';
-export type { EmptyStateProps } from './EmptyState';
-
-// Interactive components
-export { CarouselNavigation } from './CarouselNavigation';
-export { CarouselIndicators } from './CarouselIndicators';
-export { FilterButtons } from './FilterButtons';
-export type { FilterButtonsProps } from './FilterButtons';
-
-// Display components
-export { StatGrid, StatItem } from './StatGrid';
 export { FeatureIcon } from './FeatureIcon';
-export { ImageWithFallback } from './ImageWithFallback';
-export type { ImageWithFallbackProps } from './ImageWithFallback';
-
-// Domain-specific components
-export { InstructorCard } from './InstructorCard';
-export { LeaderCard } from './LeaderCard';
 export { InstructorCarousel } from './InstructorCarousel';
+export { LeaderCard } from './LeaderCard';
+export { MemoizedInstructorCard, MemoizedLeaderCard, MemoizedButton } from './Memoized';
+
+// Shared-but-reexported for convenience in this module
+export { ImageWithFallback, StatGrid, StatItem, CarouselIndicators, CarouselNavigation } from '@/app/shared/components';
+export type { ImageWithFallbackProps } from '@/app/shared/components';
+
+
