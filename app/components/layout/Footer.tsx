@@ -37,7 +37,7 @@ export default function Footer() {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Main Footer Content */}
-        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="mb-4">
@@ -104,7 +104,7 @@ export default function Footer() {
           </div>
 
           {/* Courses */}
-          <div>
+          {/* <div>
             <h4 className="text-white font-semibold text-lg mb-4 relative inline-block">
               Khóa học
               <span className={`absolute bottom-0 left-0 w-12 h-0.5 ${TAILWIND_COLORS.bgPrimary}`}></span>
@@ -122,7 +122,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Utilities */}
           <div>
