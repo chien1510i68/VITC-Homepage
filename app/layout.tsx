@@ -13,6 +13,8 @@ import { Montserrat, Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import FloatingRegisterButton from "./components/ui/FloatingRegisterButton";
 import PopupManager from "./components/PopupManager";
+import ScreenReaderAnnouncer from "./components/ScreenReaderAnnouncer";
+import SkipToContent from "./components/SkipToContent";
 import { siteConfig, seoConfig } from "@/config/site.config";
 
 const montserrat = Montserrat({
@@ -66,6 +68,8 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${playfairDisplay.variable} ${inter.variable} font-sans antialiased`}
       >
+        <SkipToContent />
+        <ScreenReaderAnnouncer />
         {children}
         <FloatingRegisterButton />
         <PopupManager />

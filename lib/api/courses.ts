@@ -1,9 +1,23 @@
-// Courses API
+/**
+ * Courses API Module
+ * 
+ * Provides functions for fetching and managing course/program data
+ * from the backend API with automatic fallback to mock data.
+ * 
+ * @module lib/api/courses
+ */
+
 import { Program } from './types';
 import { fetchWithTimeout, API_BASE_URL } from './base';
 import { mockFeaturedCourses, Course } from '@/data/courses';
 
-// Helper function to convert Course to Program
+/**
+ * Converts a Course object from the API to a Program object
+ * 
+ * @param course - The course object from the API
+ * @returns Converted Program object
+ * @internal
+ */
 const convertCourseToProgram = (course: Course): Program => {
   // Determine category from categoryCode
   const categoryMap: Record<string, string> = {
@@ -94,7 +108,7 @@ const convertCourseToProgram = (course: Course): Program => {
             ?.map(item => {
               // Extract content after <strong> tag
               const match = item.match(/<strong[^>]*>(.*?)<\/strong>\s*:?\s*(.*?)<\/p>/i);
-              if (match) {
+              if (match && match[1] && match[2]) {
                 return `${match[1]}: ${match[2].replace(/<[^>]*>/g, '').trim()}`;
               }
               return item.replace(/<[^>]*>/g, '').trim();

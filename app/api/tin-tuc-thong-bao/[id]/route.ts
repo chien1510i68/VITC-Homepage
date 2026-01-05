@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import SAMPLE_NEWS from '@/lib/newsData';
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
