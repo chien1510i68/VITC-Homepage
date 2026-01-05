@@ -1,7 +1,7 @@
 // Courses API
 import { Program } from './types';
 import { fetchWithTimeout, API_BASE_URL } from './base';
-import { mockFeaturedCourses, Course } from '@/app/data/courses';
+import { mockFeaturedCourses, Course } from '@/data/courses';
 
 // Helper function to convert Course to Program
 const convertCourseToProgram = (course: Course): Program => {

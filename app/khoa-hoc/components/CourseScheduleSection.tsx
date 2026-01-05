@@ -1,3 +1,5 @@
+'use client';
+
 import { Calendar, Clock, MapPin, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';

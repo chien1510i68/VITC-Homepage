@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { FilterButtonsProps } from './types';
 import { DEFAULT_PROPS, BUTTON_STYLES, SIZE_STYLES } from './constants';

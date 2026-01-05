@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { mockFeaturedCourses, Course, CourseCardData } from '../../data/courses';
-import CourseService from '../../services/CourseService';
+import { mockFeaturedCourses, Course, CourseCardData } from '@/data/courses';
+import CourseService from '@/lib/services/CourseService';
 
 // Component imports
 import { CompactCourseCard } from './featured-courses/CompactCourseCard';

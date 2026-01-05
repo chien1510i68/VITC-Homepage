@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';
 import type { CourseSchedule } from '@/lib/api/types';
-import { mockFeaturedCourses } from '@/app/data/courses';
+import { mockFeaturedCourses } from '@/data/courses';
 
 interface CourseCategoriesProps {
   groupedCourses: Record<string, CourseSchedule[]>;

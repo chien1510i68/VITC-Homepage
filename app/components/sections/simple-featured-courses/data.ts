@@ -1,5 +1,5 @@
 // Course data for featured courses section
-import { mockFeaturedCourses, Course as CourseData } from '@/app/data/courses';
+import { mockFeaturedCourses, Course as CourseData } from '@/data/courses';
 
 export interface Course {
   id: string;

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import ConsultationPopup from './ui/ConsultationPopup';
-import { useConsultationPopup } from '../hooks/useConsultationPopup';
+import { useConsultationPopup } from '@/lib/hooks/useConsultationPopup';
 
 const PopupManager: React.FC = () => {
   const { isVisible, closePopup, showPopup, resetPopup } = useConsultationPopup({

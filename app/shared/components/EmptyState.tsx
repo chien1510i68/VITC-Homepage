@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { EmptyStateProps } from '../types';
 import { cn } from '@/lib/utils';
