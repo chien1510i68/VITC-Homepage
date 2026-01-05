@@ -13,7 +13,7 @@ export function useCoursePrograms() {
     const loadPrograms = async () => {
       setIsLoading(true);
       try {
-        const programsData = await api.getPrograms();
+        const programsData = await api.getCourses();
         setPrograms(programsData);
       } catch (error) {
         console.error('Error loading programs:', error);

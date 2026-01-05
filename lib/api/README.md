@@ -2,40 +2,54 @@
 
 ## Overview
 
-This API layer provides a clean interface for fetching data with automatic fallback to mock data when the real API is unavailable. This ensures the application continues to function during development and handles API failures gracefully.
+This API layer provides a clean, modular interface for fetching data with automatic fallback to mock data when the real API is unavailable. The API is organized by domain for better maintainability and code organization.
 
 ## Structure
 
 ```
 lib/api/
-├── index.ts        # Main exports
-├── client.ts       # API client with fetch logic
-├── types.ts        # TypeScript interfaces
-├── mockData.ts     # Fake data for fallback
-└── README.md       # This file
+├── index.ts           # Main exports and unified API object
+├── client.ts          # Backward compatibility wrapper
+├── base.ts            # Base utilities and configuration
+├── types.ts           # TypeScript interfaces
+├── mockData.ts        # Mock data for fallback
+├── courses.ts         # Courses API
+├── instructors.ts     # Instructors API
+├── news.ts            # News API
+├── schedules.ts       # Course schedules API
+├── about.ts           # About/Timeline API
+├── lookup.ts          # Lookup services API
+├── forms.ts           # Form submission API
+└── README.md          # This file
 ```
 
 ## Usage
 
-### Import the API client
+### Import Options
 
 ```typescript
+// Option 1: Import unified API object (recommended for most cases)
 import { api } from '@/lib/api';
-// or
-import { getPrograms, getProgramById } from '@/lib/api';
+
+// Option 2: Import specific functions
+import { getCourses, getCourseById } from '@/lib/api';
+
+// Option 3: Import from specific modules
+import { getCourses } from '@/lib/api/courses';
+import { getInstructors } from '@/lib/api/instructors';
 ```
 
-### Fetch Programs
+### Fetch Courses
 
 ```typescript
-// Get all programs
-const programs = await api.getPrograms();
+// Get all courses
+const courses = await api.getCourses();
 
-// Get program by ID
-const program = await api.getProgramById(1);
+// Get course by ID
+const course = await api.getCourseById(1);
 
-// Get programs by category
-const categoryPrograms = await api.getProgramsByCategory('Chứng chỉ');
+// Get courses by category
+const categoryCourses = await api.getCoursesByCategory('Chứng chỉ');
 ```
 
 ### Fetch Instructors
@@ -111,10 +125,11 @@ Console messages:
 
 When implementing the backend API, use these endpoints:
 
-### Programs
-- `GET /api/programs` - Get all programs
-- `GET /api/programs/:id` - Get program by ID
-- `GET /api/programs?category=CategoryName` - Filter by category
+### Courses
+- `GET /api/courses` - Get all courses
+- `GET /api/courses/:id` - Get course by ID
+- `GET /api/courses?category=CategoryName` - Filter by category
+- `GET /api/courses/featured?limit=6` - Get featured courses
 
 ### Instructors
 - `GET /api/instructors` - Get all instructors
@@ -209,10 +224,10 @@ const programs = [/* hardcoded data */];
 import { useEffect, useState } from 'react';
 import { api, Program } from '@/lib/api';
 
-const [programs, setPrograms] = useState<Program[]>([]);
+const [courses, setCourses] = useState<Program[]>([]);
 
 useEffect(() => {
-  api.getPrograms().then(setPrograms);
+  api.getCourses().then(setCourses);
 }, []);
 ```
 

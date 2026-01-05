@@ -17,7 +17,7 @@ export default function ProgramsSection() {
     const loadPrograms = async () => {
       setIsLoading(true);
       try {
-        const data = await api.getPrograms();
+        const data = await api.getCourses();
         setPrograms(data);
         if (data.length > 0) {
           setSelectedProgram(data[0]);

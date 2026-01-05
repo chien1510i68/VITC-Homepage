@@ -21,7 +21,7 @@ export default function ChiTietKhoaHocPage({ params }: { params: Promise<{ id: s
     const loadProgram = async () => {
       setIsLoading(true);
       try {
-        const data = await api.getProgramById(programId);
+        const data = await api.getCourseById(programId);
         setProgram(data);
         if (!data) {
           notFound();
