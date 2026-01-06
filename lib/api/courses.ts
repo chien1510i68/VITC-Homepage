@@ -47,7 +47,7 @@ const convertCourseToProgram = (course: Course): Program => {
     : 'Liên hệ';
 
   return {
-    id: parseInt(course.id),
+    id: course.id, // Keep as string (UUID)
     title: course.title,
     category: category,
     description: course.descriptionHtml?.replace(/<[^>]*>/g, '').substring(0, 150) + '...' || '',
@@ -125,72 +125,231 @@ const convertCourseToProgram = (course: Course): Program => {
 const mockPrograms: Program[] = mockFeaturedCourses.map(convertCourseToProgram);
 
 /**
- * Get all courses
+ * Get all courses with pagination
  * Falls back to mock data if API fails
+ * 
+ * API Endpoint: POST /api/courses/filter
+ * Response format: { status: "success", data: { items: [...], total: number } }
  */
-export async function getCourses(): Promise<Program[]> {
+export async function getCourses(page = 0, size = 10): Promise<Program[]> {
   try {
-    const response = await fetchWithTimeout<Program[]>(`${API_BASE_URL}/courses`);
+    const response = await fetch(`/backend-api/courses/filter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        status: 'ACTIVE',
+        page, 
+        size 
+      })
+    });
     
-    if (response.success && response.data) {
-      console.log('✅ Courses loaded from API');
-      return response.data;
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
     
-    console.warn('⚠️ API failed, using mock courses data:', response.error);
-    return mockPrograms;
+    const result = await response.json();
+    if (result.success && result.data) {
+      console.log('✅ Courses loaded from API');
+      // Backend trả về data.data hoặc data.items
+      const items = result.data.data || result.data.items || [];
+      return items.map(convertCourseToProgram);
+    }
+    
+    throw new Error('Invalid response format');
   } catch (error) {
     console.error('❌ Error fetching courses:', error);
-    return mockPrograms;
+    throw error;
   }
 }
 
 /**
  * Get a single course by ID
  * Falls back to mock data if API fails
+ * 
+ * API Endpoint: GET /api/courses/{id}
+ * Response format: { status: "success", data: {...} }
  */
-export async function getCourseById(id: number): Promise<Program | null> {
+export async function getCourseById(id: number | string): Promise<Program | null> {
   try {
-    const response = await fetchWithTimeout<Program>(`${API_BASE_URL}/courses/${id}`);
+    const response = await fetch(`/backend-api/courses/${id}`);
     
-    if (response.success && response.data) {
-      console.log(`✅ Course ${id} loaded from API`);
-      return response.data;
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
     
-    console.warn(`⚠️ API failed, using mock course data for id ${id}:`, response.error);
-    return mockPrograms.find(p => p.id === id) || null;
+    const result = await response.json();
+    if (result.success && result.data) {
+      console.log(`✅ Course ${id} loaded from API`);
+      return convertCourseToProgram(result.data);
+    }
+    
+    throw new Error('Invalid response format');
   } catch (error) {
     console.error(`❌ Error fetching course ${id}:`, error);
-    return mockPrograms.find(p => p.id === id) || null;
+    return null;
   }
 }
 
 /**
  * Get courses by category
  * Falls back to mock data if API fails
+ * 
+ * API Endpoint: POST /api/courses/filter
+ * Response format: { status: "success", data: { items: [...], total: number } }
  */
-export async function getCoursesByCategory(category: string): Promise<Program[]> {
+export async function getCoursesByCategory(categoryCode: string, page = 0, size = 20): Promise<Program[]> {
   try {
-    const response = await fetchWithTimeout<Program[]>(
-      `${API_BASE_URL}/courses?category=${encodeURIComponent(category)}`
-    );
+    const response = await fetch(`/backend-api/courses/filter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        categoryCode,
+        status: 'ACTIVE',
+        page,
+        size
+      })
+    });
     
-    if (response.success && response.data) {
-      console.log(`✅ Courses for category "${category}" loaded from API`);
-      return response.data;
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
     
-    console.warn(`⚠️ API failed, filtering mock courses by category "${category}":`, response.error);
-    if (category === 'Tất cả') {
-      return mockPrograms;
+    const result = await response.json();
+    if (result.success && result.data) {
+      console.log(`✅ Courses for category "${categoryCode}" loaded from API`);
+      const items = result.data.data || result.data.items || [];
+      return items.map(convertCourseToProgram);
     }
-    return mockPrograms.filter(p => p.category === category);
+    
+    throw new Error('Invalid response format');
   } catch (error) {
-    console.error(`❌ Error fetching courses by category ${category}:`, error);
-    if (category === 'Tất cả') {
-      return mockPrograms;
+    console.error(`❌ Error fetching courses by category ${categoryCode}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Get featured courses for homepage
+ * Falls back to mock data if API fails
+ * 
+ * API Endpoint: POST /api/courses/filter (filtering featured courses)
+ * Can also use dedicated endpoint if available in future
+ * Response format: { status: "success", data: { items: [...], total: number } }
+ */
+export async function getFeaturedCourses(limit = 6): Promise<Program[]> {
+  try {
+    const response = await fetch(`/backend-api/courses/filter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        status: 'ACTIVE',
+        page: 0,
+        size: limit
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
-    return mockPrograms.filter(p => p.category === category);
+    
+    const result = await response.json();
+    if (result.success && result.data) {
+      console.log('✅ Featured courses loaded from API');
+      const items = result.data.data || result.data.items || [];
+      return items.map(convertCourseToProgram).slice(0, limit);
+    }
+    
+    throw new Error('Invalid response format');
+  } catch (error) {
+    console.error('❌ Error fetching featured courses:', error);
+    throw error;
+  }
+}
+
+/**
+ * Search courses by keyword and filters
+ * Falls back to mock data if API fails
+ * 
+ * API Endpoint: POST /api/courses/filter
+ * Response format: { status: "success", data: { items: [...], total: number } }
+ */
+export interface CourseSearchParams {
+  keyword?: string;
+  categoryCode?: string;
+  level?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  page?: number;
+  size?: number;
+}
+
+export async function searchCourses(params: CourseSearchParams): Promise<Program[]> {
+  try {
+    const response = await fetch(`/backend-api/courses/filter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        ...params,
+        status: 'ACTIVE',
+        page: params.page || 0,
+        size: params.size || 10
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const result = await response.json();
+    if (result.success && result.data) {
+      console.log('✅ Search results loaded from API');
+      const items = result.data.data || result.data.items || [];
+      return items.map(convertCourseToProgram);
+    }
+    
+    throw new Error('Invalid response format');
+  } catch (error) {
+    console.error('❌ Error searching courses:', error);
+    throw error;
+  }
+}
+
+/**
+ * Get course by slug
+ * Falls back to mock data if API fails
+ * 
+ * API Endpoint: POST /api/courses/filter with slug parameter
+ * Response format: { status: "success", data: { items: [...], total: number } }
+ */
+export async function getCourseBySlug(slug: string): Promise<Program | null> {
+  try {
+    const response = await fetch(`/backend-api/courses/filter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        slug,
+        status: 'ACTIVE',
+        page: 0,
+        size: 1
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const result = await response.json();
+    if (result.success && result.data) {
+      console.log(`✅ Course with slug "${slug}" loaded from API`);
+      const items = result.data.data || result.data.items || [];
+      if (items.length > 0) {
+        return convertCourseToProgram(items[0]);
+      }
+    }
+    
+    throw new Error('Course not found');
+  } catch (error) {
+    console.error(`❌ Error fetching course by slug ${slug}:`, error);
+    return null;
   }
 }

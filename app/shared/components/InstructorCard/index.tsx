@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { InstructorCardProps } from './types';
 import { DEFAULT_PROPS, SIZE_STYLES } from './constants';
+import { ImageWithFallback } from '../ImageWithFallback';
 
 /**
  * InstructorCard Component
@@ -58,13 +58,14 @@ export function InstructorCard({
           ring-2 ring-slate-100 group-hover:ring-sky-600 
           transition-all motion-reduce:transition-none duration-300
         `}>
-          <Image
+          <ImageWithFallback
             src={instructor.image}
             alt={instructor.name}
             width={parseInt(styles.avatar.split('w-')[1]) * 4}
             height={parseInt(styles.avatar.split('h-')[1]) * 4}
             className="object-cover w-full h-full"
             sizes={`${parseInt(styles.avatar.split('w-')[1]) * 4}px`}
+            fallbackSrc="https://placehold.co/400x400/8b5cf6/ffffff?text=Giảng+viên"
           />
         </div>
       </div>

@@ -1,18 +1,40 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';
 import type { CourseSchedule } from '@/lib/api/types';
-import { mockFeaturedCourses } from '@/data/courses';
+import { api } from '@/lib/api';
+import type { Course } from '@/data/courses';
 
 interface CourseCategoriesProps {
   groupedCourses: Record<string, CourseSchedule[]>;
 }
 
 export function CourseCategories({ groupedCourses }: CourseCategoriesProps) {
-  // Get 3 computer science courses from courses data
-  const computerCourses = mockFeaturedCourses
-    .filter(course => course.categoryCode === 'OFFICE' || course.categoryCode === 'PROGRAMMING')
-    .slice(0, 3);
+  const [computerCourses, setComputerCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        const courses = await api.getCourses(0, 3);
+        // Convert Program to Course-like format for display
+        const mappedCourses = courses.map(program => ({
+          id: program.id.toString(),
+          title: program.title,
+          courseCode: `VITC-${program.id}`,
+          duration: parseInt(program.duration) || 40,
+          categoryCode: 'OFFICE',
+        } as Course));
+        setComputerCourses(mappedCourses);
+      } catch (error) {
+        console.error('Error loading courses for menu:', error);
+      }
+    };
+
+    loadCourses();
+  }, []);
 
   return (
     <div className="lg:col-span-1">

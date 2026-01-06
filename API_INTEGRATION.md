@@ -3,6 +3,10 @@
 ## Overview
 Hệ thống tích hợp với Java backend để quản lý dữ liệu khóa học với fallback mechanism sang mock data khi API không khả dụng.
 
+**Backend Base URL:** `http://localhost:8080`
+
+**API Format:** Response format theo chuẩn `{ status: "success", data: {...} }`
+
 ## Setup
 
 ### 1. Environment Variables
@@ -14,7 +18,8 @@ cp .env.example .env.local
 
 Cập nhật URL API backend:
 ```
-NEXT_PUBLIC_API_BASE_URL=http://your-backend-url/api
+NEXT_PUBLIC_API_URL=http://localhost:8080/api
+NEXT_PUBLIC_API_TIMEOUT=10000
 ```
 
 ### 2. Backend Course Model
@@ -33,9 +38,14 @@ public class Course {
     private String level;
     private String descriptionHtml;
     private String subject;
-    private String status; // "ACTIVE", "INACTIVE"
+    private String status; // "ACTIVE", "INACTIVE", "DRAFT"
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Instructor instructor;
+    private List<String> highlights;
+    private List<SyllabusModule> syllabus;
+    private List<String> requirements;
+    private String benefitsHtml;
 }
 ```
 
@@ -43,54 +53,94 @@ public class Course {
 Backend cần cung cấp các endpoints:
 
 ```
-GET /api/courses - Lấy tất cả khóa học
-GET /api/courses/featured?limit=6 - Lấy khóa học nổi bật
+GET  /api/courses/{id}           - Lấy chi tiết khóa học theo ID
+POST /api/courses/filter         - Lọc/tìm kiếm khóa học với pagination
+PUT  /api/courses/               - Tạo mới hoặc cập nhật khóa học (Admin)
+DELETE /api/courses/             - Xóa khóa học (Admin)
 ```
 
 Response format:
 ```json
 {
-  "success": true,
-  "data": [Course...],
-  "message": "Success"
+  "status": "success",
+  "data": {
+    "items": [Course...],
+    "total": 100
+  }
+}
+```
+
+hoặc cho single item:
+```json
+{
+  "status": "success",
+  "data": Course
 }
 ```
 
 ## Architecture
 
 ### Data Flow
-1. **FeaturedCoursesSection** component load
-2. Gọi **CourseService.getFeaturedCourses()**
-3. Service thử fetch từ backend API
-4. Nếu thành công: Transform backend Course → frontend CourseCardData
-5. Nếu thất bại: Fallback sang mockFeaturedCourses
-6. Component render với loading/error states
+1. **Component** (e.g., FeaturedCoursesSection) load
+2. Gọi **API function** (e.g., `getFeaturedCourses()`)
+3. Function gọi backend API với fetch
+4. Kiểm tra response format: `{ status: "success", data: {...} }`
+5. Nếu thành công: Transform backend Course → frontend Program
+6. Nếu thất bại: Fallback sang mock data
+7. Component render với loading/error states
 
 ### Files Structure
 ```
-app/
-├── data/
-│   └── courses.ts              # Interface definitions & mock data
-├── services/
-│   └── CourseService.ts        # API service layer
-└── components/sections/
-    └── FeaturedCoursesSection.tsx # UI component
+lib/api/
+├── base.ts                      # Base utilities, API_BASE_URL, fetchWithTimeout
+├── courses.ts                   # Course API functions
+├── types.ts                     # TypeScript interfaces
+└── index.ts                     # Export all APIs
+
+data/
+└── courses.ts                   # Mock data & Course interface
+
+app/components/sections/
+└── FeaturedCoursesSection.tsx   # UI component
 ```
 
-### CourseService Methods
+### Course API Functions
 
-#### `getAllCourses(): Promise<Course[]>`
-Fetch tất cả khóa học từ `/api/courses`
+#### `getCourses(page, size): Promise<Program[]>`
+Lấy danh sách khóa học với pagination
+- **Endpoint:** `POST /api/courses/filter`
+- **Body:** `{ status: "ACTIVE", page, size }`
 
-#### `getFeaturedCourses(limit): Promise<Course[]>`
-Fetch khóa học nổi bật từ `/api/courses/featured`
+#### `getFeaturedCourses(limit): Promise<Program[]>`
+Lấy khóa học nổi bật cho trang chủ
+- **Endpoint:** `POST /api/courses/filter`
+- **Body:** `{ status: "ACTIVE", page: 0, size: limit }`
 
-#### `transformToCourseCard(course): CourseCardData`
-Transform backend model thành frontend display model với:
+#### `getCourseById(id): Promise<Program | null>`
+Lấy chi tiết khóa học theo ID
+- **Endpoint:** `GET /api/courses/{id}`
+
+#### `getCoursesByCategory(categoryCode, page, size): Promise<Program[]>`
+Lọc khóa học theo danh mục
+- **Endpoint:** `POST /api/courses/filter`
+- **Body:** `{ categoryCode, status: "ACTIVE", page, size }`
+
+#### `searchCourses(params): Promise<Program[]>`
+Tìm kiếm khóa học với nhiều filters
+- **Endpoint:** `POST /api/courses/filter`
+- **Params:** keyword, categoryCode, level, minPrice, maxPrice, page, size
+
+#### `getCourseBySlug(slug): Promise<Program | null>`
+Lấy khóa học theo slug (URL-friendly)
+- **Endpoint:** `POST /api/courses/filter`
+- **Body:** `{ slug, status: "ACTIVE" }`
+
+#### `convertCourseToProgram(course): Program`
+Transform backend Course model thành frontend Program model
 - Badge logic dựa trên createdAt và category
 - Price formatting theo VND
-- Mock rating và studentCount nếu không có
-- Fallback instructor name
+- Instructor details mapping
+- Fallback values cho mock data
 
 ## Error Handling
 

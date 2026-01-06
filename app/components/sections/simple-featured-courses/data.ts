@@ -1,5 +1,5 @@
 // Course data for featured courses section
-import { mockFeaturedCourses, Course as CourseData } from '@/data/courses';
+import { Course as CourseData } from '@/data/courses';
 
 export interface Course {
   id: string;
@@ -25,7 +25,7 @@ const extractDescription = (html: string = ''): string => {
 };
 
 // Convert Course data to simple Course format
-const convertCourse = (course: CourseData): Course => ({
+export const convertCourse = (course: CourseData): Course => ({
   id: course.id,
   title: course.title,
   description: extractDescription(course.descriptionHtml),
@@ -33,13 +33,7 @@ const convertCourse = (course: CourseData): Course => ({
   price: formatPrice(course.price)
 });
 
-// Get soft skills courses (categoryCode: SOFTSKILLS)
-export const softSkillsCourses: Course[] = mockFeaturedCourses
-  .filter(course => course.categoryCode === 'SOFTSKILLS')
-  .map(convertCourse);
-
-// Get computer courses (categoryCode: OFFICE, PROGRAMMING)
-export const computerCourses: Course[] = mockFeaturedCourses
-  .filter(course => course.categoryCode === 'OFFICE' || course.categoryCode === 'PROGRAMMING')
-  .map(convertCourse);
+// Default empty arrays - will be populated from API
+export const softSkillsCourses: Course[] = [];
+export const computerCourses: Course[] = [];
 

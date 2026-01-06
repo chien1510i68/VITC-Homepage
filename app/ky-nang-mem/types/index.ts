@@ -1,6 +1,6 @@
 // Type definitions for Soft Skills module
 export interface Course {
-  id: number;
+  id: number | string;  // Support both number and UUID string
   title: string;
   category: string;
   excerpt?: string;

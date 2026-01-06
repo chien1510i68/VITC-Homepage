@@ -13,7 +13,7 @@ export async function submitConsultationForm(formData: {
 }): Promise<ApiResponse<{ message: string }>> {
   try {
     const response = await fetchWithTimeout<{ message: string }>(
-      `${API_BASE_URL}/consultation`,
+      `/backend-api/v1/consultation`,
       {
         method: 'POST',
         body: JSON.stringify(formData),
@@ -25,22 +25,9 @@ export async function submitConsultationForm(formData: {
       return response;
     }
     
-    console.warn('⚠️ API failed, form data logged locally:', response.error);
-    // In production, you might want to queue this for retry
-    console.log('Form data:', formData);
-    return {
-      success: true,
-      data: { message: 'Đã ghi nhận thông tin của bạn. Chúng tôi sẽ liên hệ sớm!' },
-      message: 'Data saved locally (API unavailable)',
-    };
+    throw new Error('Invalid response format');
   } catch (error) {
     console.error('❌ Error submitting consultation form:', error);
-    // Gracefully handle by logging locally
-    console.log('Form data saved locally:', formData);
-    return {
-      success: true,
-      data: { message: 'Đã ghi nhận thông tin của bạn. Chúng tôi sẽ liên hệ sớm!' },
-      message: 'Data saved locally (API error)',
-    };
+    throw error;
   }
 }

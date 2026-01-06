@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, useEffect } from 'react';
 import { useIntersectionObserver } from '@/app/shared/hooks';
 import { FilterButtons, InstructorCard } from '@/app/shared/components';
 import { 
@@ -12,28 +12,53 @@ import {
 } from '../components';
 import { 
   LEADERSHIP, 
-  INTERNAL_INSTRUCTORS, 
-  COMPANY_LEADERS, 
-  EXPERTS, 
   INSTRUCTOR_FILTERS 
 } from '../constants/instructors';
 import { SECTION_PADDING_LG, GRADIENT_SECONDARY, HEADING_3, TEXT_BODY, GRID_2 } from '../constants/classNames';
 import type { FilterType, Instructor } from '../types';
+import * as api from '@/lib/api';
 
 export default function InstructorsSection() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const [instructors, setInstructors] = useState<Instructor[]>([]);
+  const [loading, setLoading] = useState(true);
   const sectionRef = useRef<HTMLElement>(null);
   const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1 });
 
+  useEffect(() => {
+    const loadInstructors = async () => {
+      try {
+        setLoading(true);
+        const result = await api.getInstructors();
+        
+        // Convert API instructors to local format
+        const converted: Instructor[] = result.map((inst: any) => ({
+          id: inst.id,
+          name: inst.fullName || inst.name || inst.username,
+          degree: inst.degree || 'Giảng viên',
+          specialty: inst.specialty || inst.description || '',
+          image: inst.avatarUrl || inst.image || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop'
+        }));
+        
+        setInstructors(converted);
+      } catch (error) {
+        console.error('❌ Failed to load instructors:', error);
+        setInstructors([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInstructors();
+  }, []);
+
   const filteredInstructors = useMemo<Instructor[]>(() => {
     if (activeFilter === 'all') {
-      return [...INTERNAL_INSTRUCTORS, ...COMPANY_LEADERS, ...EXPERTS];
+      return instructors;
     }
-    if (activeFilter === 'internal') return INTERNAL_INSTRUCTORS;
-    if (activeFilter === 'company') return COMPANY_LEADERS;
-    if (activeFilter === 'expert') return EXPERTS;
-    return [];
-  }, [activeFilter]);
+    // Có thể thêm logic filter theo type nếu backend hỗ trợ
+    return instructors;
+  }, [activeFilter, instructors]);
 
   return (
     <section ref={sectionRef} className={`${GRADIENT_SECONDARY} ${SECTION_PADDING_LG}`}>
@@ -88,7 +113,18 @@ export default function InstructorsSection() {
 
         {/* Instructors Carousel */}
         <AnimatedSection isVisible={isVisible} delay={300}>
-          <InstructorCarousel instructors={filteredInstructors} />
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Đang tải giảng viên...</p>
+            </div>
+          ) : filteredInstructors.length === 0 ? (
+            <div className="text-center py-12 text-gray-500">
+              <p>Chưa có thông tin giảng viên</p>
+            </div>
+          ) : (
+            <InstructorCarousel instructors={filteredInstructors} />
+          )}
         </AnimatedSection>
       </Container>
     </section>

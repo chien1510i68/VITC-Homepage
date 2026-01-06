@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { mockFeaturedCourses, Course, CourseCardData } from '@/data/courses';
+import { Course, CourseCardData } from '@/data/courses';
 import CourseService from '@/lib/services/CourseService';
 
 // Component imports
@@ -41,21 +41,20 @@ export default function FeaturedCoursesSection() {
   } = useCourseCarousel();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [featuredCourses, setFeaturedCourses] = useState<CourseCardData[]>(
-    mockFeaturedCourses.map(transformCourseToCardData)
-  );
+  const [featuredCourses, setFeaturedCourses] = useState<CourseCardData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load courses from service in production
     const loadCourses = async () => {
+      setIsLoading(true);
       try {
         const courses = await CourseService.getFeaturedCourses();
-        if (courses && courses.length > 0) {
-          const transformedCourses = courses.map(transformCourseToCardData);
-          setFeaturedCourses(transformedCourses);
-        }
+        const transformedCourses = courses.map(transformCourseToCardData);
+        setFeaturedCourses(transformedCourses);
       } catch (error) {
-        console.log('Using mock data:', error);
+        console.error('Error loading featured courses:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 

@@ -1,30 +1,29 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';
-import { ScheduleSectionProps } from './types';
+import { ScheduleSectionProps, Schedule } from './types';
 import { DEFAULT_PROPS, COLUMN_HEADERS } from './constants';
+import * as api from '@/lib/api';
 
 /**
  * ScheduleSection Component
  * 
  * Displays a table of class schedules with filtering and CTA
+ * Fetches data from API by default
  * 
  * @example
  * ```tsx
- * // Basic usage with defaults
+ * // Basic usage with API data
  * <ScheduleSection />
  * 
- * // Custom title and schedules
+ * // Custom title
  * <ScheduleSection
  *   title="Lịch học Kỹ năng mềm"
- *   schedules={customSchedules}
  *   ctaLink="/ky-nang-mem"
  * />
- * 
- * // Without CTA button
- * <ScheduleSection showCta={false} />
  * ```
  */
 export default function ScheduleSection({
@@ -32,13 +31,44 @@ export default function ScheduleSection({
   subtitle = DEFAULT_PROPS.subtitle,
   sectionId = DEFAULT_PROPS.sectionId,
   badge,
-  schedules = DEFAULT_PROPS.schedules,
   ctaText = DEFAULT_PROPS.ctaText,
   ctaLink = DEFAULT_PROPS.ctaLink,
   showCta = DEFAULT_PROPS.showCta,
   bgClassName = DEFAULT_PROPS.bgClassName,
   columns = DEFAULT_PROPS.columns,
 }: ScheduleSectionProps = {}) {
+  
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadSchedules = async () => {
+      try {
+        setIsLoading(true);
+        const result = await api.getCourseSchedules({ page: 0, size: 10 });
+        
+        // Convert API data to Schedule format
+        const formattedSchedules: Schedule[] = result.data.map(cls => ({
+          id: cls.id,
+          className: cls.code || cls.className,
+          time: cls.schedule || cls.time,
+          startDate: cls.startDate,
+          location: cls.location,
+          subject: cls.courseName || cls.subject,
+          status: cls.status === 'OPEN' ? 'Sắp khai giảng' : 'Đang học',
+        }));
+        
+        setSchedules(formattedSchedules);
+      } catch (error) {
+        console.error('❌ Failed to load schedules:', error);
+        setSchedules([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSchedules();
+  }, []);
   
   /**
    * Format date string to Vietnamese locale
@@ -106,13 +136,22 @@ export default function ScheduleSection({
         </motion.div>
 
         {/* Table */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="-mx-3 sm:mx-0 overflow-x-auto"
-        >
+        {isLoading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+          </div>
+        ) : schedules.length === 0 ? (
+          <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+            <p className="text-gray-600">Chưa có lịch khai giảng nào</p>
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="-mx-3 sm:mx-0 overflow-x-auto"
+          >
           <motion.table
             initial={{ scale: 0.95 }}
             whileInView={{ scale: 1 }}
@@ -214,7 +253,8 @@ export default function ScheduleSection({
               )}
             </tbody>
           </motion.table>
-        </motion.div>
+          </motion.div>
+        )}
 
         {/* CTA Button */}
         {showCta && (

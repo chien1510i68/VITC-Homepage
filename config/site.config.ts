@@ -4,8 +4,8 @@
  */
 
 export const siteConfig = {
-  name: 'VITC',
-  fullName: 'VITC - Trung tâm Tin học và Kỹ năng mềm',
+  name: 'VISC',
+  fullName: 'VISC - Trung tâm Tin học và Kỹ năng mềm VNUA',
   description: 'Trung tâm đào tạo tin học và kỹ năng mềm chuyên nghiệp. Cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm, chương trình đào tạo chuẩn quốc tế.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://vitc.edu.vn',
   ogImage: '/images/og-image.jpg',

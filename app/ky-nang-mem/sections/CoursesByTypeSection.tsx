@@ -1,15 +1,48 @@
 "use client";
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import CourseCard from './CourseCard';
 import ConsultationPopup from '@/app/components/ui/ConsultationPopup';
-import { ALL_COURSES, COURSE_CATEGORIES } from '../constants/courses';
-import type { CourseCategory } from '../types';
+import { COURSE_CATEGORIES } from '../constants/courses';
+import type { CourseCategory, Course } from '../types';
 import { Button } from '@/components/ui/button';
+import * as api from '@/lib/api';
 
 export default function CoursesByTypeSection() {
   const [activeCategory, setActiveCategory] = useState<CourseCategory>('Tất cả');
   const [showPopup, setShowPopup] = useState(false);
+  const [allCourses, setAllCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        setLoading(true);
+        // Gọi API lấy khóa học kỹ năng mềm với categoryCode = SOFT_SKILLS
+        const programs = await api.getCoursesByCategory('SOFT_SKILLS', 0, 50);
+        
+        // Convert sang định dạng Course
+        const softSkillsCourses: Course[] = programs.map((program) => ({
+          id: program.id,  // Sử dụng UUID thật từ API
+          title: program.title,
+          category: 'Tất cả' as CourseCategory, // Mặc định, sẽ filter sau
+          excerpt: program.description || '',
+          duration: program.duration,
+          audience: ['Sinh viên', 'Cán bộ', 'Doanh nghiệp'],
+          image: program.image
+        }));
+        
+        setAllCourses(softSkillsCourses);
+      } catch (error) {
+        console.error('❌ Failed to load courses:', error);
+        setAllCourses([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCourses();
+  }, []);
 
   const handleRegisterClick = () => {
     setShowPopup(true);
@@ -20,9 +53,9 @@ export default function CoursesByTypeSection() {
   };
 
   const filteredCourses = useMemo(() => {
-    if (activeCategory === 'Tất cả') return ALL_COURSES;
-    return ALL_COURSES.filter((course) => course.category === activeCategory);
-  }, [activeCategory]);
+    if (activeCategory === 'Tất cả') return allCourses;
+    return allCourses.filter((course) => course.category === activeCategory);
+  }, [activeCategory, allCourses]);
 
   return (
     <section id="courses" className="py-16 lg:py-24">
@@ -67,13 +100,24 @@ export default function CoursesByTypeSection() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCourses.map((course) => (
-            <div key={course.id} className="transition-all duration-300">
-              <CourseCard course={course} onRegisterClick={handleRegisterClick} />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Đang tải khóa học...</p>
+          </div>
+        ) : filteredCourses.length === 0 ? (
+          <div className="text-center py-12 text-gray-500">
+            <p>Chưa có khóa học nào</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCourses.map((course) => (
+              <div key={course.id} className="transition-all duration-300">
+                <CourseCard course={course} onRegisterClick={handleRegisterClick} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <ConsultationPopup 

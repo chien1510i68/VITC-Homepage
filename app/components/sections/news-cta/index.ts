@@ -10,5 +10,5 @@ export { HotlineBox } from './HotlineBox';
 // Types
 export type { NewsArticle } from './types';
 
-// Data
-export { newsArticles } from './data';
+// Data utilities
+export { convertNewsArticle } from './data';

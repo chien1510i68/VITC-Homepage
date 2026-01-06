@@ -1,33 +1,16 @@
-import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Course } from '../types';
+import { getSafeImageUrl, getFallbackImage } from '../utils/imageUtils';
+import { ImageWithFallback } from '../components/ImageWithFallback';
 
 interface CourseCardProps {
   course: Course;
   onRegisterClick?: () => void;
 }
 
-// Map ky-nang-mem course ID to actual course ID in courses.ts
-const courseIdMap: Record<number, string> = {
-  1: '101', // Kỹ năng giao tiếp
-  2: '102', // Kỹ năng làm việc nhóm
-  3: '103', // Kỹ năng quản lý bản thân
-  4: '104', // Kỹ năng tìm kiếm việc làm
-  5: '105', // Kỹ năng hội nhập quốc tế
-  6: '106', // Kỹ năng giải quyết vấn đề
-  7: '111', // Tư duy sáng tạo
-  8: '113', // Kỹ năng thuyết trình
-  9: '109', // Kỹ năng quản lý dự án
-  10: '108', // Kỹ năng quản lý thời gian
-  11: '114', // Kỹ năng bán hàng online
-  12: '116', // Kỹ năng tổ chức công việc hiệu quả
-};
-
 export default function CourseCard({ course, onRegisterClick }: CourseCardProps) {
-  const actualCourseId = courseIdMap[course.id] || course.id.toString();
 
   return (
     <article
@@ -36,11 +19,14 @@ export default function CourseCard({ course, onRegisterClick }: CourseCardProps)
       className="group bg-gradient-to-br from-white/60 to-white/40 dark:from-slate-800/40 dark:to-slate-900/30 backdrop-blur-sm rounded-2xl border border-slate-100 hover:shadow-2xl transition-transform duration-200 motion-reduce:transition-none hover:-translate-y-2 p-0 overflow-hidden w-full"
     >
       <div className="relative h-40 sm:h-44 lg:h-36 w-full">
-        {course.image ? (
-          <Image src={course.image} alt={course.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 33vw" />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-emerald-300 to-emerald-500" />
-        )}
+        <ImageWithFallback
+          src={getSafeImageUrl(course.image, 'course')} 
+          alt={course.title} 
+          fill 
+          className="object-cover" 
+          sizes="(max-width: 1024px) 100vw, 33vw"
+          fallbackSrc={getFallbackImage('course')}
+        />
         <div className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold bg-white/85 text-slate-900">{course.level || 'Cơ bản'}</div>
       </div>
 
@@ -60,7 +46,7 @@ export default function CourseCard({ course, onRegisterClick }: CourseCardProps)
           </div>
 
           <div className="flex items-center gap-2">
-            <Link href={`/khoa-hoc/${actualCourseId}`}>
+            <Link href={`/khoa-hoc/${course.id}`}>
               <Button
                 type="button"
                 variant="outline"

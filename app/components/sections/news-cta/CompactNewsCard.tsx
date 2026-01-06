@@ -1,43 +1,51 @@
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { NewsArticle } from "./types";
+import { useState } from "react";
 
 interface CompactNewsCardProps {
   article: NewsArticle;
   index: number;
 }
 
-export const CompactNewsCard = ({ article, index }: CompactNewsCardProps) => (
-  <Link href={`/tin-tuc-thong-bao/${article.id}`}>
-    <motion.article
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      whileHover={{ 
-        y: -2,
-        transition: { duration: 0.2, ease: "easeOut" }
-      }}
-      className="group bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
-    >
-    {/* Mobile: Horizontal Layout, Desktop: Vertical Layout */}
-    <div className="flex sm:block">
-      {/* Image Section */}
-      <div className="relative w-[30%] h-20 sm:w-full sm:h-24 flex-shrink-0 overflow-hidden">
-        <Image
-          src={article.thumbnail}
-          alt={article.title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = "data:image/svg+xml,%3csvg width='400' height='300' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='400' height='300' fill='%23f1f5f9'/%3e%3ctext x='200' y='150' text-anchor='middle' dy='.3em' fill='%236b7280' font-family='system-ui' font-size='16'%3eNews%3c/text%3e%3c/svg%3e";
-          }}
-        />
-        <div className="absolute top-1 left-1 sm:top-2 sm:left-2 px-1.5 py-0.5 sm:px-2 rounded-md text-xs font-medium bg-yellow-600 text-white">
-          Tin tức
-        </div>
-      </div>
+export const CompactNewsCard = ({ article, index }: CompactNewsCardProps) => {
+  const [imgSrc, setImgSrc] = useState(article.thumbnail);
+  const [imgError, setImgError] = useState(false);
+
+  const fallbackImage = "data:image/svg+xml,%3csvg width='400' height='300' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='400' height='300' fill='%23f1f5f9'/%3e%3ctext x='200' y='150' text-anchor='middle' dy='.3em' fill='%236b7280' font-family='system-ui' font-size='16'%3eTin t%E1%BB%A9c%3c/text%3e%3c/svg%3e";
+
+  return (
+    <Link href={`/tin-tuc-thong-bao/${article.id}`}>
+      <motion.article
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: index * 0.05 }}
+        whileHover={{ 
+          y: -2,
+          transition: { duration: 0.2, ease: "easeOut" }
+        }}
+        className="group bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
+      >
+        {/* Mobile: Horizontal Layout, Desktop: Vertical Layout */}
+        <div className="flex sm:block">
+          {/* Image Section */}
+          <div className="relative w-[30%] h-20 sm:w-full sm:h-24 flex-shrink-0 overflow-hidden bg-gray-100">
+            <img
+              src={imgError ? fallbackImage : imgSrc}
+              alt={article.title}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              onError={() => {
+                if (!imgError) {
+                  setImgError(true);
+                  setImgSrc(fallbackImage);
+                }
+              }}
+            />
+            <div className="absolute top-1 left-1 sm:top-2 sm:left-2 px-1.5 py-0.5 sm:px-2 rounded-md text-xs font-medium bg-yellow-600 text-white">
+              Tin tức
+            </div>
+          </div>
       
       {/* Content Section */}
       <div className="flex-1 p-2 sm:p-3 flex flex-col justify-between">
@@ -88,4 +96,5 @@ export const CompactNewsCard = ({ article, index }: CompactNewsCardProps) => (
     </div>
   </motion.article>
   </Link>
-);
+  );
+};

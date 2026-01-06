@@ -12,8 +12,8 @@ export default function NewsSection() {
     const loadNews = async () => {
       setIsLoading(true);
       try {
-        const data = await api.getNews();
-        setNews(data);
+        const result = await api.getNews();
+        setNews(result.data);
       } catch (error) {
         console.error('Error loading news:', error);
       } finally {

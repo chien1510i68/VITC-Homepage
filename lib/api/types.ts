@@ -1,7 +1,7 @@
 // API Types for VITC Homepage
 
 export interface Program {
-  id: number;
+  id: number | string; // Support both number and UUID string
   title: string;
   category: string;
   description: string;
@@ -60,6 +60,40 @@ export interface NewsArticle {
   image: string;
   date: string;
   category: string;
+  slug?: string;
+  content?: string;
+}
+
+/**
+ * Backend News Category Model
+ */
+export interface NewsCategory {
+  id: string;
+  code: string;
+  name: string;
+  type?: string;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+/**
+ * Backend News Model
+ * Matches the Java backend News entity
+ */
+export interface BackendNews {
+  id: string;
+  title: string;
+  summary?: string;
+  contentHtml: string;
+  imageUrl?: string;
+  categories?: NewsCategory[];
+  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  slug?: string;
+  createdAt: string;
+  updatedAt: string;
+  createdBy?: string;
+  updatedBy?: string;
 }
 
 export interface CourseSchedule {
@@ -79,6 +113,44 @@ export interface AboutTimeline {
   title: string;
   description: string;
   year?: string;
+}
+
+/**
+ * Backend Course Model
+ * Matches the Java backend Course entity
+ */
+export interface BackendCourse {
+  id: string;
+  courseCode: string;
+  title: string;
+  slug: string;
+  categoryCode?: string;
+  thumbnailUrl?: string;
+  price: number;
+  duration?: number;
+  level?: string;
+  descriptionHtml?: string;
+  subject?: string;
+  status: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
+  createdAt: string;
+  updatedAt: string;
+  instructor?: BackendInstructor;
+  benefitsHtml?: string;
+  highlights?: string[];
+  syllabus?: SyllabusModule[];
+  requirements?: string[];
+}
+
+/**
+ * Backend Instructor Model
+ * Embedded in Course response
+ */
+export interface BackendInstructor {
+  id: string;
+  username: string;
+  email: string;
+  avatarUrl?: string;
+  description?: string;
 }
 
 export interface LookupResult {
@@ -104,4 +176,44 @@ export interface ApiResponse<T> {
   data?: T;
   error?: string;
   message?: string;
+}
+
+/**
+ * Backend API Response Format
+ * Matches the Java backend response structure
+ */
+export interface BackendApiResponse<T> {
+  status: 'success' | 'error';
+  data?: T;
+  message?: string;
+  timestamp?: string;
+  errors?: Array<{
+    field: string;
+    message: string;
+  }>;
+}
+
+/**
+ * Paginated Response from Backend
+ * Used for list endpoints with pagination
+ */
+export interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+}
+
+/**
+ * Course Filter Request Parameters
+ * Used for POST /api/courses/filter
+ */
+export interface CourseFilterRequest {
+  id?: string;
+  courseCode?: string;
+  slug?: string;
+  categoryCode?: string;
+  level?: string;
+  subject?: string;
+  status?: string;
+  page?: number;
+  size?: number;
 }

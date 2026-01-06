@@ -8,4 +8,4 @@ export { Styles } from './Styles';
 
 // Data and Types
 export type { Course } from './data';
-export { softSkillsCourses, computerCourses } from './data';
+export { convertCourse } from './data';

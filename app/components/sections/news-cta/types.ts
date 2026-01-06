@@ -1,6 +1,6 @@
 // Types for news components
 export interface NewsArticle {
-  id: number;
+  id: number | string;
   title: string;
   date: string;
   thumbnail: string;

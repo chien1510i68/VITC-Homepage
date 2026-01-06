@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { Calendar, ArrowRight, TrendingUp, Bell } from 'lucide-react';
-import { SAMPLE_NEWS as GLOBAL_NEWS } from '@/lib/newsData';
+import type { NewsArticle } from '@/types/news';
+import { getSafeImageUrl, getFallbackImage } from '../utils/imageUtils';
+import { ImageWithFallback } from '../components/ImageWithFallback';
 
 function formatDate(dateString: string): string {
   if (!dateString) return '';
@@ -16,11 +18,88 @@ function formatDate(dateString: string): string {
 }
 
 export default function NewsSection() {
-  // Lấy 4 tin tức đầu tiên cho phần thông báo quan trọng
-  const importantNews = GLOBAL_NEWS.slice(0, 4);
-  
-  // Lấy 4 tin tức tiếp theo cho phần đọc nhiều nhất
-  const popularNews = GLOBAL_NEWS.slice(4, 8);
+  const [announcements, setAnnouncements] = useState<NewsArticle[]>([]);
+  const [news, setNews] = useState<NewsArticle[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadNews = async () => {
+      try {
+        // Gọi API với category SOFT_SKILLS
+        const response = await fetch('/backend-api/v1/news/filter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            page: 0,
+            category: 'SOFT_SKILLS',
+            size: 20
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          const allArticles = result.data;
+          
+          // Phân loại theo type: ANNOUNCEMENT (thông báo) và NEWS (tin tức)
+          const announcementItems = allArticles
+            .filter((item: any) => item.type === 'ANNOUNCEMENT')
+            .map((item: any) => ({
+              id: item.id,
+              title: item.title,
+              description: item.summary || '',
+              date: item.createdAt,
+              image: item.imageUrl || '',
+              category: item.category
+            }))
+            .slice(0, 6); // Lấy 6 thông báo mới nhất
+
+          const newsItems = allArticles
+            .filter((item: any) => item.type === 'NEWS')
+            .map((item: any) => ({
+              id: item.id,
+              title: item.title,
+              description: item.summary || '',
+              date: item.createdAt,
+              image: item.imageUrl || '',
+              category: item.category
+            }))
+            .slice(0, 6); // Lấy 6 tin tức mới nhất
+
+          setAnnouncements(announcementItems);
+          setNews(newsItems);
+        }
+      } catch (error) {
+        console.error('Error loading news:', error);
+        setAnnouncements([]);
+        setNews([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadNews();
+  }, []);
+
+  // Sử dụng announcements cho cột trái và news cho cột phải
+  const importantNews = announcements;
+  const popularNews = news;
+
+  if (isLoading) {
+    return (
+      <section id="news" className="py-16 bg-gradient-to-br from-slate-50 via-white to-blue-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Đang tải tin tức...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="news" className="py-16 bg-gradient-to-br from-slate-50 via-white to-blue-50">
@@ -37,38 +116,39 @@ export default function NewsSection() {
 
         {/* Two Column Layout */}
         <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          {/* Left Column - Important Announcements */}
+          {/* Left Column - Important Announcements (ANNOUNCEMENT type) */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-6">
               <Bell className="w-5 h-5 text-red-500" />
-              <h3 className="text-xl font-bold text-gray-900">Thông báo quan trọng</h3>
+              <h3 className="text-xl font-bold text-gray-900">Thông báo</h3>
             </div>
             
-            <div className="space-y-4">
-              {importantNews.map((item, idx) => (
+            <div className="space-y-2">
+              {importantNews.map((item) => (
                 <Link 
                   key={item.id} 
                   href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
-                  className="block bg-white rounded-xl border border-slate-200 hover:border-emerald-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                  className="block bg-white rounded-lg border border-slate-200 hover:border-emerald-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
                 >
-                  <div className="flex gap-4 p-4">
+                  <div className="flex gap-3 p-3">
                     {/* Image */}
-                    <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                      <Image
-                        src={item.image || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80'}
+                    <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-gradient-to-br from-emerald-100 to-emerald-200">
+                      <ImageWithFallback
+                        src={getSafeImageUrl(item.image, 'announcement')}
                         alt={item.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        fallbackSrc={getFallbackImage('announcement')}
                       />
                     </div>
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-base font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-emerald-600 transition-colors">
+                      <h4 className="text-sm font-bold text-gray-900 line-clamp-2 mb-1 group-hover:text-emerald-600 transition-colors">
                         {item.title}
                       </h4>
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                        {item.excerpt}
+                      <p className="text-xs text-gray-600 line-clamp-1 mb-1">
+                        {item.description}
                       </p>
                       <div className="flex items-center text-xs text-gray-500">
                         <Calendar className="h-3 w-3 mr-1" />
@@ -81,43 +161,39 @@ export default function NewsSection() {
             </div>
           </div>
 
-          {/* Right Column - Most Read Articles */}
+          {/* Right Column - News (NEWS type) */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-6">
               <TrendingUp className="w-5 h-5 text-blue-500" />
-              <h3 className="text-xl font-bold text-gray-900">Tin tức đọc nhiều nhất</h3>
+              <h3 className="text-xl font-bold text-gray-900">Tin tức</h3>
             </div>
             
-            <div className="space-y-4">
-              {popularNews.map((item, idx) => (
+            <div className="space-y-2">
+              {popularNews.map((item) => (
                 <Link 
                   key={item.id} 
                   href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
-                  className="block bg-white rounded-xl border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                  className="block bg-white rounded-lg border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
                 >
-                  <div className="flex gap-4 p-4">
-                    {/* Ranking Number */}
-                    <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">{idx + 1}</span>
-                    </div>
-
+                  <div className="flex gap-3 p-3">
                     {/* Image */}
-                    <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                      <Image
-                        src={item.image || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80'}
+                    <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-gradient-to-br from-blue-100 to-blue-200">
+                      <ImageWithFallback
+                        src={getSafeImageUrl(item.image, 'news')}
                         alt={item.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        fallbackSrc={getFallbackImage('news')}
                       />
                     </div>
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-base font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors">
+                      <h4 className="text-sm font-bold text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600 transition-colors">
                         {item.title}
                       </h4>
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                        {item.excerpt}
+                      <p className="text-xs text-gray-600 line-clamp-1 mb-1">
+                        {item.description}
                       </p>
                       <div className="flex items-center text-xs text-gray-500">
                         <Calendar className="h-3 w-3 mr-1" />

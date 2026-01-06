@@ -14,7 +14,7 @@ export default function Loading() {
 
         {/* Featured Post Skeleton */}
         <div className="mb-12 bg-white rounded-xl overflow-hidden shadow-sm">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-2">
             <div className="h-96 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse" />
             <div className="p-8 space-y-4">
               <div className="h-8 bg-gray-200 rounded animate-pulse" />
@@ -30,7 +30,7 @@ export default function Loading() {
         </div>
 
         {/* News Grid Skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm">
               <div className="h-56 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse" />

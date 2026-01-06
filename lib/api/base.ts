@@ -2,11 +2,12 @@
 import { ApiResponse } from './types';
 
 // API Configuration
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-export const API_TIMEOUT = 0; // No timeout - instant fallback to mock data
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+export const API_TIMEOUT = 10000; // 10 seconds timeout
 
 /**
  * Helper function to make API calls with timeout and error handling
+ * Updated to match backend response format: { status: "success", data: {...} }
  */
 export async function fetchWithTimeout<T>(
   url: string,
@@ -36,12 +37,22 @@ export async function fetchWithTimeout<T>(
       };
     }
 
-    const data = await response.json();
-    return {
-      success: true,
-      data,
-      message: 'Success',
-    };
+    const result = await response.json();
+    
+    // Check backend response format { status: "success", data: {...} }
+    if (result.status === 'success') {
+      return {
+        success: true,
+        data: result.data,
+        message: result.message || 'Success',
+      };
+    } else {
+      return {
+        success: false,
+        data: null as any,
+        error: result.message || 'Unknown error',
+      };
+    }
   } catch (error) {
     clearTimeout(timeoutId);
     

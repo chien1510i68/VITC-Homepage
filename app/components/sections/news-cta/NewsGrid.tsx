@@ -9,9 +9,10 @@ import { NewsArticle } from './types';
 interface NewsGridProps {
   articles: NewsArticle[];
   maxItems?: number;
+  loading?: boolean;
 }
 
-export const NewsGrid: React.FC<NewsGridProps> = ({ articles, maxItems = 6 }) => {
+export const NewsGrid: React.FC<NewsGridProps> = ({ articles, maxItems = 6, loading = false }) => {
   const displayedArticles = articles.slice(0, maxItems);
 
   return (
@@ -35,31 +36,51 @@ export const NewsGrid: React.FC<NewsGridProps> = ({ articles, maxItems = 6 }) =>
         </div>
       </motion.div>
 
+      {/* Loading State */}
+      {loading && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+          {[...Array(maxItems)].map((_, i) => (
+            <div key={i} className="animate-pulse bg-gray-100 rounded-lg h-24"></div>
+          ))}
+        </div>
+      )}
+
       {/* Compact News Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-        {displayedArticles.map((article, index) => (
-          <CompactNewsCard key={article.id} article={article} index={index} />
-        ))}
-      </div>
+      {!loading && displayedArticles.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+          {displayedArticles.map((article, index) => (
+            <CompactNewsCard key={article.id} article={article} index={index} />
+          ))}
+        </div>
+      )}
+
+      {/* No Data State */}
+      {!loading && displayedArticles.length === 0 && (
+        <div className="text-center py-12 text-gray-500">
+          <p>Chưa có tin tức nào</p>
+        </div>
+      )}
 
       {/* View All Link */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="text-center pt-2"
-      >
-        <Link
-          href="/tin-tuc-thong-bao"
-          className="inline-flex items-center gap-2 text-sm font-semibold group transition-colors duration-200 text-yellow-600 hover:text-yellow-700 cursor-pointer"
+      {!loading && displayedArticles.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center pt-2"
         >
-          <span>Xem tất cả tin tức</span>
-          <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </Link>
-      </motion.div>
+          <Link
+            href="/tin-tuc-thong-bao"
+            className="inline-flex items-center gap-2 text-sm font-semibold group transition-colors duration-200 text-yellow-600 hover:text-yellow-700 cursor-pointer"
+          >
+            <span>Xem tất cả tin tức</span>
+            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+        </motion.div>
+      )}
     </div>
   );
 };

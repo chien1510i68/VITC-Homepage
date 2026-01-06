@@ -15,22 +15,27 @@ export class CourseService {
    */
   static async getAllCourses(): Promise<Course[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/courses`, {
-        method: 'GET',
+      const response = await fetch('/backend-api/courses/filter', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
+        body: JSON.stringify({
+          status: 'ACTIVE',
+          page: 0,
+          size: 100
+        })
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result: ApiResponse<Course[]> = await response.json();
+      const result = await response.json();
       
       if (result.success && result.data) {
-        return result.data;
+        return result.data.data || result.data.items || [];
       } else {
         throw new Error(result.message || 'Failed to fetch courses');
       }
@@ -45,22 +50,35 @@ export class CourseService {
    */
   static async getFeaturedCourses(limit: number = 6): Promise<Course[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/courses/featured?limit=${limit}`, {
-        method: 'GET',
+      console.log('🔵 Fetching featured courses, limit:', limit);
+      
+      const response = await fetch('/backend-api/courses/filter', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
+        body: JSON.stringify({
+          status: 'ACTIVE',
+          page: 0,
+          size: limit
+        })
       });
 
+      console.log('🔵 Response status:', response.status);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('❌ Backend error:', response.status, errorText);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
 
-      const result: ApiResponse<Course[]> = await response.json();
+      const result = await response.json();
+      console.log('🔵 Response data:', result);
       
       if (result.success && result.data) {
-        return result.data.filter(course => course.status === 'ACTIVE');
+        const items = result.data.data || result.data.items || [];
+        return items.filter((course: Course) => course.status === 'ACTIVE');
       } else {
         throw new Error(result.message || 'Failed to fetch featured courses');
       }

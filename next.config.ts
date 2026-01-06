@@ -21,11 +21,33 @@ const nextConfig: NextConfig = {
         hostname: 'images.unsplash.com',
       },
       {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
+      {
         protocol: 'http',
         hostname: 'trungtamkynangmem.vnua.edu.vn',
         pathname: '/wp-content/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'example.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
     ],
+  },
+  
+  // API Rewrites - Proxy to backend to avoid CORS
+  async rewrites() {
+    return [
+      {
+        source: '/backend-api/:path*',
+        destination: 'http://localhost:8080/api/:path*',
+      },
+    ];
   },
   
   // Security headers

@@ -1,5 +1,5 @@
 import { notFound, redirect } from 'next/navigation';
-import { SAMPLE_NEWS } from '@/lib/newsData';
+import { getNewsBySlug } from '@/lib/api/news';
 
 interface PageProps {
   params: Promise<{
@@ -10,17 +10,22 @@ interface PageProps {
 export default async function NewsDetailRedirectPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const newsItem = SAMPLE_NEWS.find((item) => item.slug === slug);
+  try {
+    const newsItem = await getNewsBySlug(slug);
 
-  if (!newsItem) {
+    if (!newsItem) {
+      notFound();
+    }
+
+    redirect(`/tin-tuc-thong-bao/${newsItem.id}`);
+  } catch (error) {
+    console.error('Error fetching news by slug:', error);
     notFound();
   }
-
-  redirect(`/tin-tuc-thong-bao/${newsItem.id}`);
 }
 
 export async function generateStaticParams() {
-  return SAMPLE_NEWS
-    .filter((news) => !!news.slug)
-    .map((news) => ({ slug: news.slug as string }));
+  // Return empty array to disable static generation
+  // Pages will be generated on-demand
+  return [];
 }

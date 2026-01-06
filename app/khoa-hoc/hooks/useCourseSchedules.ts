@@ -16,8 +16,8 @@ export function useCourseSchedules() {
     const loadSchedules = async () => {
       setIsLoading(true);
       try {
-        const schedulesData = await api.getCourseSchedules();
-        setSchedules(schedulesData);
+        const result = await api.getCourseSchedules();
+        setSchedules(result.data);
       } catch (error) {
         console.error('Error loading schedules:', error);
       } finally {

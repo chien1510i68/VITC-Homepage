@@ -1,4 +1,13 @@
-﻿export interface Instructor {
+﻿/**
+ * Backend Course & Instructor Interfaces
+ * Matching Java backend model structure
+ * These are re-exported from lib/api/types for consistency
+ */
+
+/**
+ * Backend Instructor Model
+ */
+export interface Instructor {
   id: string;
   username: string;
   email: string;
@@ -6,6 +15,10 @@
   description: string;
 }
 
+/**
+ * Backend Course Model
+ * Matches the response from Java backend API
+ */
 export interface Course {
   id: string;
   courseCode: string;
@@ -18,7 +31,7 @@ export interface Course {
   level?: string;
   descriptionHtml?: string;
   subject?: string;
-  status: string;
+  status: 'DRAFT' | 'ACTIVE' | 'INACTIVE';
   createdAt: string;
   updatedAt: string;
   instructor?: Instructor;
@@ -28,6 +41,10 @@ export interface Course {
   requirements?: string[];
 }
 
+/**
+ * Course Card Display Data
+ * Frontend display model for course cards
+ */
 export interface CourseCardData {
   id: string;
   title: string;

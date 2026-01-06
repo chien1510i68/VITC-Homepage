@@ -2,29 +2,19 @@ import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import Header from '@/app/components/layout/Header';
 import Footer from '@/app/components/layout/Footer';
-import SAMPLE_NEWS from '../../../lib/newsData';
 import { notFound } from 'next/navigation';
+import { getNewsById, getNews } from '@/lib/api/news';
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  // Build API URL (use NEXT_PUBLIC_BASE_URL if set, otherwise assume same origin)
-  const base = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const apiUrl = `${base}/api/tin-tuc-thong-bao/${id}`;
-
   let newsItem: any = null;
 
   try {
-    const res = await fetch(apiUrl, { cache: 'no-store' });
-    if (res.ok) {
-      newsItem = await res.json();
-    }
-  } catch (e) {
-    // Fetch failed — we'll fallback to local sample
-  }
-
-  if (!newsItem) {
-    newsItem = SAMPLE_NEWS.find((n) => n.id === id || String(n.id) === String(id));
+    newsItem = await getNewsById(id);
+  } catch (error) {
+    console.error('Error fetching news:', error);
+    notFound();
   }
 
   if (!newsItem) {
@@ -36,7 +26,14 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
     return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
 
-  const relatedNews = SAMPLE_NEWS.filter((n) => String(n.id) !== String(id)).slice(0, 3);
+  // Get related news
+  let relatedNews: any[] = [];
+  try {
+    const result = await getNews({ page: 0, size: 10 });
+    relatedNews = result.data.filter((n: any) => String(n.id) !== String(id)).slice(0, 3);
+  } catch (error) {
+    console.error('Error fetching related news:', error);
+  }
 
   const htmlContent = newsItem.contentHtml || newsItem.content || '';
 
@@ -57,7 +54,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
             </nav>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {/* Main Content */}
             <div className="lg:col-span-2">
               <Card className="p-8">

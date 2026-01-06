@@ -3,7 +3,8 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { api, AboutTimeline } from '@/lib/api';
+import { VITC_TIMELINE } from '@/data/timeline';
+import type { AboutTimeline } from '@/lib/api';
 
 // Timeline Item Component with Hover Effect
 const TimelineItem = ({ item, index, isLast }: { item: AboutTimeline; index: number; isLast: boolean }) => {
@@ -136,24 +137,8 @@ const TimelineItem = ({ item, index, isLast }: { item: AboutTimeline; index: num
 };
 
 export default function AboutSection() {
-  const [timelineData, setTimelineData] = useState<AboutTimeline[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const loadTimeline = async () => {
-      setIsLoading(true);
-      try {
-        const data = await api.getAboutTimeline();
-        setTimelineData(data);
-      } catch (error) {
-        console.error('Error loading about timeline:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadTimeline();
-  }, []);
+  const [timelineData] = useState<AboutTimeline[]>(VITC_TIMELINE);
+  const [isLoading] = useState(false);
 
   if (isLoading) {
     return (

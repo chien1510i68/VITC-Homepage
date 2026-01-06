@@ -18,9 +18,23 @@ export * from './lookup';
 export * from './forms';
 
 // Export unified API object for backward compatibility
-import { getCourses, getCourseById, getCoursesByCategory } from './courses';
+import { 
+  getCourses, 
+  getCourseById, 
+  getCoursesByCategory,
+  getFeaturedCourses,
+  searchCourses,
+  getCourseBySlug,
+  type CourseSearchParams
+} from './courses';
 import { getInstructors, getInstructorById } from './instructors';
-import { getNews, getNewsById } from './news';
+import { 
+  getNews, 
+  getNewsById, 
+  getNewsByCategory,
+  searchNews,
+  getNewsBySlug
+} from './news';
 import { getCourseSchedules } from './schedules';
 import { getAboutTimeline } from './about';
 import { lookupExamResults, lookupCertificate } from './lookup';
@@ -37,6 +51,9 @@ export const api = {
   getCourses,
   getCourseById,
   getCoursesByCategory,
+  getFeaturedCourses,
+  searchCourses,
+  getCourseBySlug,
   
   // Instructors
   getInstructors,
@@ -45,6 +62,9 @@ export const api = {
   // News
   getNews,
   getNewsById,
+  getNewsByCategory,
+  searchNews,
+  getNewsBySlug,
   
   // Lookup
   lookupExamResults,

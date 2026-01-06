@@ -13,7 +13,6 @@ import { api, Program } from '@/lib/api';
 
 export default function ChiTietKhoaHocPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const programId = parseInt(id);
   const [program, setProgram] = useState<Program | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,13 +20,15 @@ export default function ChiTietKhoaHocPage({ params }: { params: Promise<{ id: s
     const loadProgram = async () => {
       setIsLoading(true);
       try {
-        const data = await api.getCourseById(programId);
+        console.log('🔵 Loading course with ID:', id);
+        const data = await api.getCourseById(id);
+        console.log('🔵 Course data:', data);
         setProgram(data);
         if (!data) {
           notFound();
         }
       } catch (error) {
-        console.error('Error loading program:', error);
+        console.error('❌ Error loading program:', error);
         notFound();
       } finally {
         setIsLoading(false);
@@ -35,7 +36,7 @@ export default function ChiTietKhoaHocPage({ params }: { params: Promise<{ id: s
     };
 
     loadProgram();
-  }, [programId]);
+  }, [id]);
 
   if (isLoading) {
     return (

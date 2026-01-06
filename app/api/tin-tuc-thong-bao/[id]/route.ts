@@ -1,10 +1,11 @@
 /**
  * News Detail API Route
  * App Router format - GET /api/tin-tuc-thong-bao/[id]
+ * Proxies to real backend API
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import SAMPLE_NEWS from '@/lib/newsData';
+import { getNewsById } from '@/lib/api/news';
 
 export async function GET(
   _request: NextRequest,
@@ -12,7 +13,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const item = SAMPLE_NEWS.find(n => n.id === String(id));
+    const item = await getNewsById(id);
 
     if (!item) {
       return NextResponse.json(
@@ -20,9 +21,6 @@ export async function GET(
         { status: 404 }
       );
     }
-
-    // Simulate network latency for development
-    await new Promise(resolve => setTimeout(resolve, 250));
 
     return NextResponse.json(item, {
       status: 200,

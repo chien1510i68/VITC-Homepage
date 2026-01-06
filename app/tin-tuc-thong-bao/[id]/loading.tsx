@@ -20,7 +20,7 @@ export default function Loading() {
             <div className="h-12 w-full bg-gray-200 rounded-lg animate-pulse" />
             <div className="h-8 w-3/4 bg-gray-200 rounded-lg animate-pulse" />
             
-            <div className="flex items-center gap-6 pt-4 border-t border-gray-200">
+            <div className="flex items-center gap-2 pt-4 border-t border-gray-200">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 bg-gray-200 rounded-full animate-pulse" />
                 <div className="h-4 w-24 bg-gray-200 rounded animate-pulse" />
@@ -53,7 +53,7 @@ export default function Loading() {
           {/* Related Articles Skeleton */}
           <div className="mt-12">
             <div className="h-8 w-48 bg-gray-200 rounded-lg animate-pulse mb-6" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {[...Array(2)].map((_, i) => (
                 <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm">
                   <div className="h-48 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse" />

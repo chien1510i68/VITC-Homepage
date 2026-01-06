@@ -79,8 +79,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic news pages
   let newsPages: MetadataRoute.Sitemap = [];
   try {
-    const news = await getNews();
-    newsPages = news.map((article) => ({
+    const result = await getNews();
+    newsPages = result.data.map((article) => ({
       url: `${SITE_URL}/tin-tuc-thong-bao/${article.id}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,

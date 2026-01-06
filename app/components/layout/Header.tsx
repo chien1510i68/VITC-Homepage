@@ -43,8 +43,8 @@ export default function Header() {
     // Fetch courses for mega menu
     const fetchCourses = async () => {
       try {
-        const data = await getCourseSchedules();
-        setCourses(data);
+        const result = await getCourseSchedules();
+        setCourses(result.data);
       } catch (error) {
         console.error('Failed to fetch courses:', error);
       }

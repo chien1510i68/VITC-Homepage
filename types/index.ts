@@ -25,15 +25,25 @@ export type {
 export type { Instructor } from './instructor';
 
 // News types
-export type { NewsArticle } from './news';
+export type { 
+  NewsArticle,
+  BackendNews,
+  NewsCategory
+} from './news';
 
 // API types
 export type {
   ApiResponse,
+  BackendApiResponse,
+  PaginatedResponse,
+  CourseFilterRequest,
+  BackendCourse,
+  BackendInstructor,
+  BackendNews,
+  NewsCategory,
   AboutTimeline,
   LookupResult,
   PaginationMeta,
-  PaginatedResponse,
 } from './api';
 
 // Component types
