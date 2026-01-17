@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { SectionHeader, NewsGrid, CTAPanel } from './news-cta';
 import { NewsArticle } from './news-cta/types';
 import { convertNewsArticle } from './news-cta/data';

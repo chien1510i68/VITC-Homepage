@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Course, CourseCardData } from '@/data/courses';
 import CourseService from '@/lib/services/CourseService';
 
@@ -42,7 +42,7 @@ export default function FeaturedCoursesSection() {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [featuredCourses, setFeaturedCourses] = useState<CourseCardData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [_isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadCourses = async () => {
@@ -71,6 +71,7 @@ export default function FeaturedCoursesSection() {
       
       return () => container.removeEventListener('scroll', handleScroll);
     }
+    return undefined;
   }, [updateScrollButtons, activeView]);
 
   return (

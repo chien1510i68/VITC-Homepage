@@ -12,7 +12,7 @@ interface CourseCategoriesProps {
   coursesBasicInfo: CourseBasicInfo[];
 }
 
-export function CourseCategories({ groupedCourses, coursesBasicInfo }: CourseCategoriesProps) {
+export function CourseCategories({ coursesBasicInfo }: CourseCategoriesProps) {
   const [computerCourses, setComputerCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,6 +32,11 @@ export function CourseCategories({ groupedCourses, coursesBasicInfo }: CourseCat
         courseCode: course.courseCode,
         duration: 40, // Default duration
         categoryCode: 'IT',
+        slug: course.courseCode.toLowerCase(),
+        price: 0,
+        status: 'ACTIVE' as const,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       } as Course));
       
       setComputerCourses(mappedCourses);

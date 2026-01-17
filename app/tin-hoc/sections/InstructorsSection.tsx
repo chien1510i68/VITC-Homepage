@@ -51,7 +51,7 @@ export default function InstructorsSection() {
       instructors[currentIndex],
       instructors[(currentIndex + 1) % total],
       instructors[(currentIndex + 2) % total],
-    ];
+    ].filter((instructor): instructor is Instructor => instructor !== undefined);
   };
 
   const handlePrev = () => {

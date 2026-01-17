@@ -18,7 +18,7 @@ interface CourseRowProps {
  * Responsibility: Manage a row of courses with manual scroll navigation
  * - Desktop & Mobile/Tablet: Manual scroll with navigation buttons
  */
-export const CourseRow: React.FC<CourseRowProps> = ({ title, courses, direction = 'left' }) => {
+export const CourseRow: React.FC<CourseRowProps> = ({ title, courses }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);

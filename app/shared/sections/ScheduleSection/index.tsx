@@ -49,13 +49,13 @@ export default function ScheduleSection({
         
         // Convert API data to Schedule format
         const formattedSchedules: Schedule[] = result.data.map(cls => ({
-          id: cls.id,
-          className: cls.code || cls.className,
-          time: cls.schedule || cls.time,
+          id: String(cls.id),
+          className: cls.className,
+          time: cls.schedule,
           startDate: cls.startDate,
           location: cls.location,
           subject: cls.courseName || cls.subject,
-          status: cls.status === 'OPEN' ? 'Sắp khai giảng' : 'Đang học',
+          status: cls.status || 'Sắp khai giảng',
         }));
         
         setSchedules(formattedSchedules);

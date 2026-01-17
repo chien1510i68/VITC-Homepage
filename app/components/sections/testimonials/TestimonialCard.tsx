@@ -12,7 +12,6 @@ interface TestimonialCardProps {
 
 export const TestimonialCard: React.FC<TestimonialCardProps> = ({ 
   testimonial, 
-  index, 
   isActive 
 }) => {
   const [imageError, setImageError] = useState(false);

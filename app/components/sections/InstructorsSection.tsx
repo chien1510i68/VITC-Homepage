@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';
 import { api, Instructor } from '@/lib/api';
 
@@ -48,7 +47,7 @@ export default function InstructorsSection() {
       instructors[currentIndex],
       instructors[(currentIndex + 1) % total],
       instructors[(currentIndex + 2) % total],
-    ];
+    ].filter((instructor): instructor is Instructor => instructor !== undefined);
   };
 
   const handlePrev = () => {
@@ -74,7 +73,6 @@ export default function InstructorsSection() {
   }
 
   const visibleInstructors = getVisibleInstructors();
-  const centerInstructor = visibleInstructors[2];
 
   return (
     <section className="py-10 md:py-16 bg-gradient-to-b from-gray-50 to-white overflow-hidden">

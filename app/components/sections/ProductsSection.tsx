@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Code, Smartphone, GraduationCap } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';

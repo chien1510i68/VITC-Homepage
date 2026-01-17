@@ -28,7 +28,6 @@ const features = [
 
 export default function HeroSection() {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
   const { isOpen, selectedCourseId, openModal, closeModal } = useCourseRegistration();
 

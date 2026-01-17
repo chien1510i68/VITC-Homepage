@@ -1,9 +1,6 @@
 "use client";
 
-import React from 'react';
 import Link from 'next/link';
-import SAMPLE_NEWS from '../../../lib/newsData';
-import SAMPLE_THU_VIEN from '../../../lib/thuVienData';
 import type { CourseSchedule } from '@/lib/api/types';
 
 interface Props {
@@ -13,22 +10,9 @@ interface Props {
   isOpen?: boolean;
 }
 
-export default function SoftSkillsMenu({ courses = [], onMouseEnter, onMouseLeave, isOpen = true }: Props) {
+export default function SoftSkillsMenu({ onMouseEnter, onMouseLeave, isOpen = true }: Props) {
   const propsOnMouseEnter = onMouseEnter;
   const propsOnMouseLeave = onMouseLeave;
-  const latestNews = SAMPLE_NEWS.slice(0, 3);
-  const resources = SAMPLE_THU_VIEN.slice(0, 4);
-
-  const sampleCourses = courses.length
-    ? courses.slice(0, 6).map((c: any) => ({ id: c.id || c.className || c.title, title: c.title || c.className }))
-    : [
-        { id: 'c1', title: 'Kỹ năng giao tiếp' },
-        { id: 'c2', title: 'Kỹ năng làm việc nhóm' },
-        { id: 'c3', title: 'Kỹ năng quản lý thời gian' },
-        { id: 'c4', title: 'Kỹ năng thuyết trình' },
-        { id: 'c5', title: 'Tư duy sáng tạo' },
-        { id: 'c6', title: 'Quản lý dự án cơ bản' },
-      ];
 
   return (
     <div onMouseEnter={propsOnMouseEnter} onMouseLeave={propsOnMouseLeave} className="pointer-events-auto">

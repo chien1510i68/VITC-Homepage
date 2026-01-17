@@ -4,12 +4,6 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import PARTNERS from '../../../lib/partnersData';
 
-interface Partner {
-  id: number;
-  name: string;
-  logo: string;
-}
-
 const partners = PARTNERS;
 
 export default function PartnersSection() {

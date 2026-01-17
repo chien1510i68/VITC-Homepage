@@ -87,7 +87,7 @@ export default function CoursesByTypeSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCourses.map((course) => (
               <div key={course.id} className="transition-all duration-300">
-                <CourseCard course={course} onRegisterClick={() => openModal(course.id)} />
+                <CourseCard course={course} onRegisterClick={() => openModal(String(course.id))} />
               </div>
             ))}
           </div>

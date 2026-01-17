@@ -96,11 +96,14 @@ export function getVisibleItems<T>(
 
   for (let i = -halfVisible; i <= halfVisible; i++) {
     const index = (currentIndex + i + total) % total;
-    result.push({
-      item: items[index],
-      position: i,
-      originalIndex: index,
-    });
+    const item = items[index];
+    if (item !== undefined) {
+      result.push({
+        item,
+        position: i,
+        originalIndex: index,
+      });
+    }
   }
 
   return result;

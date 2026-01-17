@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Star, Clock, GraduationCap, TrendingUp, ArrowLeft, Award } from 'lucide-react';
-import { TAILWIND_COLORS } from '@/lib/colors';
 import { Program } from '@/lib/api';
 import { CourseRegistrationModal, useCourseRegistration } from '@/app/components/course-registration';
 

@@ -39,8 +39,6 @@ export type {
   CourseFilterRequest,
   BackendCourse,
   BackendInstructor,
-  BackendNews,
-  NewsCategory,
   AboutTimeline,
   LookupResult,
   CertificateResponse,

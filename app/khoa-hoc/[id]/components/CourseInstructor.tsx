@@ -7,10 +7,6 @@ interface CourseInstructorProps {
 }
 
 export default function CourseInstructor({ program }: CourseInstructorProps) {
-  const instructor = typeof program.instructor === 'string' 
-    ? { name: program.instructor } 
-    : program.instructor;
-
   // Only render if instructor has detailed info
   if (typeof program.instructor === 'string' || !program.instructor) {
     return null;

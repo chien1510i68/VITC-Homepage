@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Clock, Star, Users, ArrowRight } from 'lucide-react';
+import { Clock, Users, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { CourseCardData } from '../../../data/courses';
+import { CourseCardData } from '@/data/courses';
 import { getBadgeStyles } from './utils';
 
 interface FullCourseCardProps {

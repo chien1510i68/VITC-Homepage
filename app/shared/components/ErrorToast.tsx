@@ -54,6 +54,7 @@ export const ErrorToast: React.FC<ErrorToastProps> = ({
       const timer = setTimeout(onClose, duration);
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [duration, onClose]);
 
   return (

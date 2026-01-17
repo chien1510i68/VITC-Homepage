@@ -25,6 +25,7 @@ export default function NewsDetail({ title, contentHtml, label }: { title: strin
       document.body.style.overflow = 'hidden';
       return () => { document.body.style.overflow = original; };
     }
+    return undefined;
   }, [open]);
 
   return (

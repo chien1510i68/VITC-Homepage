@@ -6,7 +6,7 @@ interface SuccessStateProps {
   onClose: () => void;
 }
 
-export const SuccessState: React.FC<SuccessStateProps> = ({ onClose }) => {
+export const SuccessState: React.FC<SuccessStateProps> = () => {
   return (
     <motion.div
       variants={successVariants}

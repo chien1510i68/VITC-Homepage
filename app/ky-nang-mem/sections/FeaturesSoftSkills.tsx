@@ -58,7 +58,7 @@ export default function FeaturesSoftSkills() {
               {/* Number - large and light */}
               <div className="mb-4">
                 <span className="text-6xl lg:text-7xl font-light text-gray-900 tabular-nums tracking-tight">
-                  {formatNumber(counts[index], index)}
+                  {formatNumber(counts[index] || 0, index)}
                 </span>
               </div>
 

@@ -46,6 +46,7 @@ export function useScrollable(scrollAmount = 400): UseScrollableReturn {
       scrollElement.addEventListener('scroll', checkScroll);
       return () => scrollElement.removeEventListener('scroll', checkScroll);
     }
+    return undefined;
   }, [checkScroll]);
 
   return {

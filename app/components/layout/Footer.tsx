@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { MapPin, Phone, Mail, Facebook, Youtube, Clock, GraduationCap } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Youtube, Clock } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';
 
 export default function Footer() {
@@ -11,13 +11,6 @@ export default function Footer() {
     { title: 'Tin tức', href: '/tin-tuc-thong-bao' },
     { title: 'Tiện ích - Dịch vụ', href: '/tien-ich-dich-vu' },
     { title: 'Liên hệ', href: '/lien-he' },
-  ];
-
-  const courses = [
-    { title: 'Chuẩn đầu ra Tin học VNUA', href: '#' },
-    { title: 'Chứng chỉ Quốc tế ICDL', href: '#' },
-    { title: 'Ứng dụng CNTT cơ bản', href: '#' },
-    { title: 'Tin học văn phòng', href: '#' },
   ];
 
   const utilities = [

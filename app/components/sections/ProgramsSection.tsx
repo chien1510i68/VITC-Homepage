@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Clock, Users, Calendar, BookOpen, Star, CheckCircle } from 'lucide-react';
+import { Users, Star, CheckCircle } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';
 import { api, Program } from '@/lib/api';
 
@@ -19,7 +19,7 @@ export default function ProgramsSection() {
       try {
         const data = await api.getCourses();
         setPrograms(data);
-        if (data.length > 0) {
+        if (data.length > 0 && data[0]) {
           setSelectedProgram(data[0]);
         }
       } catch (error) {

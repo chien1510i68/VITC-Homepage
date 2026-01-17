@@ -25,6 +25,7 @@ export interface Course {
   title: string;
   slug: string;
   type?: string;
+  categoryCode?: string;
   thumbnailUrl?: string;
   price: number;
   duration?: number;

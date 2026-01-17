@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   SectionHeader, 
@@ -88,13 +88,11 @@ export default function SimpleFeaturedCoursesSection() {
       const query = debouncedSearchQuery.toLowerCase();
       const filteredSoftSkills = allSoftSkills.filter(course =>
         course.title?.toLowerCase().includes(query) ||
-        course.description?.toLowerCase().includes(query) ||
-        course.category?.toLowerCase().includes(query)
+        course.description?.toLowerCase().includes(query)
       );
       const filteredComputer = allComputer.filter(course =>
         course.title?.toLowerCase().includes(query) ||
-        course.description?.toLowerCase().includes(query) ||
-        course.category?.toLowerCase().includes(query)
+        course.description?.toLowerCase().includes(query)
       );
       setSoftSkillsCourses(filteredSoftSkills);
       setComputerCourses(filteredComputer);

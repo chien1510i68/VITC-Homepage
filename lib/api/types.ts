@@ -66,7 +66,7 @@ export interface Instructor {
 }
 
 export interface NewsArticle {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
   image: string;

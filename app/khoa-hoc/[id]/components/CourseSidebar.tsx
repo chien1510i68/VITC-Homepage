@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Clock, Users, DollarSign, Award, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, Users, Award, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';
 import { Program } from '@/lib/api';

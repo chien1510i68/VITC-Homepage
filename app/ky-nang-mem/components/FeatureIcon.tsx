@@ -1,4 +1,3 @@
-import React from 'react';
 import { MapPin, Award, Star } from 'lucide-react';
 
 type IconType = 'location' | 'certificate' | 'rating';

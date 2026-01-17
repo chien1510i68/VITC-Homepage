@@ -42,8 +42,9 @@ const StickyCard002 = ({
       gsap.set(imageElements[0], { y: "0%", scale: 1, rotation: 0 });
 
       for (let i = 1; i < totalCards; i++) {
-        if (!imageElements[i]) continue;
-        gsap.set(imageElements[i], { y: "100%", scale: 1, rotation: 0 });
+        const element = imageElements[i];
+        if (!element) continue;
+        gsap.set(element, { y: "100%", scale: 1, rotation: 0 });
       }
 
       const scrollTimeline = gsap.timeline({

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Clock, Star, Users } from 'lucide-react';
+import { Clock, Users } from 'lucide-react';
 import Image from 'next/image';
-import { CourseCardData } from '../../../data/courses';
+import { CourseCardData } from '@/data/courses';
 import { getBadgeStyles } from './utils';
 
 interface CompactCourseCardProps {

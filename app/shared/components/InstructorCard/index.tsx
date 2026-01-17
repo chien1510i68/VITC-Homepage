@@ -61,10 +61,10 @@ export function InstructorCard({
           <ImageWithFallback
             src={instructor.image}
             alt={instructor.name}
-            width={parseInt(styles.avatar.split('w-')[1]) * 4}
-            height={parseInt(styles.avatar.split('h-')[1]) * 4}
+            width={parseInt(styles.avatar.split('w-')[1] || '32') * 4}
+            height={parseInt(styles.avatar.split('h-')[1] || '32') * 4}
             className="object-cover w-full h-full"
-            sizes={`${parseInt(styles.avatar.split('w-')[1]) * 4}px`}
+            sizes={`${parseInt(styles.avatar.split('w-')[1] || '32') * 4}px`}
             fallbackSrc="https://placehold.co/400x400/8b5cf6/ffffff?text=Giảng+viên"
           />
         </div>

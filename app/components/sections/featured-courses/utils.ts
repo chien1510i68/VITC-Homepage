@@ -1,5 +1,3 @@
-import { CourseCardData } from "../../../data/courses";
-
 export const getBadgeStyles = (type: string) => {
   switch (type) {
     case 'hot':
