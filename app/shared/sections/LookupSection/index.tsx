@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { api, LookupResult } from '@/lib/api';
-import { LookupSectionProps, LookupType, CertificateType } from './types';
+import { LookupSectionProps, LookupType } from './types';
 import { DEFAULT_PROPS } from './constants';
 import { 
   LookupHeader, 
@@ -46,7 +46,6 @@ export default function LookupSection({
 }: LookupSectionProps) {
   const [lookupType, setLookupType] = useState<LookupType>('score');
   const [cccd, setCccd] = useState('');
-  const [certificateType, setCertificateType] = useState<CertificateType>('all');
   const [results, setResults] = useState<LookupResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +59,8 @@ export default function LookupSection({
     try {
       let data: LookupResult[];
       if (lookupType === 'score') {
-        data = await api.lookupExamResults(cccd);
+        // Use new API for exam results
+        data = await api.lookupExamResultsByCCCD(cccd);
       } else {
         data = await api.lookupCertificate(cccd);
       }
@@ -80,7 +80,6 @@ export default function LookupSection({
 
   const handleReset = () => {
     setCccd('');
-    setCertificateType('all');
     setResults([]);
     setHasSearched(false);
   };
@@ -115,8 +114,6 @@ export default function LookupSection({
           lookupType={lookupType}
           cccd={cccd}
           setCccd={setCccd}
-          certificateType={certificateType}
-          setCertificateType={setCertificateType}
           isLoading={isLoading}
           onSearch={handleSearch}
           onReset={handleReset}

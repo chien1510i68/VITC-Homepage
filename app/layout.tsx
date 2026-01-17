@@ -9,28 +9,18 @@
  */
 
 import type { Metadata } from "next";
-import { Montserrat, Playfair_Display, Inter } from "next/font/google";
+import { Quicksand } from "next/font/google";
 import "./globals.css";
-import FloatingRegisterButton from "./components/ui/FloatingRegisterButton";
 import PopupManager from "./components/PopupManager";
 import ScreenReaderAnnouncer from "./components/ScreenReaderAnnouncer";
 import SkipToContent from "./components/SkipToContent";
+import ChatWidget from "./components/ChatWidget";
 import { siteConfig, seoConfig } from "@/config/site.config";
+import { Toaster } from "sonner";
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin", "vietnamese"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-});
-
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
+// Font chính của website - có thể thay đổi khi cần
+const primaryFont = Quicksand({
+  variable: "--font-primary",
   subsets: ["latin", "vietnamese"],
   weight: ["300", "400", "500", "600", "700"],
 });
@@ -66,14 +56,16 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning>
       <body
-        className={`${montserrat.variable} ${playfairDisplay.variable} ${inter.variable} font-sans antialiased`}
+        className={`${primaryFont.variable} font-sans antialiased`}
       >
         <SkipToContent />
         <ScreenReaderAnnouncer />
         {children}
-        <FloatingRegisterButton />
         <PopupManager />
+        <ChatWidget />
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
 }
+

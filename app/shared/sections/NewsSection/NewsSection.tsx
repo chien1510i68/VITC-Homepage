@@ -19,16 +19,20 @@ function formatDate(dateString: string): string {
 }
 
 function NewsCardHorizontal({ item, index }: { item: any; index: number }) {
+  const [imageError, setImageError] = useState(false);
+  const imageSrc = imageError || !item.image ? '/images/thu-vien/news.avif' : item.image;
+
   return (
     <div key={`${item.id}-${index}`} className="flex-shrink-0 w-[340px] group">
       <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-300 hover:border-blue-300 hover:-translate-y-2 h-full">
         {/* Image */}
         <div className="relative h-48 overflow-hidden bg-gray-100">
           <Image
-            src={item.image || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80'}
+            src={imageSrc}
             alt={item.title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-110"
+            onError={() => setImageError(true)}
           />
         </div>
 
@@ -61,16 +65,20 @@ function NewsCardHorizontal({ item, index }: { item: any; index: number }) {
 }
 
 function NewsCardList({ item, idx }: { item: any; idx: number }) {
+  const [imageError, setImageError] = useState(false);
+  const imageSrc = imageError || !item.image ? '/images/thu-vien/news.avif' : item.image;
+
   return (
     <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex overflow-hidden cursor-pointer min-h-[128px] sm:min-h-[144px] md:min-h-[160px]">
       {/* Image - Left Side */}
       <div className="relative w-24 sm:w-32 md:w-44 flex-shrink-0 bg-gray-100">
         <Image
-          src={item.image || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80'}
+          src={imageSrc}
           alt={item.title}
           fill
           className="object-cover"
           sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, 176px"
+          onError={() => setImageError(true)}
         />
       </div>
 

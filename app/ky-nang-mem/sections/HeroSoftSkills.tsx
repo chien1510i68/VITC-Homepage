@@ -6,14 +6,39 @@ import { useCarousel } from '../hooks';
 import { CarouselIndicators, StatGrid } from '../components';
 import { CarouselNavigation } from '@/app/shared/components';
 import { Button } from '@/components/ui/button';
-import { CAROUSEL_IMAGES, HERO_STATS } from '../constants/hero';
+import { HERO_STATS } from '../constants/hero';
+import { CourseRegistrationModal, useCourseRegistration } from '@/app/components/course-registration';
+import { fetchActiveSlidesByType } from '@/lib/api';
+import type { BackendSlide } from '@/types/api';
 
 export default function HeroSoftSkills() {
   const [isVisible, setIsVisible] = useState(false);
+  const [slides, setSlides] = useState<BackendSlide[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
   const { currentSlide, nextSlide, prevSlide, goToSlide } = useCarousel({
-    totalSlides: CAROUSEL_IMAGES.length,
+    totalSlides: slides.length || 1,
     autoPlayInterval: 5000,
   });
+  const { isOpen, selectedCourseId, openModal, closeModal } = useCourseRegistration();
+
+  // Fetch slides from API
+  useEffect(() => {
+    async function loadSlides() {
+      try {
+        setIsLoading(true);
+        const data = await fetchActiveSlidesByType('SOFT_SKILLS');
+        if (data && data.length > 0) {
+          setSlides(data);
+        }
+      } catch (error) {
+        console.error('Failed to load slides:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadSlides();
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -77,6 +102,7 @@ export default function HeroSoftSkills() {
                 </Button>
                 <Button
                   variant="ghost"
+                  onClick={() => openModal()}
                   className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2"
                 >
                   Đăng ký ngay
@@ -99,17 +125,24 @@ export default function HeroSoftSkills() {
           {/* Right Image - 7 columns */}
           <div className="lg:col-span-7 flex items-center order-1 lg:order-2">
             <div className="relative w-full aspect-[4/3] lg:aspect-[3/4] rounded-sm overflow-hidden">
+              {/* Loading state */}
+              {isLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                  <div className="text-gray-400 text-sm">Loading...</div>
+                </div>
+              )}
+              
               {/* Images */}
-              {CAROUSEL_IMAGES.map((image, index) => (
+              {!isLoading && slides.map((slide, index) => (
                 <div
-                  key={index}
+                  key={slide.id}
                   className={`absolute inset-0 transition-opacity duration-1000 ${
                     index === currentSlide ? 'opacity-100' : 'opacity-0'
                   }`}
                 >
                   <Image
-                    src={image}
-                    alt={`Slide ${index + 1}`}
+                    src={slide.imageUrl}
+                    alt={slide.content || `Slide ${index + 1}`}
                     fill
                     className="object-cover"
                     priority={index === 0}
@@ -119,26 +152,35 @@ export default function HeroSoftSkills() {
               ))}
 
               {/* Minimal Navigation - Bottom */}
-              <div className="absolute bottom-6 left-0 right-0 flex items-center justify-center gap-4 z-10">
-                <CarouselNavigation
-                  onPrevious={prevSlide}
-                  onNext={nextSlide}
-                  canScrollLeft={true}
-                  canScrollRight={true}
-                  variant="minimal"
-                />
+              {!isLoading && slides.length > 0 && (
+                <div className="absolute bottom-6 left-0 right-0 flex items-center justify-center gap-4 z-10">
+                  <CarouselNavigation
+                    onPrevious={prevSlide}
+                    onNext={nextSlide}
+                    canScrollLeft={true}
+                    canScrollRight={true}
+                    variant="minimal"
+                  />
 
-                <CarouselIndicators
-                  total={CAROUSEL_IMAGES.length}
-                  current={currentSlide}
-                  onSelect={goToSlide}
-                  variant="lines"
-                />
-              </div>
+                  <CarouselIndicators
+                    total={slides.length}
+                    current={currentSlide}
+                    onSelect={goToSlide}
+                    variant="lines"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Registration Modal */}
+      <CourseRegistrationModal 
+        isOpen={isOpen}
+        onClose={closeModal}
+        defaultCourseId={selectedCourseId}
+      />
 
       <style jsx>{`
         @media (prefers-reduced-motion: reduce) {

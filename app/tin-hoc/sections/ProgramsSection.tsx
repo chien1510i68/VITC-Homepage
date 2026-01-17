@@ -28,7 +28,7 @@ function LoadingState() {
   return (
     <div className={STYLES.loadingState}>
       <div className="flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
       </div>
     </div>
   );
@@ -46,7 +46,7 @@ function ProgramDetail({ program }: ProgramDetailProps) {
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
             <span className="text-white text-4xl font-bold">{program.title.charAt(0)}</span>
           </div>
         )}
@@ -59,7 +59,7 @@ function ProgramDetail({ program }: ProgramDetailProps) {
           </h3>
           {program.price && (
             <div className="ml-4 text-right">
-              <div className="text-2xl font-bold text-blue-600">{program.price}</div>
+              <div className="text-2xl font-bold text-green-600">{program.price}</div>
             </div>
           )}
         </div>
@@ -79,7 +79,7 @@ function ProgramDetail({ program }: ProgramDetailProps) {
               {program.highlights.map((highlight, index) => (
                 <span 
                   key={index}
-                  className="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 text-sm font-medium rounded-full"
+                  className="inline-flex items-center px-3 py-1.5 bg-green-50 text-green-700 text-sm font-medium rounded-full"
                 >
                   <svg className="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -139,10 +139,10 @@ function ProgramDetail({ program }: ProgramDetailProps) {
         )}
 
         {/* Button Xem Chi Tiết */}
-        <div className="mt-3">
+        <div className="mt-3 flex justify-end">
           <Link 
             href={`/khoa-hoc/${program.id}`}
-            className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+            className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -168,7 +168,7 @@ function ProgramList({ programs, selectedProgram, onProgramSelect }: ProgramList
             onClick={() => onProgramSelect(program)}
             className={`w-full rounded-lg transition-all cursor-pointer ${
               selectedProgram?.id === program.id
-                ? 'bg-blue-50 border-2 border-blue-500 shadow-md'
+                ? 'bg-green-50 border-2 border-green-500 shadow-md'
                 : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100 hover:border-gray-300'
             }`}
           >
@@ -183,7 +183,7 @@ function ProgramList({ programs, selectedProgram, onProgramSelect }: ProgramList
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
                       <span className="text-white text-xl font-bold">{program.title.charAt(0)}</span>
                     </div>
                   )}
@@ -203,12 +203,12 @@ function ProgramList({ programs, selectedProgram, onProgramSelect }: ProgramList
                   </p>
                 </div>
 
-                {/* Button xem chi tiết dưới cùng bên trái */}
-                <div>
+                {/* Button xem chi tiết dưới cùng bên phải */}
+                <div className="flex justify-end">
                   <Link
                     href={`/khoa-hoc/${program.id}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="inline-flex text-right items-center text-sm text-blue-600 hover:text-blue-700 font-medium"
+                    className="inline-flex text-right items-center text-sm text-green-600 hover:text-green-700 font-medium"
                   >
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />

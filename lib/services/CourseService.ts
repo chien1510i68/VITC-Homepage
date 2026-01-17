@@ -1,6 +1,6 @@
 import { Course, CourseCardData } from '@/data/courses';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -50,7 +50,14 @@ export class CourseService {
    */
   static async getFeaturedCourses(limit: number = 6): Promise<Course[]> {
     try {
-      console.log('🔵 Fetching featured courses, limit:', limit);
+      console.log('🔵 CourseService.getFeaturedCourses called with limit:', limit);
+      
+      const requestBody = {
+        status: 'ACTIVE',
+        page: 0,
+        size: limit
+      };
+      console.log('🔵 Request body:', requestBody);
       
       const response = await fetch('/backend-api/courses/filter', {
         method: 'POST',
@@ -58,14 +65,11 @@ export class CourseService {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({
-          status: 'ACTIVE',
-          page: 0,
-          size: limit
-        })
+        body: JSON.stringify(requestBody)
       });
 
       console.log('🔵 Response status:', response.status);
+      console.log('🔵 Response OK?:', response.ok);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -74,7 +78,7 @@ export class CourseService {
       }
 
       const result = await response.json();
-      console.log('🔵 Response data:', result);
+      console.log('🔵 Full response data:', JSON.stringify(result, null, 2));
       
       if (result.success && result.data) {
         const items = result.data.data || result.data.items || [];
@@ -106,7 +110,7 @@ export class CourseService {
       // Hot course based on category or subject
       if (course.subject?.toLowerCase().includes('python') || 
           course.subject?.toLowerCase().includes('javascript') ||
-          course.categoryCode === 'PROGRAMMING') {
+          course.type === 'PROGRAMMING') {
         return { text: 'Đang hot', type: 'hot' as const };
       }
       

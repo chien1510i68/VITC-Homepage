@@ -36,7 +36,7 @@ export default function Loading() {
                 </div>
                 <div className="flex justify-between items-center pt-4">
                   <div className="h-8 w-24 bg-gray-200 rounded animate-pulse" />
-                  <div className="h-10 w-32 bg-blue-200 rounded animate-pulse" />
+                  <div className="h-10 w-32 bg-green-200 rounded animate-pulse" />
                 </div>
               </div>
             </div>

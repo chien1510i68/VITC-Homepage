@@ -1,5 +1,30 @@
 import type { NextConfig } from "next";
 
+// Validate required environment variables
+if (!process.env.NEXT_PUBLIC_API_URL) {
+  throw new Error(
+    '\n\n❌ NEXT_PUBLIC_API_URL is required but not defined!\n' +
+    'Please set it in your .env.local file.\n' +
+    'Example: NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1\n\n'
+  );
+}
+
+// Validate API URL format
+try {
+  const apiUrl = new URL(process.env.NEXT_PUBLIC_API_URL);
+  if (!apiUrl.pathname.includes('/api/v1')) {
+    console.warn(
+      '⚠️  WARNING: NEXT_PUBLIC_API_URL should end with /api/v1\n' +
+      `Current value: ${process.env.NEXT_PUBLIC_API_URL}\n`
+    );
+  }
+} catch (error) {
+  throw new Error(
+    `\n\n❌ Invalid NEXT_PUBLIC_API_URL: ${process.env.NEXT_PUBLIC_API_URL}\n` +
+    'Must be a valid URL (e.g., http://localhost:8080/api/v1)\n\n'
+  );
+}
+
 const nextConfig: NextConfig = {
   images: {
     dangerouslyAllowSVG: true,
@@ -15,6 +40,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'vitc.edu.vn',
         pathname: '/Frond_end/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'visc.vercel.app',
       },
       {
         protocol: 'https',
@@ -34,6 +63,10 @@ const nextConfig: NextConfig = {
         hostname: 'example.com',
       },
       {
+        protocol: 'https',
+        hostname: 'file.vnua.edu.vn',
+      },
+      {
         protocol: 'http',
         hostname: 'localhost',
       },
@@ -42,16 +75,36 @@ const nextConfig: NextConfig = {
   
   // API Rewrites - Proxy to backend to avoid CORS
   async rewrites() {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL!; // Non-null assertion safe due to validation above
     return [
       {
         source: '/backend-api/:path*',
-        destination: 'http://localhost:8080/api/:path*',
+        destination: `${apiBaseUrl}/:path*`,
       },
     ];
   },
   
   // Security headers
   async headers() {
+    const isDev = process.env.NODE_ENV === 'development';
+    
+    // Extract only the origin (protocol + hostname + port) without path
+    let apiOrigin: string;
+    try {
+      const url = new URL(process.env.NEXT_PUBLIC_API_URL!);
+      apiOrigin = url.origin; // This gets http://localhost:8080 without /api/v1
+    } catch (e) {
+      throw new Error(
+        `Failed to parse NEXT_PUBLIC_API_URL: ${process.env.NEXT_PUBLIC_API_URL}\n` +
+        'Must be a valid URL.'
+      );
+    }
+    
+    // In development, allow localhost connections
+    const connectSrc = isDev 
+      ? `'self' ${apiOrigin} https://vitc.edu.vn https://www.google-analytics.com https://*.sentry.io https://*.facebook.com https://*.facebook.net`
+      : `'self' https://vitc.edu.vn https://www.google-analytics.com https://*.sentry.io https://*.facebook.com https://*.facebook.net`;
+    
     return [
       {
         source: '/:path*',
@@ -61,12 +114,12 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://*.facebook.com",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: http:",
               "font-src 'self' data:",
-              "connect-src 'self' https://vitc.edu.vn https://www.google-analytics.com https://*.sentry.io",
-              "frame-src 'self' https://www.youtube.com https://www.facebook.com",
+              `connect-src ${connectSrc}`,
+              "frame-src 'self' https://www.youtube.com https://www.facebook.com https://www.google.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

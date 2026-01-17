@@ -126,46 +126,50 @@ export type StudentLookupData = z.infer<typeof studentLookupSchema>;
 
 /**
  * Course registration validation schema
+ * Aligned with backend API: POST /api/v1/register/
  */
 export const courseRegistrationSchema = z.object({
-  fullName: z
+  username: z
     .string()
-    .min(2, validationMessages.minLength(2))
-    .max(100, validationMessages.maxLength(100)),
+    .min(1, 'Vui lòng nhập họ tên')
+    .min(3, 'Họ tên phải có ít nhất 3 ký tự')
+    .max(100, 'Họ tên không được quá 100 ký tự'),
   
   email: z
     .string()
+    .min(1, 'Vui lòng nhập email')
     .email(validationMessages.email),
   
-  phone: z
+  phoneNumber: z
     .string()
-    .regex(phoneRegex, validationMessages.phone),
+    .min(1, 'Vui lòng nhập số điện thoại')
+    .regex(/^[0-9]{10,11}$/, 'Số điện thoại phải có 10-11 chữ số'),
   
-  cccd: z
+  dob: z
     .string()
-    .regex(cccdRegex, 'CCCD/CMND phải có 9 hoặc 12 chữ số')
-    .optional()
-    .or(z.literal('')),
+    .min(1, 'Vui lòng nhập ngày sinh')
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Ngày sinh phải theo định dạng YYYY-MM-DD'),
   
   address: z
     .string()
-    .min(10, validationMessages.minLength(10))
-    .max(200, validationMessages.maxLength(200))
+    .min(1, 'Vui lòng nhập địa chỉ')
+    .max(200, 'Địa chỉ không được quá 200 ký tự'),
+  
+  course: z
+    .string()
+    .min(1, 'Vui lòng chọn chương trình học')
+    .uuid('ID chương trình không hợp lệ'),
+  
+  type: z
+    .string()
     .optional()
-    .or(z.literal('')),
+    .default(''),
   
-  courseId: z
+  note: z
     .string()
-    .min(1, validationMessages.required),
-  
-  classId: z
-    .string()
-    .optional(),
-  
-  notes: z
-    .string()
-    .max(500, validationMessages.maxLength(500))
-    .optional(),
+    .max(500, 'Ghi chú không được quá 500 ký tự')
+    .optional()
+    .default(''),
 });
 
 export type CourseRegistrationData = z.infer<typeof courseRegistrationSchema>;

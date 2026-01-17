@@ -4,37 +4,43 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';
-import type { CourseSchedule } from '@/lib/api/types';
-import { api } from '@/lib/api';
+import type { CourseSchedule, CourseBasicInfo } from '@/lib/api/types';
 import type { Course } from '@/data/courses';
 
 interface CourseCategoriesProps {
   groupedCourses: Record<string, CourseSchedule[]>;
+  coursesBasicInfo: CourseBasicInfo[];
 }
 
-export function CourseCategories({ groupedCourses }: CourseCategoriesProps) {
+export function CourseCategories({ groupedCourses, coursesBasicInfo }: CourseCategoriesProps) {
   const [computerCourses, setComputerCourses] = useState<Course[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadCourses = async () => {
-      try {
-        const courses = await api.getCourses(0, 3);
-        // Convert Program to Course-like format for display
-        const mappedCourses = courses.map(program => ({
-          id: program.id.toString(),
-          title: program.title,
-          courseCode: `VITC-${program.id}`,
-          duration: parseInt(program.duration) || 40,
-          categoryCode: 'OFFICE',
-        } as Course));
-        setComputerCourses(mappedCourses);
-      } catch (error) {
-        console.error('Error loading courses for menu:', error);
-      }
-    };
-
-    loadCourses();
-  }, []);
+    // Filter and map courses from props instead of API call
+    setIsLoading(true);
+    try {
+      // Filter only IT courses
+      const itCourses = coursesBasicInfo
+        .filter(course => course.type === 'IT')
+        .slice(0, 4); // Limit to 4 courses
+      
+      // Map to Course format for display
+      const mappedCourses = itCourses.map(course => ({
+        id: course.id,
+        title: course.title,
+        courseCode: course.courseCode,
+        duration: 40, // Default duration
+        categoryCode: 'IT',
+      } as Course));
+      
+      setComputerCourses(mappedCourses);
+    } catch (error) {
+      console.error('Error loading courses for menu:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [coursesBasicInfo]);
 
   return (
     <div className="lg:col-span-1">
@@ -42,20 +48,32 @@ export function CourseCategories({ groupedCourses }: CourseCategoriesProps) {
         Danh mục khóa học
       </h3>
       <div className="space-y-1">
-        {computerCourses.map((course) => {
-          return (
-            <Link
-              key={course.id}
-              href={`/khoa-hoc/${course.id}`}
-              className={`block py-2 px-3 rounded-md text-sm transition-all hover:${TAILWIND_COLORS.bgPrimaryLight} hover:${TAILWIND_COLORS.textPrimary} text-gray-700`}
-            >
-              <div className="font-medium line-clamp-1">{course.title}</div>
-              <div className="text-xs text-gray-500 mt-0.5">
-                {course.courseCode} • {course.duration} giờ
+        {isLoading ? (
+          // Loading skeleton
+          <>
+            {[...Array(4)].map((_, index) => (
+              <div key={index} className="py-2 px-3 rounded-md animate-pulse">
+                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
               </div>
-            </Link>
-          );
-        })}
+            ))}
+          </>
+        ) : (
+          computerCourses.map((course) => {
+            return (
+              <Link
+                key={course.id}
+                href={`/khoa-hoc/${course.id}`}
+                className={`block py-2 px-3 rounded-md text-sm transition-all hover:${TAILWIND_COLORS.bgPrimaryLight} hover:${TAILWIND_COLORS.textPrimary} text-gray-700`}
+              >
+                <div className="font-medium line-clamp-1">{course.title}</div>
+                <div className="text-xs text-gray-500 mt-0.5">
+                  {course.courseCode} • {course.duration} giờ
+                </div>
+              </Link>
+            );
+          })
+        )}
       </div>
       
       {/* View All Link */}

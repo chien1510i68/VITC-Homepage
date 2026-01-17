@@ -3,7 +3,8 @@ import Footer from "../components/layout/Footer";
 import AboutSection from "./sections/AboutSection";
 import ProgramsSection from "./sections/ProgramsSection";
 import InstructorsSection from "./sections/InstructorsSection";
-import { HeroSection, LookupSection, ScheduleSection } from "../shared/sections";
+import NewsSection from "./sections/NewsSection";
+import { HeroSection, LookupSection, ScheduleSection, TIN_HOC_LOOKUP_CONFIG } from "../shared/sections";
 import ConsultationForm from "../components/sections/ConsultationForm";
 
 export const metadata = {
@@ -17,15 +18,13 @@ export default function TinHocPage() {
       <Header />
       <main className="flex-1">
         <HeroSection />
-        <LookupSection 
-          sectionId="tra-cuu-tin-hoc"
-          contactEmail="tinhoc@visc.edu.vn"
-        />
+        <LookupSection {...TIN_HOC_LOOKUP_CONFIG} />
          <ScheduleSection
           title="Lịch khai giảng Tin học"
           ctaLink="/khoa-hoc"
         />
         <ProgramsSection />
+        <NewsSection />
         <ConsultationForm />
         <InstructorsSection />
         <AboutSection />

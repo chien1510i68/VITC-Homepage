@@ -24,13 +24,14 @@ export interface BackendNews {
   id: string;
   title: string;
   summary?: string;
-  contentHtml: string;
+  contentHtml?: string;
   imageUrl?: string;
-  categories?: NewsCategory[];
   status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  type?: string; // Danh mục nội dung: IT, SOFT_SKILLS, etc.
+  category: 'NEWS' | 'ANNOUNCEMENT' | 'EVENT'; // Loại bài viết
   slug?: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
   createdBy?: string;
   updatedBy?: string;
 }
@@ -44,8 +45,8 @@ export interface NewsArticle {
   description: string;
   image: string;
   date: string;
-  category: string;
-  categories?: NewsCategory[]; // Danh sách categories từ backend
+  category: 'NEWS' | 'ANNOUNCEMENT' | 'EVENT'; // Loại bài viết
+  type?: string; // Danh mục nội dung: IT, SOFT_SKILLS
   slug?: string;
   content?: string;
 }

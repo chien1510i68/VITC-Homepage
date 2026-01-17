@@ -25,13 +25,13 @@ export default function NewsSection() {
   useEffect(() => {
     const loadNews = async () => {
       try {
-        // Gọi API với category SOFT_SKILLS
-        const response = await fetch('/backend-api/v1/news/filter', {
+        // Gọi API với type SOFT_SKILLS
+        const response = await fetch('/backend-api/news/filter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             page: 0,
-            category: 'SOFT_SKILLS',
+            type: 'SOFT_SKILLS',
             size: 20
           })
         });
@@ -45,9 +45,9 @@ export default function NewsSection() {
         if (result.success && result.data) {
           const allArticles = result.data;
           
-          // Phân loại theo type: ANNOUNCEMENT (thông báo) và NEWS (tin tức)
+          // Phân loại theo category: ANNOUNCEMENT (thông báo) và NEWS (tin tức)
           const announcementItems = allArticles
-            .filter((item: any) => item.type === 'ANNOUNCEMENT')
+            .filter((item: any) => item.category === 'ANNOUNCEMENT')
             .map((item: any) => ({
               id: item.id,
               title: item.title,
@@ -59,7 +59,7 @@ export default function NewsSection() {
             .slice(0, 6); // Lấy 6 thông báo mới nhất
 
           const newsItems = allArticles
-            .filter((item: any) => item.type === 'NEWS')
+            .filter((item: any) => item.category === 'NEWS')
             .map((item: any) => ({
               id: item.id,
               title: item.title,
@@ -90,7 +90,7 @@ export default function NewsSection() {
 
   if (isLoading) {
     return (
-      <section id="news" className="py-16 bg-gradient-to-br from-slate-50 via-white to-blue-50">
+      <section id="news" className="py-16 bg-green-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -102,7 +102,7 @@ export default function NewsSection() {
   }
 
   return (
-    <section id="news" className="py-16 bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <section id="news" className="py-16 bg-green-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -128,11 +128,11 @@ export default function NewsSection() {
                 <Link 
                   key={item.id} 
                   href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
-                  className="block bg-white rounded-lg border border-slate-200 hover:border-emerald-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                  className="block bg-white rounded-lg border border-slate-200 hover:border-green-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
                 >
                   <div className="flex gap-3 p-3">
                     {/* Image */}
-                    <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-gradient-to-br from-emerald-100 to-emerald-200">
+                    <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-green-100">
                       <ImageWithFallback
                         src={getSafeImageUrl(item.image, 'announcement')}
                         alt={item.title}
@@ -144,7 +144,7 @@ export default function NewsSection() {
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-gray-900 line-clamp-2 mb-1 group-hover:text-emerald-600 transition-colors">
+                      <h4 className="text-sm font-bold text-gray-900 line-clamp-2 mb-1 group-hover:text-green-600 transition-colors">
                         {item.title}
                       </h4>
                       <p className="text-xs text-gray-600 line-clamp-1 mb-1">
@@ -173,11 +173,11 @@ export default function NewsSection() {
                 <Link 
                   key={item.id} 
                   href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
-                  className="block bg-white rounded-lg border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                  className="block bg-white rounded-lg border border-slate-200 hover:border-green-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
                 >
                   <div className="flex gap-3 p-3">
                     {/* Image */}
-                    <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-gradient-to-br from-blue-100 to-blue-200">
+                    <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-green-100">
                       <ImageWithFallback
                         src={getSafeImageUrl(item.image, 'news')}
                         alt={item.title}
@@ -189,7 +189,7 @@ export default function NewsSection() {
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600 transition-colors">
+                      <h4 className="text-sm font-bold text-gray-900 line-clamp-2 mb-1 group-hover:text-green-600 transition-colors">
                         {item.title}
                       </h4>
                       <p className="text-xs text-gray-600 line-clamp-1 mb-1">
@@ -211,7 +211,7 @@ export default function NewsSection() {
         <div className="text-center mt-12">
           <Link 
             href="/tin-tuc-thong-bao"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white font-semibold rounded-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-green-600 text-white font-semibold rounded-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
           >
             Xem thêm tin tức
             <ArrowRight className="w-5 h-5" />

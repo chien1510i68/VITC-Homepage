@@ -6,6 +6,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { HeroSectionProps } from './types';
 import { DEFAULT_PROPS } from './constants';
+import { fetchActiveSlidesByType } from '@/lib/api';
+import type { BackendSlide } from '@/types/api';
 
 /**
  * HeroSection Component
@@ -43,17 +45,46 @@ export default function HeroSection({
 }: HeroSectionProps = {}) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(autoPlayInterval > 0);
+  const [apiSlides, setApiSlides] = useState<BackendSlide[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch slides from API
+  useEffect(() => {
+    async function loadSlides() {
+      try {
+        setIsLoading(true);
+        const data = await fetchActiveSlidesByType('IT');
+        if (data && data.length > 0) {
+          setApiSlides(data);
+        }
+      } catch (error) {
+        console.error('Failed to load hero slides:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadSlides();
+  }, []);
+
+  // Use API slides if available, otherwise fall back to props/default
+  const displaySlides = apiSlides.length > 0 
+    ? apiSlides.map(slide => ({
+        id: slide.id,
+        image: slide.imageUrl,
+        title: slide.content || '',
+      }))
+    : slides;
 
   // Auto-play effect
   useEffect(() => {
-    if (!isAutoPlaying || autoPlayInterval === 0) return;
+    if (!isAutoPlaying || autoPlayInterval === 0 || isLoading) return;
     
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide((prev) => (prev + 1) % displaySlides.length);
     }, autoPlayInterval);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, autoPlayInterval, slides.length]);
+  }, [isAutoPlaying, autoPlayInterval, displaySlides.length, isLoading]);
 
   /**
    * Navigate to specific slide and pause auto-play
@@ -67,7 +98,7 @@ export default function HeroSection({
    * Go to next slide and pause auto-play
    */
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setCurrentSlide((prev) => (prev + 1) % displaySlides.length);
     setIsAutoPlaying(false);
   };
 
@@ -75,14 +106,21 @@ export default function HeroSection({
    * Go to previous slide and pause auto-play
    */
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrentSlide((prev) => (prev - 1 + displaySlides.length) % displaySlides.length);
     setIsAutoPlaying(false);
   };
 
   return (
     <section className={`relative w-full ${height} overflow-hidden ${className}`}>
+      {/* Loading State */}
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
+          <div className="text-gray-400">Loading...</div>
+        </div>
+      )}
+      
       {/* Slides */}
-      {slides.map((slide, index) => (
+      {!isLoading && displaySlides.map((slide, index) => (
         <div
           key={slide.id}
           className={`absolute inset-0 transition-opacity ${
@@ -107,7 +145,7 @@ export default function HeroSection({
       ))}
 
       {/* Navigation Arrows */}
-      {showNavigation && slides.length > 1 && (
+      {!isLoading && showNavigation && displaySlides.length > 1 && (
         <>
           <Button
             type="button"
@@ -138,9 +176,9 @@ export default function HeroSection({
       )}
 
       {/* Dots Indicator */}
-      {showIndicators && slides.length > 1 && (
+      {!isLoading && showIndicators && displaySlides.length > 1 && (
         <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2 sm:gap-2.5 md:gap-3">
-          {slides.map((_, index) => (
+          {displaySlides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}

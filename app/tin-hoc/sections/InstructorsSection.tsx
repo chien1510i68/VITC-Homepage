@@ -11,15 +11,18 @@ export default function InstructorsSection() {
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [currentIndex, setCurrentIndex] = useState(2);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadInstructors = async () => {
       setIsLoading(true);
+      setError(null);
       try {
         const data = await api.getInstructors();
         setInstructors(data);
       } catch (error) {
         console.error('Error loading instructors:', error);
+        setError(error instanceof Error ? error.message : 'Không thể tải thông tin giảng viên');
       } finally {
         setIsLoading(false);
       }
@@ -63,14 +66,39 @@ export default function InstructorsSection() {
     return (
       <section className="py-12 md:py-16 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-600">Đang tải thông tin giảng viên...</p>
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+          </div>
+          <p className="text-gray-600 mt-4">Đang tải thông tin giảng viên...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-12 md:py-16 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="max-w-md mx-auto bg-red-50 border border-red-200 rounded-lg p-6">
+            <svg className="w-12 h-12 text-red-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 className="text-red-800 font-semibold mb-2">Không thể tải thông tin giảng viên</h3>
+            <p className="text-red-700 text-sm">{error}</p>
+          </div>
         </div>
       </section>
     );
   }
 
   if (instructors.length === 0) {
-    return null;
+    return (
+      <section className="py-12 md:py-16 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-gray-600">Chưa có thông tin giảng viên</p>
+        </div>
+      </section>
+    );
   }
 
   const visibleInstructors = getVisibleInstructors();
@@ -161,6 +189,10 @@ export default function InstructorsSection() {
                         alt={instructor.name}
                         fill
                         className="object-cover"
+                        onError={(e) => {
+                          const img = e.target as HTMLImageElement;
+                          img.src = '/images/thu-vien/user.avif';
+                        }}
                       />
                       {/* Gradient Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />

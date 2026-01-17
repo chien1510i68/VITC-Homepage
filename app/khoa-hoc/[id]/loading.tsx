@@ -6,16 +6,16 @@ export default function Loading() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Skeleton */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 py-16">
+      <div className="bg-gradient-to-br from-green-50 to-emerald-50 py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto space-y-6">
-            <div className="h-8 w-32 bg-blue-200 rounded-full animate-pulse" />
+            <div className="h-8 w-32 bg-green-200 rounded-full animate-pulse" />
             <div className="h-12 w-3/4 bg-gray-200 rounded-lg animate-pulse" />
             <div className="h-6 w-full bg-gray-200 rounded-lg animate-pulse" />
             <div className="h-6 w-5/6 bg-gray-200 rounded-lg animate-pulse" />
             
             <div className="flex gap-4 pt-4">
-              <div className="h-12 w-40 bg-blue-200 rounded-lg animate-pulse" />
+              <div className="h-12 w-40 bg-green-200 rounded-lg animate-pulse" />
               <div className="h-12 w-40 bg-gray-200 rounded-lg animate-pulse" />
             </div>
           </div>
@@ -51,7 +51,7 @@ export default function Loading() {
                   </div>
                 ))}
               </div>
-              <div className="h-12 w-full bg-blue-200 rounded-lg animate-pulse" />
+              <div className="h-12 w-full bg-green-200 rounded-lg animate-pulse" />
             </div>
           </div>
         </div>

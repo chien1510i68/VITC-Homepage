@@ -21,14 +21,14 @@ export const CARD_BASE = 'bg-white rounded-2xl sm:rounded-3xl shadow-md border b
 export const CARD_HOVER = 'hover:shadow-2xl hover:-translate-y-1 transition-all duration-300';
 export const CARD_INTERACTIVE = `${CARD_BASE} ${CARD_HOVER} cursor-pointer`;
 
-export const GRADIENT_PRIMARY = 'bg-gradient-to-r from-sky-600 to-emerald-600';
-export const GRADIENT_SECONDARY = 'bg-gradient-to-br from-slate-50 via-white to-sky-50/30';
-export const TEXT_GRADIENT = 'text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-emerald-600';
+export const GRADIENT_PRIMARY = 'bg-green-600';
+export const GRADIENT_SECONDARY = 'bg-green-50';
+export const TEXT_GRADIENT = 'text-green-600';
 
 export const GRID_2 = 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6';
 export const GRID_3 = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6';
 export const GRID_4 = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6';
 
-export const FOCUS_RING = 'focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2';
+export const FOCUS_RING = 'focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2';
 export const TRANSITION_DEFAULT = 'transition-all duration-200';
 export const TRANSITION_SLOW = 'transition-all duration-300';

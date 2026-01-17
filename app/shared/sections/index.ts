@@ -4,6 +4,7 @@
  */
 
 export { default as LookupSection } from './LookupSection';
+export { default as CertificateLookupSection } from './CertificateLookupSection';
 export { default as ScheduleSection } from './ScheduleSection';
 export { default as HeroSection } from './HeroSection';
 export { default as NewsSection } from './NewsSection';
@@ -20,4 +21,11 @@ export type { ScheduleSectionProps, Schedule } from './ScheduleSection/types';
 export type { HeroSectionProps, Slide } from './HeroSection/types';
 export type { NewsSectionProps, NewsItem, NewsLayout } from './NewsSection';
 export type { ThuVienSectionProps, LibraryItem } from './ThuVienSection';
+
+// Export configs
+export { 
+  TIN_HOC_LOOKUP_CONFIG, 
+  TIEN_ICH_LOOKUP_CONFIG, 
+  KY_NANG_MEM_LOOKUP_CONFIG 
+} from './LookupSection/configs';
 // export type { HeroSectionProps } from './HeroSection/types';

@@ -12,7 +12,7 @@ export const CompactNewsCard = ({ article, index }: CompactNewsCardProps) => {
   const [imgSrc, setImgSrc] = useState(article.thumbnail);
   const [imgError, setImgError] = useState(false);
 
-  const fallbackImage = "data:image/svg+xml,%3csvg width='400' height='300' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='400' height='300' fill='%23f1f5f9'/%3e%3ctext x='200' y='150' text-anchor='middle' dy='.3em' fill='%236b7280' font-family='system-ui' font-size='16'%3eTin t%E1%BB%A9c%3c/text%3e%3c/svg%3e";
+  const fallbackImage = "/images/thu-vien/news.avif";
 
   return (
     <Link href={`/tin-tuc-thong-bao/${article.id}`}>

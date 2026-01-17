@@ -2,7 +2,7 @@
 import { ApiResponse } from './types';
 
 // API Configuration
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
 export const API_TIMEOUT = 10000; // 10 seconds timeout
 
 /**
@@ -39,8 +39,11 @@ export async function fetchWithTimeout<T>(
 
     const result = await response.json();
     
-    // Check backend response format { status: "success", data: {...} }
-    if (result.status === 'success') {
+    console.log('🔍 API Response:', { url, result });
+    
+    // Check backend response format - can be either:
+    // { success: true, data: {...} } or { status: "success", data: {...} }
+    if (result.success === true || result.status === 'success') {
       return {
         success: true,
         data: result.data,
@@ -50,7 +53,7 @@ export async function fetchWithTimeout<T>(
       return {
         success: false,
         data: null as any,
-        error: result.message || 'Unknown error',
+        error: result.message || result.error || 'Unknown error',
       };
     }
   } catch (error) {

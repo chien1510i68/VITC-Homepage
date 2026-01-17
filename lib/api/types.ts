@@ -4,6 +4,7 @@ export interface Program {
   id: number | string; // Support both number and UUID string
   title: string;
   category: string;
+  type?: string; // IT, SOFT_SKILLS, etc.
   description: string;
   fullDescription?: string;
   image: string;
@@ -20,6 +21,17 @@ export interface Program {
   syllabus?: SyllabusModule[];
   requirements?: string[];
   benefits?: string[];
+}
+
+/**
+ * Course Basic Info - Minimal course information
+ * Response from: /courses/basic-info
+ */
+export interface CourseBasicInfo {
+  id: string;
+  title: string;
+  courseCode: string;
+  type?: string; // Course type (IT, SOFT_SKILLS, etc.)
 }
 
 export interface InstructorDetail {
@@ -124,7 +136,7 @@ export interface BackendCourse {
   courseCode: string;
   title: string;
   slug: string;
-  categoryCode?: string;
+  type?: string;
   thumbnailUrl?: string;
   price: number;
   duration?: number;
@@ -162,8 +174,8 @@ export interface LookupResult {
   birthPlace: string;
   courseName: string;
   certificateType: string;
-  theoryScore: number;
-  practiceScore: number;
+  theoryScore: string | number;
+  practiceScore: string | number;
   finalScore: number;
   result: string;
   examDate: string;
@@ -204,16 +216,54 @@ export interface PaginatedResponse<T> {
 
 /**
  * Course Filter Request Parameters
- * Used for POST /api/courses/filter
+ * Used for POST /api/v1/courses/filter
  */
 export interface CourseFilterRequest {
   id?: string;
   courseCode?: string;
   slug?: string;
-  categoryCode?: string;
+  type?: string;
   level?: string;
   subject?: string;
   status?: string;
   page?: number;
   size?: number;
+}
+
+/**
+ * Certificate response from CCCD lookup
+ */
+export interface CertificateResponse {
+  id: string;
+  username: string;
+  dob: string;
+  address: string;
+  identifyNumber: string;
+  gender: string | null;
+  loaiChungChi: string;
+  soHieu: string;
+  vaoSo: string;
+  ngayCap: string;
+  diemLtThcb: string;
+  diemThUdnc: string;
+}
+
+/**
+ * Exam Result response from CCCD lookup
+ * Response from: /results/cccd/{cccd}
+ */
+export interface ExamResultResponse {
+  id: string;
+  username: string;
+  dob: string;
+  address: string;
+  identifyNumber: string;
+  gender: 'MALE' | 'FEMALE' | 'OTHER';
+  diemLt: string;
+  diemTh: string;
+  diemTong: string;
+  ketQua: string;
+  ghiChu: string;
+  kyThi: string;
+  ngayThi: string;
 }

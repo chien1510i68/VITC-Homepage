@@ -16,7 +16,7 @@ import { z } from 'zod';
  */
 const clientSchema = z.object({
   // API Configuration
-  NEXT_PUBLIC_API_BASE_URL: z.string().url().default('http://localhost:8080/api'),
+  NEXT_PUBLIC_API_URL: z.string().url().default('http://localhost:8080/api/v1'),
   NEXT_PUBLIC_API_TIMEOUT: z.coerce.number().positive().default(10000),
   NEXT_PUBLIC_USE_MOCK_FALLBACK: z
     .enum(['true', 'false'])

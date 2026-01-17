@@ -34,7 +34,7 @@ export default function NewsDetail({ title, contentHtml, label }: { title: strin
           type="button"
           variant="ghost"
           onClick={openModal}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-white hover:bg-sky-600 px-3 py-1"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-green-600 hover:text-white hover:bg-green-600 px-3 py-1"
         >
           {label}
         </Button>
@@ -43,7 +43,7 @@ export default function NewsDetail({ title, contentHtml, label }: { title: strin
           type="button"
           variant="ghost"
           onClick={openModal}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-white hover:bg-sky-600 px-3 py-1"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-green-600 hover:text-white hover:bg-green-600 px-3 py-1"
         >
           Xem chi tiết
         </Button>

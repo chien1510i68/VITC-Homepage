@@ -43,6 +43,7 @@ export type {
   NewsCategory,
   AboutTimeline,
   LookupResult,
+  CertificateResponse,
   PaginationMeta,
 } from './api';
 

@@ -42,13 +42,13 @@ export interface PaginatedResponse<T> {
 
 /**
  * Course Filter Request Parameters
- * Used for POST /api/courses/filter
+ * Used for POST /api/v1/courses/filter
  */
 export interface CourseFilterRequest {
   id?: string;
   courseCode?: string;
   slug?: string;
-  categoryCode?: string;
+  type?: string;
   level?: string;
   subject?: string;
   status?: string;
@@ -65,7 +65,7 @@ export interface BackendCourse {
   courseCode: string;
   title: string;
   slug: string;
-  categoryCode?: string;
+  type?: string;
   thumbnailUrl?: string;
   price: number;
   duration?: number;
@@ -92,6 +92,28 @@ export interface BackendInstructor {
   email: string;
   avatarUrl?: string;
   description?: string;
+}
+
+/**
+ * Backend Slide Model
+ * Used for hero carousel slides
+ */
+export interface BackendSlide {
+  id: string;
+  imageUrl: string;
+  content?: string;
+  type: 'IT' | 'SOFT_SKILLS' | 'HOME';
+  orderIndex: number;
+  status?: 'ACTIVE' | 'INACTIVE';
+}
+
+/**
+ * Slide Filter Request Parameters
+ * Used for POST /api/v1/slides/filter
+ */
+export interface SlideFilterRequest {
+  type?: 'IT' | 'SOFT_SKILLS' | 'HOME';
+  status?: 'ACTIVE' | 'INACTIVE';
 }
 
 /**
@@ -149,13 +171,31 @@ export interface LookupResult {
   birthPlace: string;
   courseName: string;
   certificateType: string;
-  theoryScore: number;
-  practiceScore: number;
+  theoryScore: string | number;
+  practiceScore: string | number;
   finalScore: number;
   result: string;
   examDate: string;
   issueDate: string;
   certificateId: string;
+}
+
+/**
+ * Certificate response from CCCD lookup
+ */
+export interface CertificateResponse {
+  id: string;
+  username: string;
+  dob: string;
+  address: string;
+  identifyNumber: string;
+  gender: string | null;
+  loaiChungChi: string;
+  soHieu: string;
+  vaoSo: string;
+  ngayCap: string;
+  diemLtThcb: string;
+  diemThUdnc: string;
 }
 
 /**

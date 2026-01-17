@@ -20,7 +20,7 @@ export default function ContactSection() {
               <label className="block text-sm font-medium text-slate-700 mb-1">Họ và tên</label>
               <input
                 type="text"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 placeholder="Nguyễn Văn A"
               />
             </div>
@@ -28,7 +28,7 @@ export default function ContactSection() {
               <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
               <input
                 type="email"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 placeholder="email@domain.com"
               />
             </div>
@@ -39,7 +39,7 @@ export default function ContactSection() {
               <label className="block text-sm font-medium text-slate-700 mb-1">Số điện thoại</label>
               <input
                 type="tel"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 placeholder="098x xxx xxx"
               />
             </div>
@@ -47,7 +47,7 @@ export default function ContactSection() {
               <label className="block text-sm font-medium text-slate-700 mb-1">Nhu cầu</label>
               <input
                 type="text"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 placeholder="Ví dụ: Tư vấn khóa học, mở lớp cho doanh nghiệp..."
               />
             </div>
@@ -57,7 +57,7 @@ export default function ContactSection() {
             <label className="block text-sm font-medium text-slate-700 mb-1">Ghi chú thêm</label>
             <textarea
               rows={4}
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Chia sẻ thêm về nhu cầu của bạn..."
             />
           </div>
@@ -66,7 +66,7 @@ export default function ContactSection() {
             <p className="text-xs text-slate-500 max-w-md">
               Bằng cách gửi form, bạn đồng ý cho VISC liên hệ qua email hoặc điện thoại để tư vấn chi tiết hơn.
             </p>
-            <Button type="submit" className="min-w-[160px] bg-sky-600 hover:bg-sky-700 text-white">
+            <Button type="submit" className="min-w-[160px] bg-green-600 hover:bg-green-700 text-white">
               Gửi yêu cầu
             </Button>
           </div>

@@ -7,7 +7,7 @@
  * @module lib/api/courses
  */
 
-import { Program } from './types';
+import { Program, CourseBasicInfo, ApiResponse } from './types';
 import { fetchWithTimeout, API_BASE_URL } from './base';
 import { mockFeaturedCourses, Course } from '@/data/courses';
 
@@ -19,7 +19,7 @@ import { mockFeaturedCourses, Course } from '@/data/courses';
  * @internal
  */
 const convertCourseToProgram = (course: Course): Program => {
-  // Determine category from categoryCode
+  // Determine category from type
   const categoryMap: Record<string, string> = {
     'OFFICE': 'Tin học văn phòng',
     'PROGRAMMING': 'Lập trình',
@@ -32,7 +32,7 @@ const convertCourseToProgram = (course: Course): Program => {
     'MANAGEMENT': 'Quản lý'
   };
 
-  const category = categoryMap[course.categoryCode || ''] || 'Khác';
+  const category = categoryMap[course.type || ''] || 'Khác';
   
   // Format price
   const priceFormatted = course.price > 0 
@@ -50,6 +50,7 @@ const convertCourseToProgram = (course: Course): Program => {
     id: course.id, // Keep as string (UUID)
     title: course.title,
     category: category,
+    type: course.type,
     description: course.descriptionHtml?.replace(/<[^>]*>/g, '').substring(0, 150) + '...' || '',
     fullDescription: course.descriptionHtml || '',
     image: course.thumbnailUrl || 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=600&fit=crop',
@@ -128,7 +129,7 @@ const mockPrograms: Program[] = mockFeaturedCourses.map(convertCourseToProgram);
  * Get all courses with pagination
  * Falls back to mock data if API fails
  * 
- * API Endpoint: POST /api/courses/filter
+ * API Endpoint: POST /api/v1/courses/filter
  * Response format: { status: "success", data: { items: [...], total: number } }
  */
 export async function getCourses(page = 0, size = 10): Promise<Program[]> {
@@ -137,7 +138,7 @@ export async function getCourses(page = 0, size = 10): Promise<Program[]> {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
-        status: 'ACTIVE',
+        // status: 'ACTIVE',
         page, 
         size 
       })
@@ -191,20 +192,20 @@ export async function getCourseById(id: number | string): Promise<Program | null
 }
 
 /**
- * Get courses by category
+ * Get courses by type
  * Falls back to mock data if API fails
  * 
- * API Endpoint: POST /api/courses/filter
+ * API Endpoint: POST /api/v1/courses/filter
  * Response format: { status: "success", data: { items: [...], total: number } }
  */
-export async function getCoursesByCategory(categoryCode: string, page = 0, size = 20): Promise<Program[]> {
+export async function getCoursesByCategory(type: string, page = 0, size = 20): Promise<Program[]> {
   try {
     const response = await fetch(`/backend-api/courses/filter`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
-        categoryCode,
-        status: 'ACTIVE',
+        type,
+        // status: 'ACTIVE',
         page,
         size
       })
@@ -216,14 +217,14 @@ export async function getCoursesByCategory(categoryCode: string, page = 0, size 
     
     const result = await response.json();
     if (result.success && result.data) {
-      console.log(`✅ Courses for category "${categoryCode}" loaded from API`);
+      console.log(`✅ Courses for type "${type}" loaded from API`);
       const items = result.data.data || result.data.items || [];
       return items.map(convertCourseToProgram);
     }
     
     throw new Error('Invalid response format');
   } catch (error) {
-    console.error(`❌ Error fetching courses by category ${categoryCode}:`, error);
+    console.error(`❌ Error fetching courses by type ${type}:`, error);
     throw error;
   }
 }
@@ -232,7 +233,7 @@ export async function getCoursesByCategory(categoryCode: string, page = 0, size 
  * Get featured courses for homepage
  * Falls back to mock data if API fails
  * 
- * API Endpoint: POST /api/courses/filter (filtering featured courses)
+ * API Endpoint: POST /api/v1/courses/filter (filtering featured courses)
  * Can also use dedicated endpoint if available in future
  * Response format: { status: "success", data: { items: [...], total: number } }
  */
@@ -242,7 +243,7 @@ export async function getFeaturedCourses(limit = 6): Promise<Program[]> {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
-        status: 'ACTIVE',
+        // status: 'ACTIVE',
         page: 0,
         size: limit
       })
@@ -270,12 +271,12 @@ export async function getFeaturedCourses(limit = 6): Promise<Program[]> {
  * Search courses by keyword and filters
  * Falls back to mock data if API fails
  * 
- * API Endpoint: POST /api/courses/filter
+ * API Endpoint: POST /api/v1/courses/filter
  * Response format: { status: "success", data: { items: [...], total: number } }
  */
 export interface CourseSearchParams {
   keyword?: string;
-  categoryCode?: string;
+  type?: string;
   level?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -290,7 +291,7 @@ export async function searchCourses(params: CourseSearchParams): Promise<Program
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         ...params,
-        status: 'ACTIVE',
+        // status: 'ACTIVE',
         page: params.page || 0,
         size: params.size || 10
       })
@@ -318,7 +319,7 @@ export async function searchCourses(params: CourseSearchParams): Promise<Program
  * Get course by slug
  * Falls back to mock data if API fails
  * 
- * API Endpoint: POST /api/courses/filter with slug parameter
+ * API Endpoint: POST /api/v1/courses/filter with slug parameter
  * Response format: { status: "success", data: { items: [...], total: number } }
  */
 export async function getCourseBySlug(slug: string): Promise<Program | null> {
@@ -328,7 +329,7 @@ export async function getCourseBySlug(slug: string): Promise<Program | null> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         slug,
-        status: 'ACTIVE',
+        // status: 'ACTIVE',
         page: 0,
         size: 1
       })
@@ -353,3 +354,33 @@ export async function getCourseBySlug(slug: string): Promise<Program | null> {
     return null;
   }
 }
+
+/**
+ * Get basic course information (id, title, courseCode)
+ * Used for dropdowns and selection lists
+ * 
+ * API Endpoint: GET /api/v1/courses/basic-info
+ * Response format: { success: true, message: null, data: [...] }
+ */
+export async function getCoursesBasicInfo(): Promise<CourseBasicInfo[]> {
+  try {
+    const response = await fetch('/backend-api/courses/basic-info');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const result: ApiResponse<CourseBasicInfo[]> = await response.json();
+    
+    if (result.success && result.data) {
+      console.log('✅ Courses basic info loaded from API');
+      return result.data;
+    }
+    
+    throw new Error(result.message || 'Failed to fetch courses basic info');
+  } catch (error) {
+    console.error('❌ Error fetching courses basic info:', error);
+    throw error;
+  }
+}
+

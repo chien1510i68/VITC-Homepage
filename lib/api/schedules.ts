@@ -23,7 +23,7 @@ export async function getCourseSchedules(options: { page?: number; size?: number
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        status: 'OPEN',
+        // status: 'OPEN',
         page: page,
         size: size
       })

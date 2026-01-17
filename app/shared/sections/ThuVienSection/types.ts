@@ -17,4 +17,6 @@ export interface ThuVienSectionProps {
   maxItems?: number;
   className?: string;
   id?: string;
+  showViewAll?: boolean;
+  viewAllLink?: string;
 }

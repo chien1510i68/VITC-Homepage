@@ -4,27 +4,19 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ConsultationPopup from '@/app/components/ui/ConsultationPopup';
 import { useIntersectionObserver } from '../hooks';
 import { SectionHeader } from '../components';
 import { INTRODUCTION_SECTIONS } from '../constants/introduction';
+import { CourseRegistrationModal, useCourseRegistration } from '@/app/components/course-registration';
 
 export default function IntroductionSection() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [showPopup, setShowPopup] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1 });
+  const { isOpen, selectedCourseId, openModal, closeModal } = useCourseRegistration();
 
   const toggleExpand = (id: number) => {
     setExpandedId(expandedId === id ? null : id);
-  };
-
-  const handleRegisterClick = () => {
-    setShowPopup(true);
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
   };
 
 
@@ -42,7 +34,7 @@ export default function IntroductionSection() {
             title={
               <>
                 Trung tâm đào tạo<br />
-                <span className="text-sky-600">Kỹ năng mềm</span>
+                <span className="text-green-600">Kỹ năng mềm</span>
               </>
             }
             description="Trung tâm đào tạo kỹ năng mềm (CSST) là đơn vị đào tạo trực thuộc Học Viện Nông nghiệp Việt Nam, có tài khoản, con dấu riêng."
@@ -82,7 +74,7 @@ export default function IntroductionSection() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 55vw"
                     />
                     {/* Overlay gradient on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
                 </div>
 
@@ -129,7 +121,7 @@ export default function IntroductionSection() {
                     type="button"
                     variant="ghost"
                     onClick={() => toggleExpand(section.id)}
-                    className="group mt-6 sm:mt-8 inline-flex items-center gap-2 text-slate-900 font-semibold hover:text-sky-600 min-h-[44px] cursor-pointer"
+                    className="group mt-0 sm:mt-0 inline-flex items-center gap-2 text-slate-900 font-semibold hover:text-green-600 min-h-[44px] cursor-pointer"
                   >
                     <span className="text-sm sm:text-base">{isExpanded ? 'Thu gọn' : 'Xem thêm'}</span>
                     <ChevronDown 
@@ -153,8 +145,8 @@ export default function IntroductionSection() {
           <div className="inline-flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             <Button
               type="button"
-              onClick={handleRegisterClick}
-              className="group px-6 sm:px-8 py-3 sm:py-4 bg-slate-900 hover:bg-sky-600 text-white font-semibold min-h-[44px] cursor-pointer w-full sm:w-auto"
+              onClick={() => openModal()}
+              className="group px-6 sm:px-8 py-3 sm:py-4 bg-slate-900 hover:bg-green-600 text-white font-semibold min-h-[44px] cursor-pointer w-full sm:w-auto"
             >
               <span className="flex items-center justify-center gap-2 text-sm sm:text-base">
                 Đăng ký ngay
@@ -180,9 +172,11 @@ export default function IntroductionSection() {
         </div>
       </div>
 
-      <ConsultationPopup 
-        isVisible={showPopup}
-        onClose={handleClosePopup}
+      {/* Registration Modal */}
+      <CourseRegistrationModal 
+        isOpen={isOpen}
+        onClose={closeModal}
+        defaultCourseId={selectedCourseId}
       />
     </section>
   );

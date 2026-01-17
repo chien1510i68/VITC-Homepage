@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Play, Users, Award, Calendar, ArrowDown, CheckCircle } from 'lucide-react';
+import { CourseRegistrationModal, useCourseRegistration } from '@/app/components/course-registration';
+import ConsultationModal from './ConsultationModal';
 
 const heroText = [
   "Nâng tầm kỹ năng số",
@@ -27,6 +29,8 @@ const features = [
 export default function HeroSection() {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+  const { isOpen, selectedCourseId, openModal, closeModal } = useCourseRegistration();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -105,6 +109,7 @@ export default function HeroSection() {
             >
               <Button 
                 size="lg"
+                onClick={() => openModal()}
                 className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg shadow-orange-500/30 hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105"
               >
                 Đăng ký học ngay
@@ -112,6 +117,7 @@ export default function HeroSection() {
               <Button 
                 variant="outline"
                 size="lg"
+                onClick={() => setIsConsultationOpen(true)}
                 className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 hover:scale-105"
               >
                 Tư vấn miễn phí
@@ -149,7 +155,7 @@ export default function HeroSection() {
               className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-white/30 shadow-xl"
             >
               <h3 className="text-2xl font-bold text-slate-900 mb-6">
-                Tại sao chọn VITC?
+                Tại sao chọn VISC?
               </h3>
               <div className="space-y-4">
                 {features.map((feature, index) => (
@@ -217,6 +223,19 @@ export default function HeroSection() {
           className="absolute bottom-1/4 left-1/4 w-24 h-24 rounded-full bg-orange-400/10 blur-xl"
         />
       </div>
+
+      {/* Registration Modal */}
+      <CourseRegistrationModal 
+        isOpen={isOpen}
+        onClose={closeModal}
+        defaultCourseId={selectedCourseId}
+      />
+
+      {/* Consultation Modal */}
+      <ConsultationModal 
+        isOpen={isConsultationOpen}
+        onClose={() => setIsConsultationOpen(false)}
+      />
     </section>
   );
 }

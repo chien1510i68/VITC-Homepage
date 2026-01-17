@@ -1,14 +1,18 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ConsultationPopupProps } from './consultation-popup/types';
 import { overlayVariants, modalVariants } from './consultation-popup/animations';
 import { ConsultationForm } from './consultation-popup/ConsultationForm';
 import { SuccessState } from './consultation-popup/SuccessState';
 import { useConsultationForm } from './consultation-popup/useConsultationForm';
+import { api, CourseBasicInfo } from '@/lib/api';
 
 const ConsultationPopup: React.FC<ConsultationPopupProps> = ({ onClose, isVisible }) => {
+  const [courses, setCourses] = useState<CourseBasicInfo[]>([]);
+  const [isLoadingCourses, setIsLoadingCourses] = useState(false);
+  
   const {
     formData,
     isSubmitting,
@@ -22,6 +26,25 @@ const ConsultationPopup: React.FC<ConsultationPopupProps> = ({ onClose, isVisibl
       resetForm();
     }, 2000);
   });
+
+  // Load courses when modal opens
+  useEffect(() => {
+    if (isVisible && courses.length === 0) {
+      loadCourses();
+    }
+  }, [isVisible]);
+
+  const loadCourses = async () => {
+    setIsLoadingCourses(true);
+    try {
+      const data = await api.getCoursesBasicInfo();
+      setCourses(data);
+    } catch (error) {
+      console.error('Error loading courses:', error);
+    } finally {
+      setIsLoadingCourses(false);
+    }
+  };
 
   // Prevent scroll when modal is open
   useEffect(() => {
@@ -113,6 +136,8 @@ const ConsultationPopup: React.FC<ConsultationPopupProps> = ({ onClose, isVisibl
                     onChange={handleChange}
                     onSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
+                    courses={courses}
+                    isLoadingCourses={isLoadingCourses}
                   />
                 </>
               ) : (

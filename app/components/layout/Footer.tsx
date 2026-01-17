@@ -58,25 +58,37 @@ export default function Footer() {
               <div className="flex items-start gap-3 group">
                 <MapPin className={`w-5 h-5 mt-0.5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
                 <p className="text-sm group-hover:text-white transition-colors">
-                  Học viện Nông Nghiệp Việt Nam 
+                  {process.env.NEXT_PUBLIC_ADDRESS || 'Phòng 106, Nhà B1 - HVNNVN'}<br />
+                  {process.env.NEXT_PUBLIC_ADDRESS_FULL || 'Trâu Quỳ - Gia Lâm - Hà Nội'}
                 </p>
               </div>
-              <div className="flex items-center gap-3 group">
-                <Phone className={`w-5 h-5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
-                <a href="tel:0123456789" className="text-sm group-hover:text-white transition-colors">
-                  0123 456 789
-                </a>
+              <div className="flex items-start gap-3 group">
+                <Phone className={`w-5 h-5 mt-0.5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
+                <div className="text-sm space-y-1">
+                  <div className="flex items-center gap-2">
+                    <a href={`tel:${(process.env.NEXT_PUBLIC_PHONE_IT || '0961.174.239').replace(/\./g, '')}`} className="group-hover:text-white transition-colors">
+                      {process.env.NEXT_PUBLIC_PHONE_IT || '0961.174.239'}
+                    </a>
+                    <span className="text-xs text-gray-500">(Tin học)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a href={`tel:${(process.env.NEXT_PUBLIC_PHONE_SOFT_SKILLS || '0379.450.522').replace(/\./g, '')}`} className="group-hover:text-white transition-colors">
+                      {process.env.NEXT_PUBLIC_PHONE_SOFT_SKILLS || '0379.450.522'}
+                    </a>
+                    <span className="text-xs text-gray-500">(Kỹ năng mềm)</span>
+                  </div>
+                </div>
               </div>
               <div className="flex items-center gap-3 group">
                 <Mail className={`w-5 h-5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
-                <a href="mailto:contact@visc.edu.vn" className="text-sm group-hover:text-white transition-colors">
-                  contact@visc.edu.vn
+                <a href={`mailto:${process.env.NEXT_PUBLIC_EMAIL || 'tttinhockynangmem@vnua.edu.vn'}`} className="text-sm group-hover:text-white transition-colors">
+                  {process.env.NEXT_PUBLIC_EMAIL || 'tttinhockynangmem@vnua.edu.vn'}
                 </a>
               </div>
               <div className="flex items-center gap-3 group">
                 <Clock className={`w-5 h-5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
                 <p className="text-sm group-hover:text-white transition-colors">
-                  Thứ 2 - Thứ 7: 8:00 - 17:00
+                  {process.env.NEXT_PUBLIC_WORKING_HOURS_WEEKDAY || 'Thứ 2 - Thứ 7: 8:00 - 17:00'}
                 </p>
               </div>
             </div>
@@ -149,7 +161,9 @@ export default function Footer() {
               <h5 className="text-white font-semibold text-sm mb-3">Kết nối với chúng tôi</h5>
               <div className="flex gap-3">
                 <a 
-                  href="#" 
+                  href={process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://www.facebook.com/visc.vnua'}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`w-10 h-10 border-2 border-gray-600 rounded-lg flex items-center justify-center hover:${TAILWIND_COLORS.borderPrimary} hover:${TAILWIND_COLORS.textPrimary} transition-all hover:scale-110`}
                   aria-label="Facebook"
                 >

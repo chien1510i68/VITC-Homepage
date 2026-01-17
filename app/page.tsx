@@ -28,7 +28,7 @@ export default function Home() {
         
         // Convert API CourseSchedule to ScheduleSection Schedule format
         const convertedSchedules: Schedule[] = result.data.map(schedule => ({
-          id: schedule.id,
+          id: String(schedule.id),
           className: schedule.className || schedule.courseName,
           time: schedule.schedule,
           startDate: schedule.startDate,

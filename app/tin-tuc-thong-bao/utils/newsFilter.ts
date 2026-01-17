@@ -6,21 +6,22 @@
 import type { NewsArticle } from '@/types/news';
 
 export interface TypedNewsArticle extends NewsArticle {
-  type?: string;
+  category: 'NEWS' | 'ANNOUNCEMENT' | 'EVENT';
+  type?: string; // IT, SOFT_SKILLS
 }
 
 /**
- * Filter news articles by ANNOUNCEMENT type
+ * Filter news articles by ANNOUNCEMENT category
  */
 export function filterAnnouncements(articles: TypedNewsArticle[]): TypedNewsArticle[] {
-  return articles.filter((item) => item.type === 'ANNOUNCEMENT');
+  return articles.filter((item) => item.category === 'ANNOUNCEMENT');
 }
 
 /**
- * Filter news articles by NEWS type
+ * Filter news articles by NEWS category
  */
 export function filterNews(articles: TypedNewsArticle[]): TypedNewsArticle[] {
-  return articles.filter((item) => item.type === 'NEWS');
+  return articles.filter((item) => item.category === 'NEWS');
 }
 
 /**

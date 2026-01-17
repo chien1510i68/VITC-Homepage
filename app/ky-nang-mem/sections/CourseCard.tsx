@@ -16,7 +16,7 @@ export default function CourseCard({ course, onRegisterClick }: CourseCardProps)
     <article
       role="article"
       aria-labelledby={`course-${course.id}-title`}
-      className="group bg-gradient-to-br from-white/60 to-white/40 dark:from-slate-800/40 dark:to-slate-900/30 backdrop-blur-sm rounded-2xl border border-slate-100 hover:shadow-2xl transition-transform duration-200 motion-reduce:transition-none hover:-translate-y-2 p-0 overflow-hidden w-full"
+      className="group bg-white rounded-2xl border border-slate-100 hover:shadow-2xl transition-transform duration-200 motion-reduce:transition-none hover:-translate-y-2 p-0 overflow-hidden w-full"
     >
       <div className="relative h-40 sm:h-44 lg:h-36 w-full">
         <ImageWithFallback
@@ -49,22 +49,22 @@ export default function CourseCard({ course, onRegisterClick }: CourseCardProps)
             <Link href={`/khoa-hoc/${course.id}`}>
               <Button
                 type="button"
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 aria-label={`Xem chi tiết ${course.title}`}
-                className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-sky-600 hover:border-sky-600 px-2 py-1"
+                className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-green-600 hover:border-green-600 px-2 py-1"
               >
                 <span>Chi tiết</span>
-                <ArrowRight className="w-3 h-3" />
+                {/* <ArrowRight className="w-3 h-3" /> */}
               </Button>
             </Link>
             <Button
               type="button"
-              variant="ghost"
+              variant="outline"
               size="sm"
               onClick={onRegisterClick}
               aria-label={`Đăng ký ${course.title}`}
-              className="inline-flex items-center gap-2 text-sm font-medium text-sky-600 hover:text-white hover:bg-sky-600 px-3 py-1"
+              className="inline-flex items-center gap-2 text-sm font-medium text-green-600 hover:text-white hover:bg-green-600 px-3 py-1"
             >
               <span>Đăng ký</span>
               <ArrowRight className="w-4 h-4" />

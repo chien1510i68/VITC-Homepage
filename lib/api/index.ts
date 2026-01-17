@@ -16,6 +16,8 @@ export * from './schedules';
 export * from './about';
 export * from './lookup';
 export * from './forms';
+export * from './documents';
+export * from './slides';
 
 // Export unified API object for backward compatibility
 import { 
@@ -25,6 +27,7 @@ import {
   getFeaturedCourses,
   searchCourses,
   getCourseBySlug,
+  getCoursesBasicInfo,
   type CourseSearchParams
 } from './courses';
 import { getInstructors, getInstructorById } from './instructors';
@@ -37,8 +40,8 @@ import {
 } from './news';
 import { getCourseSchedules } from './schedules';
 import { getAboutTimeline } from './about';
-import { lookupExamResults, lookupCertificate } from './lookup';
-import { submitConsultationForm } from './forms';
+import { lookupExamResults, lookupCertificate, lookupCertificateByCCCD, lookupExamResultsByCCCD } from './lookup';
+import { submitConsultationForm, submitCourseRegistration } from './forms';
 
 export const api = {
   // About
@@ -54,6 +57,7 @@ export const api = {
   getFeaturedCourses,
   searchCourses,
   getCourseBySlug,
+  getCoursesBasicInfo,
   
   // Instructors
   getInstructors,
@@ -68,10 +72,13 @@ export const api = {
   
   // Lookup
   lookupExamResults,
+  lookupExamResultsByCCCD, // New API
   lookupCertificate,
+  lookupCertificateByCCCD,
   
   // Forms
   submitConsultationForm,
+  submitCourseRegistration,
 };
 
 export default api;

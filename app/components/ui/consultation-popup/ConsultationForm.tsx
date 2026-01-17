@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FormData, courseOptions } from './types';
+import { FormData } from './types';
+import { CourseBasicInfo } from '@/lib/api';
 
 interface ConsultationFormProps {
   formData: FormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onSubmit: (e: React.FormEvent) => Promise<void>;
   isSubmitting: boolean;
+  courses: CourseBasicInfo[];
+  isLoadingCourses: boolean;
 }
 
 export const ConsultationForm: React.FC<ConsultationFormProps> = ({
   formData,
   onChange,
   onSubmit,
-  isSubmitting
+  isSubmitting,
+  courses,
+  isLoadingCourses
 }) => {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -47,10 +52,14 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
           value={formData.course}
           onChange={onChange}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all text-gray-700"
+          disabled={isLoadingCourses}
         >
-          {courseOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
+          <option value="">
+            {isLoadingCourses ? 'Đang tải...' : 'Chọn chương trình học quan tâm'}
+          </option>
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>
+              {course.title} {course.courseCode ? `(${course.courseCode})` : ''}
             </option>
           ))}
         </select>

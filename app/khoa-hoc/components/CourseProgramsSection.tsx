@@ -35,6 +35,10 @@ export default function CourseProgramsSection({
   isLoading,
   hasActiveFilters,
 }: CourseProgramsSectionProps) {
+  const handleRegister = () => {
+    alert('Chức năng đăng ký đang được phát triển');
+  };
+
   return (
     <section className="py-16 bg-gradient-to-b from-white to-gray-50">
      <h2 className="text-3xl text-center md:text-4xl font-bold text-gray-900 mb-4">
@@ -125,12 +129,13 @@ export default function CourseProgramsSection({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {programs.map((program) => (
-              <Link key={program.id} href={`/khoa-hoc/${program.id}`}>
-                <Card 
-                  className="group overflow-hidden border-2 border-gray-200 hover:border-green-500 transition-all duration-300 hover:translate-y-[-4px] cursor-pointer h-full"
-                >
-                  {/* Image */}
-                  <div className="relative h-48 overflow-hidden bg-gray-100">
+              <Card 
+                key={program.id}
+                className="group overflow-hidden border-2 border-gray-200 hover:border-green-500 transition-all duration-300 hover:translate-y-[-4px] h-full"
+              >
+                {/* Image */}
+                <Link href={`/khoa-hoc/${program.id}`}>
+                  <div className="relative h-48 overflow-hidden bg-gray-100 cursor-pointer">
                     <Image
                       src={program.image}
                       alt={program.title}
@@ -146,49 +151,62 @@ export default function CourseProgramsSection({
                       {program.category}
                     </div>
                   </div>
+                </Link>
 
-                  <CardHeader>
-                    <CardTitle className={`text-xl mb-2 ${TAILWIND_COLORS.textPrimaryHover} transition-colors`}>
+                <CardHeader>
+                  <Link href={`/khoa-hoc/${program.id}`}>
+                    <CardTitle className={`text-xl mb-2 ${TAILWIND_COLORS.textPrimaryHover} transition-colors cursor-pointer`}>
                       {program.title}
                     </CardTitle>
-                    <CardDescription className="line-clamp-2 text-sm">
-                      {program.description}
-                    </CardDescription>
-                  </CardHeader>
+                  </Link>
+                  <CardDescription className="line-clamp-2 text-sm">
+                    {program.description}
+                  </CardDescription>
+                </CardHeader>
 
-                  <CardContent>
-                    {/* Stats */}
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Clock className="w-4 h-4" />
-                        <span>{program.duration}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Users className="w-4 h-4" />
-                        <span>{program.students}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Calendar className="w-4 h-4" />
-                        <span>{program.sessions}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                        <span className="font-semibold">{program.rating}</span>
-                      </div>
+                <CardContent>
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Clock className="w-4 h-4" />
+                      <span>{program.duration}</span>
                     </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Users className="w-4 h-4" />
+                      <span>{program.students}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Calendar className="w-4 h-4" />
+                      <span>{program.sessions}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                      <span className="font-semibold">{program.rating}</span>
+                    </div>
+                  </div>
 
-                    {/* Price & CTA */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                      <div className={`text-xl font-bold ${TAILWIND_COLORS.textPrimary}`}>
-                        {program.price}
-                      </div>
-                      <Button size="sm" className={`${TAILWIND_COLORS.bgPrimary} ${TAILWIND_COLORS.bgPrimaryHover}`}>
-                        Chi tiết
+                  {/* Price & CTA */}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                    <div className={`text-xl font-bold ${TAILWIND_COLORS.textPrimary}`}>
+                      {program.price}
+                    </div>
+                    <div className="flex gap-2">
+                      <Link href={`/khoa-hoc/${program.id}`}>
+                        <Button size="sm" variant="outline" className="hover:border-green-600 hover:text-green-600">
+                          Chi tiết
+                        </Button>
+                      </Link>
+                      <Button 
+                        size="sm" 
+                        onClick={handleRegister}
+                        className={`${TAILWIND_COLORS.bgPrimary} ${TAILWIND_COLORS.bgPrimaryHover}`}
+                      >
+                        Đăng ký
                       </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              </Link>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}

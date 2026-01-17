@@ -24,7 +24,7 @@ export interface Course {
   courseCode: string;
   title: string;
   slug: string;
-  categoryCode?: string;
+  type?: string;
   thumbnailUrl?: string;
   price: number;
   duration?: number;

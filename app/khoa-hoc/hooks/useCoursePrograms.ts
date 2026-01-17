@@ -13,7 +13,7 @@ export function useCoursePrograms() {
     const loadPrograms = async () => {
       setIsLoading(true);
       try {
-        const programsData = await api.getCourses();
+        const programsData = await api.getCourses(0, 30);
         setPrograms(programsData);
       } catch (error) {
         console.error('Error loading programs:', error);
@@ -25,16 +25,24 @@ export function useCoursePrograms() {
     loadPrograms();
   }, []);
 
-  // Get unique categories
+  // Fixed categories - không gọi API
   const categories = useMemo(() => {
-    const uniqueCategories = Array.from(new Set(programs.map(p => p.category)));
-    return ['Tất cả', ...uniqueCategories];
-  }, [programs]);
+    return ['Tất cả', 'Tin học', 'Kỹ năng mềm'];
+  }, []);
 
   // Filter programs
   const filteredPrograms = useMemo(() => {
     return programs.filter(program => {
-      const matchesCategory = selectedCategory === 'Tất cả' || program.category === selectedCategory;
+      // Map category names to type
+      let matchesCategory = true;
+      if (selectedCategory === 'Tin học') {
+        matchesCategory = program.type === 'IT';
+      } else if (selectedCategory === 'Kỹ năng mềm') {
+        matchesCategory = program.type === 'SOFT_SKILLS';
+      } else if (selectedCategory !== 'Tất cả') {
+        matchesCategory = program.category === selectedCategory;
+      }
+      
       const matchesSearch = submittedCourseSearch === '' || 
         program.title.toLowerCase().includes(submittedCourseSearch.toLowerCase());
       

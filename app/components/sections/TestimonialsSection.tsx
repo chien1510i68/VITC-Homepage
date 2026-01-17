@@ -74,12 +74,12 @@ const TestimonialsSection: React.FC = () => {
           className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mt-12 sm:mt-14 lg:mt-16"
         >
           <div className="text-center p-4 sm:p-0">
-            <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-600 mb-2">5,000+</div>
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-600 mb-2">50,000+</div>
             <div className="text-sm sm:text-base text-gray-600">Học viên đã tin tưởng</div>
           </div>
           <div className="text-center p-4 sm:p-0 border-t sm:border-t-0 border-gray-200">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-600 mb-2 pt-4 sm:pt-0">4.8/5</div>
-            <div className="text-sm sm:text-base text-gray-600">Đánh giá trung bình</div>
+            <div className="text-sm sm:text-base text-gray-600">Đánh giá tích cực</div>
           </div>
           <div className="text-center p-4 sm:p-0 border-t sm:border-t-0 border-gray-200">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-600 mb-2 pt-4 sm:pt-0">95%</div>

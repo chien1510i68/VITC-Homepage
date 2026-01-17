@@ -20,6 +20,7 @@ interface CourseCardProps {
  */
 export const CourseCard: React.FC<CourseCardProps> = ({ course, index }) => {
   const [imageError, setImageError] = useState(false);
+  const imageSrc = imageError ? '/images/thu-vien/course.avif' : course.image;
 
   return (
     <Link href={`/khoa-hoc/${course.id}`}>
@@ -38,7 +39,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, index }) => {
           {/* Image */}
           <div className="relative h-28 sm:h-32 md:h-36 lg:h-32 overflow-hidden bg-gray-50">
             <Image
-              src={course.image}
+              src={imageSrc}
               alt={course.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"

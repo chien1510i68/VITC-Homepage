@@ -1,34 +1,77 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { X, FileText, User, Phone, Mail, Calendar, BookOpen } from 'lucide-react';
+import { X, FileText, User, Phone, Mail, Calendar, BookOpen, MapPin, Loader2 } from 'lucide-react';
+import { api, CourseBasicInfo } from '@/lib/api';
 
 export default function FloatingRegisterButton() {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [courses, setCourses] = useState<CourseBasicInfo[]>([]);
+  const [isLoadingCourses, setIsLoadingCourses] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
+    username: '',
+    phoneNumber: '',
     email: '',
     course: '',
-    examDate: '',
+    dob: '',
+    address: '',
     note: '',
+    type: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Load courses when modal opens
+  useEffect(() => {
+    if (isFormOpen && courses.length === 0) {
+      loadCourses();
+    }
+  }, [isFormOpen]);
+
+  const loadCourses = async () => {
+    setIsLoadingCourses(true);
+    try {
+      const data = await api.getCoursesBasicInfo();
+      setCourses(data);
+    } catch (error) {
+      console.error('Error loading courses:', error);
+    } finally {
+      setIsLoadingCourses(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    alert('Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.');
-    setIsFormOpen(false);
-    setFormData({
-      fullName: '',
-      phone: '',
-      email: '',
-      course: '',
-      examDate: '',
-      note: '',
-    });
+    
+    try {
+      // Submit to API
+      const response = await api.submitCourseRegistration({
+        username: formData.username,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        course: formData.course,
+        type: formData.type,
+        dob: formData.dob,
+        address: formData.address,
+        note: formData.note,
+      });
+      
+      if (response.success) {
+        alert('Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.');
+        setIsFormOpen(false);
+        setFormData({
+          username: '',
+          phoneNumber: '',
+          email: '',
+          course: '',
+          dob: '',
+          address: '',
+          note: '',
+          type: '',
+        });
+      }
+    } catch (error: any) {
+      alert(error.message || 'Có lỗi xảy ra. Vui lòng thử lại.');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -63,8 +106,8 @@ export default function FloatingRegisterButton() {
             {/* Header */}
             <div className="sticky top-0 bg-gradient-to-r from-green-500 to-green-600 text-white p-6 flex items-center justify-between rounded-t-2xl">
               <div>
-                <h2 className="text-2xl font-bold mb-1">Đăng ký thi</h2>
-                <p className="text-green-50 text-sm">Điền thông tin để đăng ký tham gia kỳ thi</p>
+                <h2 className="text-2xl font-bold mb-1">Đăng ký học</h2>
+                <p className="text-green-50 text-sm">Điền thông tin để đăng ký chương trình học</p>
               </div>
               <button
                 onClick={() => setIsFormOpen(false)}
@@ -76,7 +119,7 @@ export default function FloatingRegisterButton() {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="p-6 space-y-5">
-              {/* Full Name */}
+              {/* Username */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Họ và tên <span className="text-red-500">*</span>
@@ -85,12 +128,14 @@ export default function FloatingRegisterButton() {
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
-                    name="fullName"
-                    value={formData.fullName}
+                    name="username"
+                    value={formData.username}
                     onChange={handleChange}
                     placeholder="Nhập họ và tên đầy đủ"
                     className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     required
+                    minLength={3}
+                    maxLength={100}
                   />
                 </div>
               </div>
@@ -105,10 +150,11 @@ export default function FloatingRegisterButton() {
                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                       type="tel"
-                      name="phone"
-                      value={formData.phone}
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
                       onChange={handleChange}
                       placeholder="0123456789"
+                      pattern="[0-9]{10,11}"
                       className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                       required
                     />
@@ -134,48 +180,79 @@ export default function FloatingRegisterButton() {
                 </div>
               </div>
 
-              {/* Course */}
+              {/* Course - Loaded from API */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Khóa học <span className="text-red-500">*</span>
+                  Chương trình học <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <BookOpen className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <select
                     name="course"
                     value={formData.course}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      const selectedCourse = courses.find(c => c.id === e.target.value);
+                      setFormData({
+                        ...formData,
+                        course: e.target.value,
+                        type: selectedCourse?.type || '',
+                      });
+                    }}
                     className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent appearance-none bg-white"
                     required
+                    disabled={isLoadingCourses}
                   >
-                    <option value="">Chọn khóa học</option>
-                    <option value="tin-hoc-van-phong">Tin học văn phòng</option>
-                    <option value="lap-trinh-web">Lập trình Web</option>
-                    <option value="lap-trinh-mobile">Lập trình Mobile</option>
-                    <option value="data-science">Data Science</option>
-                    <option value="ai-machine-learning">AI & Machine Learning</option>
-                    <option value="digital-marketing">Digital Marketing</option>
-                    <option value="graphic-design">Thiết kế đồ họa</option>
-                    <option value="other">Khác</option>
+                    <option value="">
+                      {isLoadingCourses ? 'Đang tải...' : 'Chọn chương trình học'}
+                    </option>
+                    {courses.map((course) => (
+                      <option key={course.id} value={course.id}>
+                        {course.title} {course.courseCode ? `(${course.courseCode})` : ''}
+                      </option>
+                    ))}
                   </select>
+                  {isLoadingCourses && (
+                    <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 animate-spin" />
+                  )}
                 </div>
               </div>
 
-              {/* Exam Date */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Ngày dự kiến thi <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type="date"
-                    name="examDate"
-                    value={formData.examDate}
-                    onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    required
-                  />
+              {/* Date of Birth and Address */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Ngày sinh <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type="date"
+                      name="dob"
+                      value={formData.dob}
+                      onChange={handleChange}
+                      className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Địa chỉ <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type="text"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      placeholder="Nhập địa chỉ"
+                      className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      required
+                      maxLength={200}
+                    />
+                  </div>
                 </div>
               </div>
 

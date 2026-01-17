@@ -8,15 +8,13 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';
-import { LookupType, CertificateType } from '../types';
-import { CERTIFICATE_TYPES, HELP_TEXT } from '../constants';
+import { LookupType } from '../types';
+import { HELP_TEXT } from '../constants';
 
 interface LookupFormProps {
   lookupType: LookupType;
   cccd: string;
   setCccd: (value: string) => void;
-  certificateType: CertificateType;
-  setCertificateType: (value: CertificateType) => void;
   isLoading: boolean;
   onSearch: () => void;
   onReset: () => void;
@@ -26,8 +24,6 @@ export const LookupForm = ({
   lookupType,
   cccd,
   setCccd,
-  certificateType,
-  setCertificateType,
   isLoading,
   onSearch,
   onReset
@@ -102,33 +98,6 @@ export const LookupForm = ({
             </div>
           </div>
         </motion.div>
-
-        {/* Certificate Type Filter */}
-        {lookupType === 'certificate' && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mb-4"
-          >
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Loại chứng chỉ (Tùy chọn)
-            </label>
-            <motion.select
-              whileFocus={{ scale: 1.01 }}
-              value={certificateType}
-              onChange={(e) => setCertificateType(e.target.value as CertificateType)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base transition-all duration-200"
-            >
-              {CERTIFICATE_TYPES.map(type => (
-                <option key={type.value} value={type.value}>
-                  {type.label}
-                </option>
-              ))}
-            </motion.select>
-          </motion.div>
-        )}
 
         {/* Help Text */}
         <motion.div

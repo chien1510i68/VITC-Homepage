@@ -1,6 +1,6 @@
 'use client';
 
-import type { CourseSchedule } from '@/lib/api/types';
+import type { CourseSchedule, CourseBasicInfo } from '@/lib/api/types';
 import { CourseCategories } from './mega-menu/CourseCategories';
 import { FeaturedCourses } from './mega-menu/FeaturedCourses';
 import { PromotionsBanner } from './mega-menu/PromotionsBanner';
@@ -10,9 +10,10 @@ interface MegaMenuProps {
   onMouseEnter: () => void;
   onMouseLeave: () => void;
   courses: CourseSchedule[];
+  coursesBasicInfo: CourseBasicInfo[];
 }
 
-export function MegaMenu({ isOpen, onMouseEnter, onMouseLeave, courses }: MegaMenuProps) {
+export function MegaMenu({ isOpen, onMouseEnter, onMouseLeave, courses, coursesBasicInfo }: MegaMenuProps) {
   if (!isOpen) return null;
 
   // Group courses by subject
@@ -43,7 +44,7 @@ export function MegaMenu({ isOpen, onMouseEnter, onMouseLeave, courses }: MegaMe
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             
             {/* Left Column - Course Categories */}
-            <CourseCategories groupedCourses={groupedCourses} />
+            <CourseCategories groupedCourses={groupedCourses} coursesBasicInfo={coursesBasicInfo} />
 
             {/* Right Column - Featured Courses & Promotions */}
             <div className="lg:col-span-3">

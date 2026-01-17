@@ -26,7 +26,7 @@ export function useAllNews(): UseAllNewsReturn {
       setError(null);
       
       try {
-        const response = await fetch('/backend-api/v1/news/filter', {
+        const response = await fetch('/backend-api/news/filter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -48,8 +48,8 @@ export function useAllNews(): UseAllNewsReturn {
             description: item.summary || '',
             date: item.createdAt,
             image: item.imageUrl || '',
-            category: item.category,
-            type: item.type,
+            category: item.category, // NEWS, ANNOUNCEMENT, EVENT
+            type: item.type, // IT, SOFT_SKILLS
             slug: item.slug || ''
           }));
           setAllNews(articles);

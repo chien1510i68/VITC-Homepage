@@ -6,11 +6,12 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { TAILWIND_COLORS } from '@/lib/colors';
-import { getCourseSchedules } from '@/lib/api';
-import type { CourseSchedule } from '@/lib/api/types';
+import { getCourseSchedules, api } from '@/lib/api';
+import type { CourseSchedule, CourseBasicInfo } from '@/lib/api/types';
 import { MegaMenu } from './MegaMenu';
 import SoftSkillsMenu from './SoftSkillsMenu';
 import { useRef } from 'react';
+import { getCoursesFromCache, saveCoursesToCache } from '@/lib/cache/coursesCache';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,6 +23,7 @@ export default function Header() {
   const [softSkillsPos, setSoftSkillsPos] = useState<{ left: number; top: number } | null>(null);
   const softSkillsAnchorRef = useRef<HTMLDivElement | null>(null);
   const [courses, setCourses] = useState<CourseSchedule[]>([]);
+  const [coursesBasicInfo, setCoursesBasicInfo] = useState<CourseBasicInfo[]>([]);
   const pathname = usePathname();
   const currentPath = pathname ?? '/';
 
@@ -50,7 +52,27 @@ export default function Header() {
       }
     };
     
+    // Load courses basic info from cache or API
+    const loadCoursesBasicInfo = async () => {
+      // Try to get from cache first
+      const cached = getCoursesFromCache();
+      if (cached) {
+        setCoursesBasicInfo(cached);
+        return;
+      }
+
+      // If no cache, fetch from API
+      try {
+        const data = await api.getCoursesBasicInfo();
+        setCoursesBasicInfo(data);
+        saveCoursesToCache(data);
+      } catch (error) {
+        console.error('Failed to fetch courses basic info:', error);
+      }
+    };
+    
     fetchCourses();
+    loadCoursesBasicInfo();
   }, []);
 
   useEffect(() => {
@@ -275,6 +297,7 @@ export default function Header() {
         onMouseEnter={() => setShowMegaMenu(true)}
         onMouseLeave={() => setShowMegaMenu(false)}
         courses={courses}
+        coursesBasicInfo={coursesBasicInfo}
       />
       {/* Soft Skills Submenu (render as sibling so it can be fixed & full width) */}
       {isSoftSkillsMounted && (

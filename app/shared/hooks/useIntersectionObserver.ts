@@ -1,34 +1,11 @@
 import { useEffect, useState, RefObject } from 'react';
 
-/**
- * Options for useIntersectionObserver hook
- */
-export interface UseIntersectionObserverOptions {
-  /** Intersection threshold (0-1) */
+interface UseIntersectionObserverOptions {
   threshold?: number;
-  
-  /** Root margin for observer */
   rootMargin?: string;
-  
-  /** Trigger only once */
   triggerOnce?: boolean;
 }
 
-/**
- * useIntersectionObserver Hook
- * 
- * Detects when an element enters the viewport using Intersection Observer API
- * 
- * @example
- * ```tsx
- * const ref = useRef<HTMLDivElement>(null);
- * const isVisible = useIntersectionObserver(ref, { threshold: 0.5 });
- * 
- * <div ref={ref} className={isVisible ? 'fade-in' : 'fade-out'}>
- *   Content
- * </div>
- * ```
- */
 export function useIntersectionObserver(
   ref: RefObject<Element | null>,
   options: UseIntersectionObserverOptions = {}
