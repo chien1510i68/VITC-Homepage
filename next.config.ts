@@ -1,31 +1,37 @@
 import type { NextConfig } from "next";
 
-// Validate required environment variables
-if (!process.env.NEXT_PUBLIC_API_URL) {
-  throw new Error(
-    '\n\n❌ NEXT_PUBLIC_API_URL is required but not defined!\n' +
-    'Please set it in your .env.local file.\n' +
-    'Example: NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1\n\n'
-  );
+// Default API URL for build time (sẽ được override khi run container)
+const DEFAULT_API_URL = 'http://localhost:8080/api/v1';
+
+// Get API URL with fallback
+const apiUrlFromEnv = process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL;
+
+// Validate API URL format if provided
+if (apiUrlFromEnv) {
+  try {
+    const apiUrl = new URL(apiUrlFromEnv);
+    if (!apiUrl.pathname.includes('/api/v1')) {
+      console.warn(
+        '⚠️  WARNING: NEXT_PUBLIC_API_URL should end with /api/v1\n' +
+        `Current value: ${apiUrlFromEnv}\n`
+      );
+    }
+  } catch (error) {
+    console.error(
+      `\n\n❌ Invalid NEXT_PUBLIC_API_URL: ${apiUrlFromEnv}\n` +
+      'Must be a valid URL (e.g., http://localhost:8080/api/v1)\n\n'
+    );
+    // Warning only, don't throw error to allow build
+  }
 }
 
-// Validate API URL format
-try {
-  const apiUrl = new URL(process.env.NEXT_PUBLIC_API_URL);
-  if (!apiUrl.pathname.includes('/api/v1')) {
-    console.warn(
-      '⚠️  WARNING: NEXT_PUBLIC_API_URL should end with /api/v1\n' +
-      `Current value: ${process.env.NEXT_PUBLIC_API_URL}\n`
-    );
-  }
-} catch (error) {
-  throw new Error(
-    `\n\n❌ Invalid NEXT_PUBLIC_API_URL: ${process.env.NEXT_PUBLIC_API_URL}\n` +
-    'Must be a valid URL (e.g., http://localhost:8080/api/v1)\n\n'
-  );
-}
+// Log the API URL being used
+console.log(`📡 Building with API URL: ${apiUrlFromEnv}`);
 
 const nextConfig: NextConfig = {
+  // Enable standalone output for Docker
+  output: 'standalone',
+  
   images: {
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
@@ -75,7 +81,7 @@ const nextConfig: NextConfig = {
   
   // API Rewrites - Proxy to backend to avoid CORS
   async rewrites() {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL!; // Non-null assertion safe due to validation above
+    const apiBaseUrl = apiUrlFromEnv;
     return [
       {
         source: '/backend-api/:path*',
@@ -91,13 +97,11 @@ const nextConfig: NextConfig = {
     // Extract only the origin (protocol + hostname + port) without path
     let apiOrigin: string;
     try {
-      const url = new URL(process.env.NEXT_PUBLIC_API_URL!);
+      const url = new URL(apiUrlFromEnv);
       apiOrigin = url.origin; // This gets http://localhost:8080 without /api/v1
     } catch (e) {
-      throw new Error(
-        `Failed to parse NEXT_PUBLIC_API_URL: ${process.env.NEXT_PUBLIC_API_URL}\n` +
-        'Must be a valid URL.'
-      );
+      console.warn(`Failed to parse API URL: ${apiUrlFromEnv}`);
+      apiOrigin = 'http://localhost:8080'; // Fallback
     }
     
     // In development, allow localhost connections

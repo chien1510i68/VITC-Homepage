@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  vitc-web:
+    # Nếu muốn build trong docker-compose (thay vì dùng image đã build)
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    #   args:
+    #     NEXT_PUBLIC_API_URL: https://api.vitc.edu.vn/api/v1
+    
+    # Sử dụng image đã build
+    image: vitc-homepage:latest
+    container_name: vitc-homepage
+    ports:
+      - "3000:3000"
+    # Chọn 1 trong 2 cách:
+    # Cách 1: Dùng file .env.production (khuyến nghị)
+    env_file:
+      - .env.production
+    # Cách 2: Hoặc comment env_file và dùng environment trực tiếp
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      # Thêm biến môi trường cần thiết nếu không dùng env_file
+      # - NEXT_PUBLIC_API_URL=https://your-api.com/api/v1
+    restart: unless-stopped
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    
+    # Health check
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Network
+    networks:
+      - vitc-network
+
+networks:
+  vitc-network:
+    driver: bridge
