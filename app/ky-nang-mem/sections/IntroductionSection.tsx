@@ -21,14 +21,14 @@ export default function IntroductionSection() {
 
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      className="bg-white py-12 sm:py-16 md:py-20 lg:py-32"
+      className="bg-white py-8 lg:py-12"
     >
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl">
-        
+
         {/* Header */}
-        <div className="mb-12 sm:mb-16 md:mb-24 lg:mb-32">
+        <div className="mb-8 lg:mb-10">
           <SectionHeader
             label="Giới thiệu"
             title={
@@ -43,7 +43,7 @@ export default function IntroductionSection() {
         </div>
 
         {/* Alternating Sections */}
-        <div className="space-y-12 sm:space-y-16 md:space-y-24 lg:space-y-32">
+        <div className="space-y-8 lg:space-y-12">
           {INTRODUCTION_SECTIONS.map((section, index) => {
             const isExpanded = expandedId === section.id;
             const isLeft = section.imagePosition === 'left';
@@ -52,65 +52,60 @@ export default function IntroductionSection() {
             return (
               <div
                 key={section.id}
-                className={`grid grid-cols-1 lg:grid-cols-20 gap-6 sm:gap-8 md:gap-10 lg:gap-16 items-start transition-all duration-700 ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-                }`}
+                className={`grid grid-cols-1 lg:grid-cols-20 gap-8 lg:gap-12 items-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                  }`}
                 style={{ transitionDelay: `${delay}ms` }}
               >
                 {/* Image Section - 55% (11 columns) */}
-                <div 
-                  className={`lg:col-span-11 ${
-                    isLeft ? 'lg:order-1' : 'lg:order-2'
-                  }`}
+                <div
+                  className={`lg:col-span-11 ${isLeft ? 'lg:order-1' : 'lg:order-2'
+                    }`}
                 >
-                  <div className={`group relative overflow-hidden bg-slate-100 rounded-lg transition-all duration-700 ${
-                    isExpanded ? 'aspect-[4/5]' : 'h-[40vh] sm:h-[45vh] md:h-[50vh]'
-                  }`}>
+                  <div className={`group relative overflow-hidden bg-slate-100 rounded-2xl transition-all duration-700 ${isExpanded ? 'aspect-[16/10]' : 'h-[300px] lg:h-[350px]'
+                    }`}>
                     <Image
                       src={section.image}
                       alt={section.title}
                       fill
-                      className="object-cover transition-all duration-500 group-hover:brightness-110"
+                      className="object-cover transition-all duration-500 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 55vw"
                     />
-                    {/* Overlay gradient on hover */}
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-black/10 transition-opacity duration-500"></div>
                   </div>
                 </div>
 
                 {/* Content Section - 45% (9 columns) */}
-                <div 
-                  className={`lg:col-span-9 ${
-                    isLeft ? 'lg:order-2' : 'lg:order-1'
-                  } flex flex-col justify-between ${
-                    isExpanded ? '' : 'max-h-[40vh] sm:max-h-[45vh] md:max-h-[50vh] overflow-hidden'
-                  }`}
+                <div
+                  className={`lg:col-span-9 ${isLeft ? 'lg:order-2' : 'lg:order-1'
+                    } flex flex-col justify-center`}
                 >
                   {/* Title */}
-                  <div className="space-y-4 sm:space-y-5 md:space-y-6">
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      <span className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-200">
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl sm:text-4xl font-black text-slate-100">
                         0{section.id}
                       </span>
-                      <div className="h-px flex-1 bg-slate-200"></div>
+                      <div className="h-px flex-1 bg-slate-100"></div>
                     </div>
-                    
-                    <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-bold tracking-tight text-slate-900">
+
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-slate-900">
                       {section.title}
                     </h3>
 
-                    {/* Description */}
-                    <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
-                      {section.description}
-                    </p>
+                    {/* Description - Clamped to 3 lines */}
+                    <div className="relative">
+                      <p className={`text-sm sm:text-base text-slate-600 leading-relaxed transition-all duration-300 ${isExpanded ? '' : 'line-clamp-3'
+                        }`}>
+                        {section.description}
+                      </p>
+                    </div>
 
                     {/* Expanded Content */}
-                    <div 
-                      className={`overflow-hidden transition-all duration-500 ${
-                        isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                      }`}
+                    <div
+                      className={`overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0'
+                        }`}
                     >
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-3 sm:pt-4 border-t border-slate-200">
+                      <p className="text-xs sm:text-sm text-slate-500 leading-relaxed pt-4 border-t border-slate-100">
                         {section.fullContent}
                       </p>
                     </div>
@@ -121,13 +116,12 @@ export default function IntroductionSection() {
                     type="button"
                     variant="ghost"
                     onClick={() => toggleExpand(section.id)}
-                    className="group mt-0 sm:mt-0 inline-flex items-center gap-2 text-slate-900 font-semibold hover:text-green-600 min-h-[44px] cursor-pointer"
+                    className="group mt-2 px-0 inline-flex items-center gap-1 text-green-600 font-semibold hover:bg-transparent min-h-[32px] cursor-pointer"
                   >
-                    <span className="text-sm sm:text-base">{isExpanded ? 'Thu gọn' : 'Xem thêm'}</span>
-                    <ChevronDown 
-                      className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 ${
-                        isExpanded ? 'rotate-180' : 'rotate-0'
-                      }`}
+                    <span className="text-xs sm:text-sm">{isExpanded ? 'Thu gọn' : 'Xem thêm'}</span>
+                    <ChevronDown
+                      className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'
+                        }`}
                     />
                   </Button>
                 </div>
@@ -137,43 +131,24 @@ export default function IntroductionSection() {
         </div>
 
         {/* Bottom CTA */}
-        <div 
-          className={`mt-12 sm:mt-16 md:mt-24 lg:mt-32 text-center transition-all duration-700 delay-300 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-          }`}
+        <div
+          className={`mt-8 lg:mt-12 text-center transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+            }`}
         >
-          <div className="inline-flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+          <div className="inline-flex items-center gap-4">
             <Button
               type="button"
               onClick={() => openModal()}
-              className="group px-6 sm:px-8 py-3 sm:py-4 bg-slate-900 hover:bg-green-600 text-white font-semibold min-h-[44px] cursor-pointer w-full sm:w-auto"
+              className="px-6 py-2 bg-slate-900 hover:bg-green-600 text-white text-xs font-semibold rounded-full w-full sm:w-auto"
             >
-              <span className="flex items-center justify-center gap-2 text-sm sm:text-base">
-                Đăng ký ngay
-                <svg 
-                  className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </span>
-            </Button>
-            
-            <Button
-              type="button"
-              variant="outline"
-              className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-slate-900 text-slate-900 font-semibold hover:bg-slate-900 hover:text-white min-h-[44px] cursor-pointer w-full sm:w-auto text-sm sm:text-base"
-            >
-              Liên hệ tư vấn
+              Đăng ký ngay
             </Button>
           </div>
         </div>
       </div>
 
       {/* Registration Modal */}
-      <CourseRegistrationModal 
+      <CourseRegistrationModal
         isOpen={isOpen}
         onClose={closeModal}
         defaultCourseId={selectedCourseId}

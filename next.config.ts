@@ -10,9 +10,11 @@ const apiUrlFromEnv = process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL;
 if (apiUrlFromEnv) {
   try {
     const apiUrl = new URL(apiUrlFromEnv);
-    if (!apiUrl.pathname.includes('/api/v1')) {
+    const path = apiUrl.pathname || '';
+    const isSupported = path.includes('/api/v1') || path.includes('/api-service');
+    if (!isSupported) {
       console.warn(
-        '⚠️  WARNING: NEXT_PUBLIC_API_URL should end with /api/v1\n' +
+        '⚠️  WARNING: NEXT_PUBLIC_API_URL should include /api/v1 or /api-service\n' +
         `Current value: ${apiUrlFromEnv}\n`
       );
     }
@@ -49,6 +51,14 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'vitc.edu.vn',
+      },
+      {
+        protocol: 'https',
+        hostname: 'visc.vnua.edu.vn',
+      },
+      {
+        protocol: 'https',
         hostname: 'visc.vercel.app',
       },
       {
@@ -74,25 +84,40 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'http',
+        hostname: 'file.vnua.edu.vn',
+      },
+      {
+        protocol: 'http',
         hostname: 'localhost',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
       },
     ],
   },
   
-  // API Rewrites - Proxy to backend to avoid CORS
-  async rewrites() {
-    const apiBaseUrl = apiUrlFromEnv;
-    return [
-      {
-        source: '/backend-api/:path*',
-        destination: `${apiBaseUrl}/:path*`,
-      },
-    ];
-  },
+  // NOTE:
+  // We intentionally avoid using `rewrites()` for /backend-api because `next.config.ts`
+  // is evaluated at build time, which can bake environment variables into the output.
+  // Instead, we proxy /backend-api/* via a Route Handler at `app/backend-api/[...path]/route.ts`
+  // which reads `process.env.NEXT_PUBLIC_API_URL` at runtime.
   
   // Security headers
   async headers() {
     const isDev = process.env.NODE_ENV === 'development';
+
+    // When enabled, we instruct browsers to upgrade all http subresource requests to https.
+    // This is great behind a proper TLS endpoint (Ingress), but it breaks plain HTTP access
+    // via IP:PORT (e.g. http://172.31.208.1:3000) because the browser will try to load
+    // `https://172.31.208.1:3000/_next/static/...` which typically doesn't exist.
+    //
+    // Keep it opt-in so local/dev and direct IP access remain functional.
+    const enforceHttps = process.env.ENFORCE_HTTPS_HEADERS === 'true';
     
     // Extract only the origin (protocol + hostname + port) without path
     let apiOrigin: string;
@@ -119,23 +144,27 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://*.facebook.com",
-              "style-src 'self' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: https: http:",
-              "font-src 'self' data:",
+              "font-src 'self' data: https://fonts.gstatic.com",
               `connect-src ${connectSrc}`,
               "frame-src 'self' https://www.youtube.com https://www.facebook.com https://www.google.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
               "frame-ancestors 'self'",
-              "upgrade-insecure-requests",
+              ...(enforceHttps ? ["upgrade-insecure-requests"] : []),
             ].join('; '),
           },
-          // Strict Transport Security
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload',
-          },
+          // Strict Transport Security (only meaningful over HTTPS; keep opt-in)
+          ...(enforceHttps
+            ? [
+                {
+                  key: 'Strict-Transport-Security',
+                  value: 'max-age=63072000; includeSubDomains; preload',
+                },
+              ]
+            : []),
           // X-Frame-Options
           {
             key: 'X-Frame-Options',

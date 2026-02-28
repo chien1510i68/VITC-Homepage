@@ -15,7 +15,7 @@ export default function SoftSkillsMenu({ onMouseEnter, onMouseLeave, isOpen = tr
   const propsOnMouseLeave = onMouseLeave;
 
   return (
-    <div onMouseEnter={propsOnMouseEnter} onMouseLeave={propsOnMouseLeave} className="pointer-events-auto">
+    <div onMouseEnter={propsOnMouseEnter} onMouseLeave={propsOnMouseLeave} className="pointer-events-auto pt-2">
       <div className="w-80 md:w-96">
         <div className={`rounded-2xl overflow-hidden shadow-2xl border border-gray-200 transform transition-all duration-300 ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
           <div className={`bg-white text-gray-900 p-4 ${isOpen ? 'animate-in fade-in slide-in-from-top-4 duration-300' : ''}`}> 

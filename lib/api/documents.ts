@@ -3,7 +3,7 @@
  * Handles document/library resource operations
  */
 
-import { API_BASE_URL, fetchWithTimeout } from './base';
+import { fetchWithTimeout } from './base';
 import type { ApiResponse } from './types';
 
 /**
@@ -54,7 +54,7 @@ export async function fetchDocuments(
     console.log('📦 Request body:', requestBody);
     
     const response = await fetchWithTimeout<DocumentsResponse>(
-      `${API_BASE_URL}/documents/filter`,
+      `/api/v1/documents/filter`,
       {
         method: 'POST',
         body: JSON.stringify(requestBody),

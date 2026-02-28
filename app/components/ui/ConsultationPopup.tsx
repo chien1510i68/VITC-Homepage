@@ -80,7 +80,7 @@ const ConsultationPopup: React.FC<ConsultationPopupProps> = ({ onClose, isVisibl
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 overflow-y-auto"
           variants={overlayVariants}
           initial="hidden"
           animate="visible"
@@ -88,13 +88,13 @@ const ConsultationPopup: React.FC<ConsultationPopupProps> = ({ onClose, isVisibl
         >
           {/* Backdrop */}
           <motion.div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
             onClick={onClose}
           />
 
           {/* Modal */}
           <motion.div
-            className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto"
+            className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full my-8 z-10"
             variants={modalVariants}
             initial="hidden"
             animate="visible"

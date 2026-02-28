@@ -5,13 +5,17 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { resolveApiUrl } from '@/lib/api/base';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
-    const backendUrl = `${apiUrl}/register/`;
+
+    // Always call backend via a stable versioned path.
+    // This works whether the configured base is:
+    // - https://domain/api-service   (Spring context path)
+    // - https://domain/api/v1        (direct versioned base)
+    const backendUrl = resolveApiUrl('/api/v1/register/');
     
     console.log('📤 [API Route] Proxying registration to:', backendUrl);
     console.log('📦 [API Route] Request body:', JSON.stringify(body, null, 2));

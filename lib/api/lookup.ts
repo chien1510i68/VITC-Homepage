@@ -1,6 +1,6 @@
 // Lookup Services API
 import { LookupResult, CertificateResponse } from './types';
-import { fetchWithTimeout, API_BASE_URL } from './base';
+import { fetchWithTimeout, apiFetch } from './base';
 
 /**
  * Lookup exam results by CCCD (old endpoint - deprecated)
@@ -8,7 +8,7 @@ import { fetchWithTimeout, API_BASE_URL } from './base';
 export async function lookupExamResults(cccd: string): Promise<LookupResult[]> {
   try {
     const response = await fetchWithTimeout<LookupResult[]>(
-      `/backend-api/certificates/cccd/?cccd=${encodeURIComponent(cccd)}`
+      `/api/v1/certificates/cccd/?cccd=${encodeURIComponent(cccd)}`
     );
     
     if (response.success && response.data) {
@@ -30,7 +30,7 @@ export async function lookupExamResults(cccd: string): Promise<LookupResult[]> {
  */
 export async function lookupExamResultsByCCCD(cccd: string): Promise<LookupResult[]> {
   try {
-    const response = await fetch(`/backend-api/results/cccd/${encodeURIComponent(cccd)}`);
+    const response = await apiFetch(`/api/v1/results/cccd/${encodeURIComponent(cccd)}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -81,7 +81,7 @@ export async function lookupExamResultsByCCCD(cccd: string): Promise<LookupResul
 export async function lookupCertificate(cccd: string): Promise<LookupResult[]> {
   try {
     // Call new API endpoint
-    const response = await fetch(`/backend-api/certificates/cccd/${cccd}`);
+    const response = await apiFetch(`/api/v1/certificates/cccd/${encodeURIComponent(cccd)}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -126,7 +126,7 @@ export async function lookupCertificate(cccd: string): Promise<LookupResult[]> {
  */
 export async function lookupCertificateByCCCD(cccd: string): Promise<CertificateResponse[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/certificates/cccd/${encodeURIComponent(cccd)}`);
+    const response = await apiFetch(`/api/v1/certificates/cccd/${encodeURIComponent(cccd)}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

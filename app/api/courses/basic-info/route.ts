@@ -8,8 +8,11 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
-    const backendUrl = `${apiUrl}/courses/basic-info`;
+    const rawBase = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+    const apiBase = rawBase.replace(/\/$/, '');
+    const backendUrl = apiBase.includes('/api/v1')
+      ? `${apiBase}/courses/basic-info`
+      : `${apiBase}/api/v1/courses/basic-info`;
     
     console.log('📤 [API Route] Fetching courses from:', backendUrl);
     

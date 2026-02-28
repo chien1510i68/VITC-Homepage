@@ -7,7 +7,7 @@ import { fetchWithTimeout, API_BASE_URL } from './base';
  */
 export async function getAboutTimeline(): Promise<AboutTimeline[]> {
   try {
-    const response = await fetchWithTimeout<AboutTimeline[]>(`/backend-api/v1/about/timeline`);
+    const response = await fetchWithTimeout<AboutTimeline[]>(`/api/v1/about/timeline`);
     
     if (response.success && response.data) {
       console.log('✅ About timeline loaded from API');

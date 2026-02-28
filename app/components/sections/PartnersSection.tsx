@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import PARTNERS from '../../../lib/partnersData';
+import PARTNERS from '@/lib/partnersData';
 
 const partners = PARTNERS;
 
@@ -12,6 +12,7 @@ export default function PartnersSection() {
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
+    
     // If the user prefers reduced motion, don't start the automatic scrolling
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;

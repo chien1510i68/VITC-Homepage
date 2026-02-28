@@ -16,7 +16,7 @@ export function isValidImageUrl(url: string | undefined | null): boolean {
  * Get fallback image URL based on type
  * Uses placeholder service for consistent placeholder images
  */
-export function getFallbackImage(type: 'announcement' | 'news' | 'course' | 'instructor' | 'leader'): string {
+export function getFallbackImage(type: 'announcement' | 'news' | 'course' | 'instructor' | 'leader' | 'document'): string {
   if (type === 'announcement') {
     // Red/orange placeholder for announcements
     return 'https://placehold.co/400x400/f59e0b/ffffff?text=Thông+báo';
@@ -29,19 +29,25 @@ export function getFallbackImage(type: 'announcement' | 'news' | 'course' | 'ins
     // Purple placeholder for instructors/leaders
     return 'https://placehold.co/400x400/8b5cf6/ffffff?text=Giảng+viên';
   }
+  if (type === 'document') {
+    // Local fallback for documents
+    return '/images/thu-vien/document-image.avif';
+  }
   // Blue placeholder for news
   return 'https://placehold.co/400x400/3b82f6/ffffff?text=Tin+tức';
 }
 
 /**
  * Get safe image URL with fallback
+ * Strips query params from all URLs to avoid Next.js Image Optimizer conflicts
  */
 export function getSafeImageUrl(
   url: string | undefined | null,
-  type: 'announcement' | 'news' | 'course' | 'instructor' | 'leader'
+  type: 'announcement' | 'news' | 'course' | 'instructor' | 'leader' | 'document'
 ): string {
   if (isValidImageUrl(url)) {
-    return url!;
+    // Strip query params if exists (file.vnua.edu.vn has ?dpi=150&quality=100)
+    return url!.split('?')[0] || url!;
   }
   return getFallbackImage(type);
 }

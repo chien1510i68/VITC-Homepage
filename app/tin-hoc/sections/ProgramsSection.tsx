@@ -51,7 +51,7 @@ function ProgramDetail({ program }: ProgramDetailProps) {
           </div>
         )}
       </div>
-      
+
       <div className="p-4 md:p-6 max-h-[500px] overflow-y-auto custom-scrollbar">
         <div className="flex items-start justify-between mb-3">
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 flex-1">
@@ -63,21 +63,21 @@ function ProgramDetail({ program }: ProgramDetailProps) {
             </div>
           )}
         </div>
-        
+
         {/* Short Description */}
         {program.description && (
           <p className="text-gray-600 leading-relaxed mb-3">
             {program.description}
           </p>
         )}
-        
+
         {/* Highlights */}
         {program.highlights && program.highlights.length > 0 && (
           <div className="mb-3">
             <h4 className="text-sm font-semibold text-gray-900 mb-3">Điểm nổi bật:</h4>
             <div className="flex flex-wrap gap-2">
               {program.highlights.map((highlight, index) => (
-                <span 
+                <span
                   key={index}
                   className="inline-flex items-center px-3 py-1.5 bg-green-50 text-green-700 text-sm font-medium rounded-full"
                 >
@@ -90,7 +90,7 @@ function ProgramDetail({ program }: ProgramDetailProps) {
             </div>
           </div>
         )}
-        
+
         {/* Info Bar */}
         <div className="flex flex-wrap gap-3 py-3 mb-3 border-y border-gray-200">
           {program.duration && (
@@ -127,20 +127,11 @@ function ProgramDetail({ program }: ProgramDetailProps) {
           )}
         </div>
 
-        {/* Full Description HTML - Giới hạn 3-4 dòng */}
-        {program.fullDescription && (
-          <div className="mb-3">
-            <h4 className="text-lg font-semibold text-gray-900 mb-2">Mô tả chi tiết</h4>
-            <div 
-              className="prose prose-sm max-w-none text-gray-700 leading-relaxed line-clamp-4"
-              dangerouslySetInnerHTML={{ __html: program.fullDescription }}
-            />
-          </div>
-        )}
+
 
         {/* Button Xem Chi Tiết */}
         <div className="mt-3 flex justify-end">
-          <Link 
+          <Link
             href={`/khoa-hoc/${program.id}`}
             className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
           >
@@ -166,11 +157,10 @@ function ProgramList({ programs, selectedProgram, onProgramSelect }: ProgramList
           <div
             key={program.id}
             onClick={() => onProgramSelect(program)}
-            className={`w-full rounded-lg transition-all cursor-pointer ${
-              selectedProgram?.id === program.id
+            className={`w-full rounded-lg transition-all cursor-pointer ${selectedProgram?.id === program.id
                 ? 'bg-green-50 border-2 border-green-500 shadow-md'
                 : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100 hover:border-gray-300'
-            }`}
+              }`}
           >
             <div className="flex gap-2 p-2">
               {/* Ảnh 30% bên trái */}
@@ -264,8 +254,8 @@ export default function ProgramsSection() {
   }
 
   return (
-    <motion.section 
-      className={STYLES.section} 
+    <motion.section
+      className={STYLES.section}
       id="programs"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -279,13 +269,13 @@ export default function ProgramsSection() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <SectionHeader 
+          <SectionHeader
             title={SECTION_CONFIG.title}
             subtitle={SECTION_CONFIG.subtitle}
           />
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className={STYLES.grid}
           initial="hidden"
           whileInView="visible"
@@ -319,7 +309,7 @@ export default function ProgramsSection() {
             }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <ProgramList 
+            <ProgramList
               programs={programs}
               selectedProgram={selectedProgram}
               onProgramSelect={handleProgramSelect}

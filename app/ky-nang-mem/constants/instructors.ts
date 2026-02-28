@@ -7,14 +7,14 @@ export const LEADERSHIP: Leader[] = [
     name: 'TS. Ngô Trí Dương',
     title: 'Giám đốc Trung tâm',
     specialty: 'Chuyên gia đào tạo kỹ năng mềm & phát triển năng lực sinh viên',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80',
+    image: '/images/soft-skills/gdtt.jpg',
   },
   {
     id: 2,
     name: 'ThS. Nguyễn Thị Thu Huyền',
     title: 'Phó Giám đốc Trung tâm',
     specialty: 'Chuyên gia phát triển chương trình đào tạo & quản lý hoạt động',
-    image: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=300&q=80',
+    image: '/images/soft-skills/pgdtt.jpg',
   },
 ];
 

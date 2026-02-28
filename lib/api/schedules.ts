@@ -1,6 +1,6 @@
 // Course Schedules API
 import { CourseSchedule } from './types';
-import { fetchWithTimeout, API_BASE_URL } from './base';
+import { fetchWithTimeout, API_BASE_URL, apiFetch } from './base';
 
 /**
  * Get all course schedules (classes)
@@ -10,13 +10,13 @@ import { fetchWithTimeout, API_BASE_URL } from './base';
  */
 export async function getCourseSchedules(options: { page?: number; size?: number } = {}): Promise<{ data: CourseSchedule[]; total: number }> {
   const { page = 0, size = 100 } = options;
-  const url = '/backend-api/classes/filter';
+  const url = '/api/v1/classes/filter';
   
   console.log('🔵 Calling Schedules API:', url);
   console.log('📦 Request body:', { status: 'OPEN', page, size });
   
   try {
-    const response = await fetch(url, {
+    const response = await apiFetch(url, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',

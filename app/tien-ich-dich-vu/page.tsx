@@ -7,6 +7,7 @@ import {
   ServicesSection, 
   CTASection 
 } from './sections';
+import TaiLieuSection from './sections/TaiLieuSection';
 
 export default function TienIchDichVuPage() {
 
@@ -15,10 +16,11 @@ export default function TienIchDichVuPage() {
       <Header />
       
       <main className="flex-1">
-        <HeroSection />
+        {/* <HeroSection /> */}
         <LookupSection {...TIEN_ICH_LOOKUP_CONFIG} />
-        <UtilitiesSection />
-        <ServicesSection />
+        {/* <UtilitiesSection /> */}
+        {/* <ServicesSection /> */}
+        <TaiLieuSection />
         <CTASection />
       </main>
 

@@ -16,7 +16,7 @@ export const ANIMATION_CONFIG = {
 };
 
 export const STYLES = {
-  section: "py-10 md:py-16 bg-gradient-to-b from-white to-gray-50",
+  section: "py-4 md:py-16 bg-gradient-to-b from-white to-gray-50",
   container: "w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12",
   header: "text-center mb-12",
   title: "text-3xl md:text-4xl lg:text-5xl font-semibold text-gray-900 mb-4",

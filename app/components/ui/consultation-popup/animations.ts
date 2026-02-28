@@ -6,8 +6,8 @@ export const overlayVariants = {
 export const modalVariants = {
   hidden: { 
     opacity: 0, 
-    scale: 0.8,
-    y: -50 
+    scale: 0.9,
+    y: 0
   },
   visible: { 
     opacity: 1, 
@@ -21,8 +21,8 @@ export const modalVariants = {
   },
   exit: {
     opacity: 0,
-    scale: 0.8,
-    y: -50,
+    scale: 0.9,
+    y: 0,
     transition: {
       duration: 0.2
     }

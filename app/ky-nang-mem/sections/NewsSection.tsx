@@ -6,6 +6,7 @@ import { Calendar, ArrowRight, TrendingUp, Bell } from 'lucide-react';
 import type { NewsArticle } from '@/types/news';
 import { getSafeImageUrl, getFallbackImage } from '../utils/imageUtils';
 import { ImageWithFallback } from '../components/ImageWithFallback';
+import { apiFetch } from '@/lib/api/base';
 
 function formatDate(dateString: string): string {
   if (!dateString) return '';
@@ -26,7 +27,7 @@ export default function NewsSection() {
     const loadNews = async () => {
       try {
         // Gọi API với type SOFT_SKILLS
-        const response = await fetch('/backend-api/news/filter', {
+        const response = await apiFetch('/api/v1/news/filter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -41,32 +42,33 @@ export default function NewsSection() {
         }
 
         const result = await response.json();
-        
+
         if (result.success && result.data) {
           const allArticles = result.data;
-          
-          // Phân loại theo category: ANNOUNCEMENT (thông báo) và NEWS (tin tức)
+
+          // Phân loại theo type: ANNOUNCEMENT (thông báo) và NEWS (tin tức)
+          // CHỈ lấy các bài viết đã PUBLISHED
           const announcementItems = allArticles
-            .filter((item: any) => item.category === 'ANNOUNCEMENT')
+            .filter((item: any) => item.type === 'ANNOUNCEMENT' && item.status === 'PUBLISHED')
             .map((item: any) => ({
               id: item.id,
               title: item.title,
               description: item.summary || '',
               date: item.createdAt,
               image: item.imageUrl || '',
-              category: item.category
+              category: item.type
             }))
             .slice(0, 6); // Lấy 6 thông báo mới nhất
 
           const newsItems = allArticles
-            .filter((item: any) => item.category === 'NEWS')
+            .filter((item: any) => item.type === 'NEWS' && item.status === 'PUBLISHED')
             .map((item: any) => ({
               id: item.id,
               title: item.title,
               description: item.summary || '',
               date: item.createdAt,
               image: item.imageUrl || '',
-              category: item.category
+              category: item.type
             }))
             .slice(0, 6); // Lấy 6 tin tức mới nhất
 
@@ -102,37 +104,37 @@ export default function NewsSection() {
   }
 
   return (
-    <section id="news" className="py-16 bg-green-50">
+    <section id="news" className="py-10 bg-green-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
             Tin tức — Thông báo
           </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-500 text-sm max-w-2xl mx-auto">
             Danh sách sinh viên đủ điều kiện cấp chứng chỉ và các thông báo liên quan
           </p>
         </div>
 
         {/* Two Column Layout */}
-        <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {/* Left Column - Important Announcements (ANNOUNCEMENT type) */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-6">
-              <Bell className="w-5 h-5 text-red-500" />
-              <h3 className="text-xl font-bold text-gray-900">Thông báo</h3>
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <Bell className="w-4 h-4 text-red-500" />
+              <h3 className="text-lg font-bold text-gray-900">Thông báo</h3>
             </div>
-            
+
             <div className="space-y-2">
               {importantNews.map((item) => (
-                <Link 
-                  key={item.id} 
+                <Link
+                  key={item.id}
                   href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
-                  className="block bg-white rounded-lg border border-slate-200 hover:border-green-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                  className="block bg-white rounded-lg border border-slate-100 hover:border-green-200 shadow-sm hover:shadow transition-all duration-300 overflow-hidden group"
                 >
-                  <div className="flex gap-3 p-3">
+                  <div className="flex gap-3 p-2">
                     {/* Image */}
-                    <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-green-100">
+                    <div className="relative w-14 h-14 flex-shrink-0 rounded-md overflow-hidden bg-green-50">
                       <ImageWithFallback
                         src={getSafeImageUrl(item.image, 'announcement')}
                         alt={item.title}
@@ -144,13 +146,13 @@ export default function NewsSection() {
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-gray-900 line-clamp-2 mb-1 group-hover:text-green-600 transition-colors">
+                      <h4 className="text-xs font-bold text-gray-900 line-clamp-2 mb-0.5 group-hover:text-green-600 transition-colors">
                         {item.title}
                       </h4>
-                      <p className="text-xs text-gray-600 line-clamp-1 mb-1">
+                      <p className="text-[10px] text-gray-500 line-clamp-1 mb-1">
                         {item.description}
                       </p>
-                      <div className="flex items-center text-xs text-gray-500">
+                      <div className="flex items-center text-[10px] text-gray-400">
                         <Calendar className="h-3 w-3 mr-1" />
                         {formatDate(item.date || '')}
                       </div>
@@ -162,22 +164,22 @@ export default function NewsSection() {
           </div>
 
           {/* Right Column - News (NEWS type) */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 mb-6">
-              <TrendingUp className="w-5 h-5 text-blue-500" />
-              <h3 className="text-xl font-bold text-gray-900">Tin tức</h3>
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingUp className="w-4 h-4 text-blue-500" />
+              <h3 className="text-lg font-bold text-gray-900">Tin tức</h3>
             </div>
-            
+
             <div className="space-y-2">
               {popularNews.map((item) => (
-                <Link 
-                  key={item.id} 
+                <Link
+                  key={item.id}
                   href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
-                  className="block bg-white rounded-lg border border-slate-200 hover:border-green-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                  className="block bg-white rounded-lg border border-slate-100 hover:border-green-200 shadow-sm hover:shadow transition-all duration-300 overflow-hidden group"
                 >
-                  <div className="flex gap-3 p-3">
+                  <div className="flex gap-3 p-2">
                     {/* Image */}
-                    <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-green-100">
+                    <div className="relative w-14 h-14 flex-shrink-0 rounded-md overflow-hidden bg-green-50">
                       <ImageWithFallback
                         src={getSafeImageUrl(item.image, 'news')}
                         alt={item.title}
@@ -189,13 +191,13 @@ export default function NewsSection() {
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-gray-900 line-clamp-2 mb-1 group-hover:text-green-600 transition-colors">
+                      <h4 className="text-xs font-bold text-gray-900 line-clamp-2 mb-0.5 group-hover:text-green-600 transition-colors">
                         {item.title}
                       </h4>
-                      <p className="text-xs text-gray-600 line-clamp-1 mb-1">
+                      <p className="text-[10px] text-gray-500 line-clamp-1 mb-1">
                         {item.description}
                       </p>
-                      <div className="flex items-center text-xs text-gray-500">
+                      <div className="flex items-center text-[10px] text-gray-400">
                         <Calendar className="h-3 w-3 mr-1" />
                         {formatDate(item.date || '')}
                       </div>
@@ -208,13 +210,13 @@ export default function NewsSection() {
         </div>
 
         {/* View More Button */}
-        <div className="text-center mt-12">
-          <Link 
+        <div className="text-center mt-8">
+          <Link
             href="/tin-tuc-thong-bao"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-green-600 text-white font-semibold rounded-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+            className="inline-flex items-center gap-2 px-6 py-2 bg-green-600 text-white text-xs font-semibold rounded-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
           >
             Xem thêm tin tức
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>

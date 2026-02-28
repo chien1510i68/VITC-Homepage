@@ -39,7 +39,7 @@ const TimelineItem = ({ item, index, isLast }: { item: AboutTimeline; index: num
             initial={{ height: 60 }}
             animate={{ height: isHovered ? "auto" : 60 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            whileHover={{ 
+            whileHover={{
               boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
               y: -2
             }}
@@ -79,7 +79,7 @@ const TimelineItem = ({ item, index, isLast }: { item: AboutTimeline; index: num
                 <p className="text-sm text-gray-600 leading-relaxed">
                   {item.description}
                 </p>
-                
+
                 {/* Image */}
                 {item.image && (
                   <div className="relative rounded-lg overflow-hidden aspect-video">
@@ -90,7 +90,7 @@ const TimelineItem = ({ item, index, isLast }: { item: AboutTimeline; index: num
                     />
                   </div>
                 )}
-                
+
                 <motion.div
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
@@ -156,7 +156,7 @@ export default function AboutSection() {
   }
 
   return (
-    <section id="about" className="py-16 bg-white">
+    <section id="about" className="py-6 md:py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Header */}
         <motion.div
@@ -184,7 +184,7 @@ export default function AboutSection() {
         <div className="relative max-w-4xl mx-auto">
           {/* Central Timeline Line */}
           <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-200 via-emerald-300 to-emerald-200 -translate-x-0.5" />
-          
+
           {/* Timeline Items */}
           <div className="space-y-6">
             {timelineData.map((item, index) => (
@@ -210,7 +210,7 @@ export default function AboutSection() {
             Hãy trở thành một phần trong hành trình tiếp theo
           </p>
           <motion.button
-            whileHover={{ 
+            whileHover={{
               scale: 1.02,
               boxShadow: "0 10px 30px rgba(16, 185, 129, 0.2)"
             }}

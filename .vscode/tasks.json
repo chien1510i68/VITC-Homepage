@@ -7,6 +7,52 @@
 			"command": "npm run dev",
 			"isBackground": true,
 			"problemMatcher": []
+		},
+		{
+			"label": "api-smoke",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"fetch('http://localhost:3000/backend-api/api/v1/news/filter',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({page:0,size:1})}).then(async r=>{console.log('status',r.status); console.log('body', (await r.text()).slice(0,200));}).catch(e=>{console.error(e);process.exit(1);});"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "api-smoke",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"fetch(\"http://localhost:3000/backend-api/api/v1/news/filter\",{method:\"POST\",headers:{\"content-type\":\"application/json\"},body:JSON.stringify({page:0,size:1})}).then(async r=>{console.log(\"status\",r.status); console.log(\"body\", (await r.text()).slice(0,200));}).catch(e=>{console.error(e);process.exit(1);});"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "api-smoke2",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"fetch(\"http://localhost:3000/backend-api/api/v1/news/filter\",{method:\"POST\",headers:{\"content-type\":\"application/json\"},body:JSON.stringify({page:0,size:1})}).then(async r=>{console.log(\"status\",r.status); console.log(\"body\", (await r.text()).slice(0,200));}).catch(e=>{console.error(e);process.exit(1);});"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "curl-smoke",
+			"type": "shell",
+			"command": "curl.exe",
+			"args": [
+				"-i",
+				"-X",
+				"POST",
+				"http://localhost:3000/backend-api/api/v1/news/filter",
+				"-H",
+				"Content-Type: application/json",
+				"--data",
+				"{\"page\":0,\"size\":1}"
+			],
+			"isBackground": false
 		}
 	]
 }

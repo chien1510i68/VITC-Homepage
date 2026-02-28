@@ -1,6 +1,7 @@
 import { Course, CourseCardData } from '@/data/courses';
+import { apiFetch } from '@/lib/api/base';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -15,7 +16,7 @@ export class CourseService {
    */
   static async getAllCourses(): Promise<Course[]> {
     try {
-      const response = await fetch('/backend-api/courses/filter', {
+      const response = await apiFetch('/api/v1/courses/filter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +60,7 @@ export class CourseService {
       };
       console.log('🔵 Request body:', requestBody);
       
-      const response = await fetch('/backend-api/courses/filter', {
+      const response = await apiFetch('/api/v1/courses/filter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

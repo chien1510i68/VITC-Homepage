@@ -9,7 +9,7 @@
  */
 
 import type { Metadata } from "next";
-import { Quicksand } from "next/font/google";
+import { Quicksand, Roboto } from "next/font/google";
 import "./globals.css";
 import PopupManager from "./components/PopupManager";
 import ScreenReaderAnnouncer from "./components/ScreenReaderAnnouncer";
@@ -18,11 +18,18 @@ import ChatWidget from "./components/ChatWidget";
 import { siteConfig, seoConfig } from "@/config/site.config";
 import { Toaster } from "sonner";
 
-// Font chính của website - có thể thay đổi khi cần
+// Font chính của website
 const primaryFont = Quicksand({
   variable: "--font-primary",
   subsets: ["latin", "vietnamese"],
   weight: ["300", "400", "500", "600", "700"],
+});
+
+// Font Roboto dùng riêng cho Header
+const headerFont = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin", "vietnamese"],
+  weight: ["300", "400", "500", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -62,7 +69,7 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning>
       <body
-        className={`${primaryFont.variable} font-sans antialiased`}
+        className={`${primaryFont.variable} ${headerFont.variable} font-sans antialiased`}
       >
         <SkipToContent />
         <ScreenReaderAnnouncer />

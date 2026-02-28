@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './base';
+import { apiFetch } from './base';
 import { BackendSlide, SlideFilterRequest } from '@/types/api';
 
 /**
@@ -9,7 +9,7 @@ export async function fetchSlides(
   filters: SlideFilterRequest = {}
 ): Promise<BackendSlide[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/slides/filter`, {
+    const response = await apiFetch('/api/v1/slides/filter', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export async function fetchSlides(
  * Fetch active slides for a specific type
  */
 export async function fetchActiveSlidesByType(
-  type: 'IT' | 'SOFT_SKILLS' | 'HOME'
+  type: 'IT' | 'SOFT_SKILLS' | 'HOME' | 'BANNER'
 ): Promise<BackendSlide[]> {
   return fetchSlides({ type, status: 'ACTIVE' });
 }

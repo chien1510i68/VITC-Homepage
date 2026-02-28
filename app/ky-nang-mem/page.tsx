@@ -3,12 +3,10 @@ import Footer from '../components/layout/Footer';
 import HeroSoftSkills from './sections/HeroSoftSkills';
 import IntroductionSection from './sections/IntroductionSection';
 import type { Metadata } from 'next';
-import NewsSection from './sections/NewsSection';
-import InstructorsSection from './sections/InstructorsSection';
+import NewsAndFormSection from './sections/NewsAndFormSection';
 import CoursesByTypeSection from './sections/CoursesByTypeSection';
 import PartnersSection from './sections/PartnersSection';
 import ThuVienSection from './sections/ThuVienSection';
-import ConsultationForm from '../components/sections/ConsultationForm';
 
 export const metadata: Metadata = {
     title: 'Kỹ năng mềm - VISC',
@@ -24,10 +22,8 @@ export default function KyNangMemPage() {
                 <HeroSoftSkills />
                 <IntroductionSection />
                 <CoursesByTypeSection />
-                <NewsSection />
+                <NewsAndFormSection />
                 <ThuVienSection />
-                <InstructorsSection />
-                <ConsultationForm />
                 <PartnersSection />
             </main>
 

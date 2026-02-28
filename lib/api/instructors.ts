@@ -1,6 +1,6 @@
 // Instructors API
 import { Instructor } from './types';
-import { fetchWithTimeout, API_BASE_URL } from './base';
+import { fetchWithTimeout, API_BASE_URL, apiFetch } from './base';
 
 /**
  * Backend User Response
@@ -39,7 +39,7 @@ function convertUserToInstructor(user: BackendUser, index: number): Instructor {
  */
 export async function getInstructors(type: string = 'IT'): Promise<Instructor[]> {
   try {
-    const response = await fetch(`/backend-api/users/type/${type}`);
+    const response = await apiFetch(`/api/v1/users/type/${type}`);
     
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -66,7 +66,7 @@ export async function getInstructors(type: string = 'IT'): Promise<Instructor[]>
  */
 export async function getInstructorById(id: number): Promise<Instructor | null> {
   try {
-    const response = await fetchWithTimeout<Instructor>(`/backend-api/instructors/${id}`);
+    const response = await fetchWithTimeout<Instructor>(`/api/v1/instructors/${id}`);
     
     if (response.success && response.data) {
       console.log(`✅ Instructor ${id} loaded from API`);

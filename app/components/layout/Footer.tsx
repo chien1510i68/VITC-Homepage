@@ -32,22 +32,28 @@ export default function Footer() {
         {/* Main Footer Content */}
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Company Info */}
-          <div className="space-y-4">
-            <div className="mb-4">
-              <Image 
-                src="/images/logo.jpg"
-                alt="VISC Logo"
-                width={150}
-                height={50}
-                className="h-12 w-auto"
-              />
+          <div className="space-y-4 text-left">
+            <div className="flex items-start  ">
+
+
             </div>
-            <p className="text-sm leading-relaxed">
-              Trung tâm Tin học và Kỹ năng mềm VNUA cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm.
-            </p>
-            
+
             {/* Contact Info */}
             <div className="space-y-3 pt-4">
+              <div className="flex items-start gap-3 group">
+                <Image
+                  src="/images/logo.png"
+                  alt="VISC Logo"
+                  width={100}
+                  height={100}
+                  className={`w-7 h-7 mt-0.5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`}
+                />
+                {/* <MapPin className={`w-5 h-5 mt-0.5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} /> */}
+                <p className="text-sm group-hover:text-white transition-colors">
+                  Trung tâm Tin học và Kỹ năng mềm VNUA cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm.
+                </p>
+              </div>
+
               <div className="flex items-start gap-3 group">
                 <MapPin className={`w-5 h-5 mt-0.5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
                 <p className="text-sm group-hover:text-white transition-colors">
@@ -55,6 +61,8 @@ export default function Footer() {
                   {process.env.NEXT_PUBLIC_ADDRESS_FULL || 'Trâu Quỳ - Gia Lâm - Hà Nội'}
                 </p>
               </div>
+
+
               <div className="flex items-start gap-3 group">
                 <Phone className={`w-5 h-5 mt-0.5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
                 <div className="text-sm space-y-1">
@@ -62,13 +70,13 @@ export default function Footer() {
                     <a href={`tel:${(process.env.NEXT_PUBLIC_PHONE_IT || '0961.174.239').replace(/\./g, '')}`} className="group-hover:text-white transition-colors">
                       {process.env.NEXT_PUBLIC_PHONE_IT || '0961.174.239'}
                     </a>
-                    <span className="text-xs text-gray-500">(Tin học)</span>
+                    <span className="text-xs ">(Tin học)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <a href={`tel:${(process.env.NEXT_PUBLIC_PHONE_SOFT_SKILLS || '0379.450.522').replace(/\./g, '')}`} className="group-hover:text-white transition-colors">
                       {process.env.NEXT_PUBLIC_PHONE_SOFT_SKILLS || '0379.450.522'}
                     </a>
-                    <span className="text-xs text-gray-500">(Kỹ năng mềm)</span>
+                    <span className="text-xs ">(Kỹ năng mềm)</span>
                   </div>
                 </div>
               </div>
@@ -88,15 +96,15 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="text-left pl-8 lg:pl-12">
             <h4 className="text-white font-semibold text-lg mb-4 relative inline-block">
               Liên kết nhanh
               <span className={`absolute bottom-0 left-0 w-12 h-0.5 ${TAILWIND_COLORS.bgPrimary}`}></span>
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2.5 mb-6 text-left">
               {quickLinks.map((link, index) => (
                 <li key={index}>
-                  <Link 
+                  <Link
                     href={link.href}
                     className={`text-sm hover:${TAILWIND_COLORS.textPrimary} hover:translate-x-1 transition-all inline-flex items-center gap-2 group`}
                   >
@@ -106,6 +114,38 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
+
+            {/* Social Links */}
+            <div>
+              <h5 className="text-white font-semibold text-sm mb-3">Kết nối với chúng tôi</h5>
+              <div className="flex gap-3">
+                <a
+                  href={process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://www.facebook.com/visc.vnua'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-10 h-10 border-2 border-gray-600 rounded-lg flex items-center justify-center hover:${TAILWIND_COLORS.borderPrimary} hover:${TAILWIND_COLORS.textPrimary} transition-all hover:scale-110`}
+                  aria-label="Facebook"
+                >
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a
+                  href="#"
+                  className={`w-10 h-10 border-2 border-gray-600 rounded-lg flex items-center justify-center hover:${TAILWIND_COLORS.borderPrimary} hover:${TAILWIND_COLORS.textPrimary} transition-all hover:scale-110`}
+                  aria-label="YouTube"
+                >
+                  <Youtube className="w-5 h-5" />
+                </a>
+                <a
+                  href="#"
+                  className={`w-10 h-10 border-2 border-gray-600 rounded-lg flex items-center justify-center hover:${TAILWIND_COLORS.borderPrimary} hover:${TAILWIND_COLORS.textPrimary} transition-all hover:scale-110`}
+                  aria-label="Zalo"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 14.5c-.405.488-1.26 1.03-2.483 1.03-1.511 0-2.647-.736-2.647-1.865 0-.736.488-1.26 1.236-1.26.713 0 1.236.488 1.236 1.236 0 .372-.186.713-.511.93.326.093.713.14 1.116.14.791 0 1.329-.302 1.609-.651.326-.419.488-.977.488-1.609 0-1.329-.837-2.18-2.18-2.18h-.14c-.744 0-1.329.279-1.748.837l-.372.511c-.279.419-.744.651-1.236.651-.791 0-1.423-.651-1.423-1.423 0-.372.14-.744.419-1.023l.884-1.023c.837-.977 2.087-1.539 3.416-1.539 2.273 0 3.881 1.609 3.881 3.881 0 1.023-.326 1.934-.93 2.623z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Courses */}
@@ -129,56 +169,23 @@ export default function Footer() {
             </ul>
           </div> */}
 
-          {/* Utilities */}
-          <div>
+          {/* Map */}
+          <div className="flex flex-col items-center">
             <h4 className="text-white font-semibold text-lg mb-4 relative inline-block">
-              Tiện ích
+              Vị trí trên bản đồ
               <span className={`absolute bottom-0 left-0 w-12 h-0.5 ${TAILWIND_COLORS.bgPrimary}`}></span>
             </h4>
-            <ul className="space-y-2.5 mb-6">
-              {utilities.map((utility, index) => (
-                <li key={index}>
-                  <Link 
-                    href={utility.href}
-                    className={`text-sm hover:${TAILWIND_COLORS.textPrimary} hover:translate-x-1 transition-all inline-flex items-center gap-2 group`}
-                  >
-                    <span className={`w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:${TAILWIND_COLORS.bgPrimary} transition-colors`}></span>
-                    {utility.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            {/* Social Links */}
-            <div>
-              <h5 className="text-white font-semibold text-sm mb-3">Kết nối với chúng tôi</h5>
-              <div className="flex gap-3">
-                <a 
-                  href={process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://www.facebook.com/visc.vnua'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`w-10 h-10 border-2 border-gray-600 rounded-lg flex items-center justify-center hover:${TAILWIND_COLORS.borderPrimary} hover:${TAILWIND_COLORS.textPrimary} transition-all hover:scale-110`}
-                  aria-label="Facebook"
-                >
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a 
-                  href="#" 
-                  className={`w-10 h-10 border-2 border-gray-600 rounded-lg flex items-center justify-center hover:${TAILWIND_COLORS.borderPrimary} hover:${TAILWIND_COLORS.textPrimary} transition-all hover:scale-110`}
-                  aria-label="YouTube"
-                >
-                  <Youtube className="w-5 h-5" />
-                </a>
-                <a 
-                  href="#" 
-                  className={`w-10 h-10 border-2 border-gray-600 rounded-lg flex items-center justify-center hover:${TAILWIND_COLORS.borderPrimary} hover:${TAILWIND_COLORS.textPrimary} transition-all hover:scale-110`}
-                  aria-label="Zalo"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 14.5c-.405.488-1.26 1.03-2.483 1.03-1.511 0-2.647-.736-2.647-1.865 0-.736.488-1.26 1.236-1.26.713 0 1.236.488 1.236 1.236 0 .372-.186.713-.511.93.326.093.713.14 1.116.14.791 0 1.329-.302 1.609-.651.326-.419.488-.977.488-1.609 0-1.329-.837-2.18-2.18-2.18h-.14c-.744 0-1.329.279-1.748.837l-.372.511c-.279.419-.744.651-1.236.651-.791 0-1.423-.651-1.423-1.423 0-.372.14-.744.419-1.023l.884-1.023c.837-.977 2.087-1.539 3.416-1.539 2.273 0 3.881 1.609 3.881 3.881 0 1.023-.326 1.934-.93 2.623z"/>
-                  </svg>
-                </a>
-              </div>
+            <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg">
+              <iframe
+                src={process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_URL || 'https://www.google.com/maps?ll=21.006125,105.932474&z=15&t=m&hl=vi&gl=US&mapclient=embed&cid=7854680610929000262&output=embed'}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full"
+              />
             </div>
           </div>
         </div>
@@ -187,7 +194,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-400">
-              © 2026 <span className="text-white font-semibold">VISC</span>. All rights reserved.
+              © 2026 <span className="text-white font-semibold">VITC VNUA</span>. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
               <Link href="#" className={`hover:${TAILWIND_COLORS.textPrimary} transition-colors`}>

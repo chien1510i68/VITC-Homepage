@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Calendar, ArrowRight, TrendingUp, Bell } from 'lucide-react';
 import type { NewsArticle } from '@/types/news';
 import Image from 'next/image';
+import { apiFetch } from '@/lib/api/base';
 
 function formatDate(dateString: string): string {
   if (!dateString) return '';
@@ -27,7 +28,8 @@ function getSafeImageUrl(url: string | undefined | null, type: 'announcement' | 
   if (!url || url.includes('example.com')) {
     return getFallbackImage(type);
   }
-  return url;
+  // Strip query params if exists (file.vnua.edu.vn has ?dpi=150&quality=100)
+  return url.split('?')[0] || url;
 }
 
 interface ImageWithFallbackProps {
@@ -78,7 +80,7 @@ export default function NewsSection() {
     const loadNews = async () => {
       try {
         // Gọi API với type IT
-        const response = await fetch('/backend-api/news/filter', {
+        const response = await apiFetch('/api/v1/news/filter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -93,32 +95,33 @@ export default function NewsSection() {
         }
 
         const result = await response.json();
-        
+
         if (result.success && result.data) {
           const allArticles = result.data;
-          
-          // Phân loại theo category: ANNOUNCEMENT (thông báo) và NEWS (tin tức)
+
+          // Phân loại theo type: ANNOUNCEMENT (thông báo) và NEWS (tin tức)
+          // CHỈ lấy các bài viết đã PUBLISHED
           const announcementItems = allArticles
-            .filter((item: any) => item.category === 'ANNOUNCEMENT')
+            .filter((item: any) => item.type === 'ANNOUNCEMENT' && item.status === 'PUBLISHED')
             .map((item: any) => ({
               id: item.id,
               title: item.title,
               description: item.summary || '',
               date: item.createdAt,
               image: item.imageUrl || '',
-              category: item.category
+              category: item.type
             }))
             .slice(0, 6); // Lấy 6 thông báo mới nhất
 
           const newsItems = allArticles
-            .filter((item: any) => item.category === 'NEWS')
+            .filter((item: any) => item.type === 'NEWS' && item.status === 'PUBLISHED')
             .map((item: any) => ({
               id: item.id,
               title: item.title,
               description: item.summary || '',
               date: item.createdAt,
               image: item.imageUrl || '',
-              category: item.category
+              category: item.type
             }))
             .slice(0, 6); // Lấy 6 tin tức mới nhất
 
@@ -174,12 +177,12 @@ export default function NewsSection() {
               <Bell className="w-5 h-5 text-red-500" />
               <h3 className="text-xl font-bold text-gray-900">Thông báo</h3>
             </div>
-            
+
             {importantNews.length > 0 ? (
               <div className="space-y-2">
                 {importantNews.map((item) => (
-                  <Link 
-                    key={item.id} 
+                  <Link
+                    key={item.id}
                     href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
                     className="block bg-white rounded-lg border border-slate-200 hover:border-green-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
                   >
@@ -225,12 +228,12 @@ export default function NewsSection() {
               <TrendingUp className="w-5 h-5 text-blue-500" />
               <h3 className="text-xl font-bold text-gray-900">Tin tức</h3>
             </div>
-            
+
             {popularNews.length > 0 ? (
               <div className="space-y-2">
                 {popularNews.map((item) => (
-                  <Link 
-                    key={item.id} 
+                  <Link
+                    key={item.id}
                     href={`/tin-tuc-thong-bao/${item.id || item.slug}`}
                     className="block bg-white rounded-lg border border-slate-200 hover:border-green-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
                   >
@@ -273,7 +276,7 @@ export default function NewsSection() {
 
         {/* View More Button */}
         <div className="text-center mt-12">
-          <Link 
+          <Link
             href="/tin-tuc-thong-bao"
             className="inline-flex items-center gap-2 px-8 py-3 bg-green-600 text-white font-semibold rounded-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
           >

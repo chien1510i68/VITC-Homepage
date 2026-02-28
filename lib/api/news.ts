@@ -8,7 +8,7 @@
  */
 
 import { NewsArticle, BackendNews, NewsCategory } from '@/types/news';
-import { API_BASE_URL } from './base';
+import { API_BASE_URL, apiFetch } from './base';
 
 /**
  * Converts a BackendNews object to a NewsArticle display object
@@ -18,17 +18,17 @@ import { API_BASE_URL } from './base';
  * @internal
  */
 const convertBackendNewsToArticle = (news: BackendNews): NewsArticle => {
-  // Map category to Vietnamese
+  // Map type (kind of article) to Vietnamese
   const categoryMap: Record<string, string> = {
     'NEWS': 'Tin tức',
     'ANNOUNCEMENT': 'Thông báo',
     'EVENT': 'Sự kiện'
   };
-  const categoryName = categoryMap[news.category] || 'Tin tức';
+  const categoryName = categoryMap[news.type?.toUpperCase() || ''] || 'Tin tức';
 
   // Strip HTML tags from contentHtml for description
-  const description = news.summary || 
-    news.contentHtml?.replace(/<[^>]*>/g, '').substring(0, 200) + '...' || 
+  const description = news.summary ||
+    news.contentHtml?.replace(/<[^>]*>/g, '').substring(0, 200) + '...' ||
     '';
 
   return {
@@ -37,8 +37,8 @@ const convertBackendNewsToArticle = (news: BackendNews): NewsArticle => {
     description,
     image: news.imageUrl || 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=600&fit=crop',
     date: news.createdAt,
-    category: news.category, // NEWS, ANNOUNCEMENT, EVENT
-    type: news.type, // IT, SOFT_SKILLS
+    category: (news.type as any) || 'NEWS', // backend 'type' is frontend 'category' (NEWS/ANNOUNCEMENT)
+    type: (news.category as any) || 'IT', // backend 'category' is frontend 'type' (IT/SOFT_SKILLS)
     slug: news.slug || '',
     content: news.contentHtml || ''
   };
@@ -52,31 +52,19 @@ const convertBackendNewsToArticle = (news: BackendNews): NewsArticle => {
  * 
  * @throws {Error} If API request fails or returns invalid data
  */
-/**
- * Get all news articles with pagination
- * 
- * Uses Next.js rewrites to proxy to backend (server-side, no CORS issue)
- * /backend-api/v1/news/filter -> http://localhost:8080/api/v1/news/filter
- * Response format: { success: true, data: { data: [...], total: number } }
- * 
- * @param options - Pagination options {page, size}
- * @throws {Error} If API request fails or returns invalid data
- */
 export async function getNews(options: { page?: number; size?: number } = {}): Promise<{ data: NewsArticle[]; total: number }> {
   const { page = 0, size = 10 } = options;
-  
-  // Use absolute URL for server-side rendering, relative for client
- 
-  const url = `/backend-api/news/filter`;
+
+  const url = `/api/v1/news/filter`;
 
   try {
-    const response = await fetch(url, {
+    const response = await apiFetch(url, {
       method: 'POST',
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         page: page,
         size: size
       })
@@ -111,29 +99,25 @@ export async function getNews(options: { page?: number; size?: number } = {}): P
  */
 export async function getNewsById(id: number | string): Promise<NewsArticle | null> {
   try {
-    // Use absolute URL for server-side rendering, relative for client
-    const baseUrl = typeof window === 'undefined' 
-      ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1').replace('/v1', '')
-      : '/backend-api';
-    const url = `${baseUrl}/news/${id}`;
-    
-    const response = await fetch(url, {
+    const url = `/api/v1/news/${id}`;
+
+    const response = await apiFetch(url, {
       headers: { 'Accept': 'application/json' }
     });
-    
+
     if (!response.ok) {
       if (response.status === 404) {
         return null;
       }
       throw new Error(`API error ${response.status}: ${response.statusText}`);
     }
-    
+
     const result = await response.json();
     if (result.success && result.data) {
       console.log(`✅ News ${id} loaded`);
       return convertBackendNewsToArticle(result.data);
     }
-    
+
     throw new Error('Invalid response format');
   } catch (error) {
     console.error(`❌ Error fetching news ${id}:`, error);
@@ -150,22 +134,22 @@ export async function getNewsById(id: number | string): Promise<NewsArticle | nu
  */
 export async function getNewsByCategory(categoryId: string, page = 0, size = 10): Promise<NewsArticle[]> {
   try {
-    const response = await fetch(`/backend-api/news/filter`, {
+    const response = await apiFetch(`/api/v1/news/filter`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ categories: [categoryId], page, size })
     });
-    
+
     if (!response.ok) {
       throw new Error(`API error ${response.status}`);
     }
-    
+
     const result = await response.json();
     if (result.success && result.data) {
       const newsData = Array.isArray(result.data) ? result.data : [];
       return newsData.map(convertBackendNewsToArticle);
     }
-    
+
     throw new Error('Invalid response format');
   } catch (error) {
     console.error(`❌ Error fetching category ${categoryId}:`, error);
@@ -182,22 +166,22 @@ export async function getNewsByCategory(categoryId: string, page = 0, size = 10)
  */
 export async function searchNews(keyword: string, page = 0, size = 10): Promise<NewsArticle[]> {
   try {
-    const response = await fetch(`/backend-api/news/filter`, {
+    const response = await apiFetch(`/api/v1/news/filter`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ title: keyword, page, size })
     });
-    
+
     if (!response.ok) {
       throw new Error(`API error ${response.status}`);
     }
-    
+
     const result = await response.json();
     if (result.success && result.data) {
       const newsData = Array.isArray(result.data) ? result.data : [];
       return newsData.map(convertBackendNewsToArticle);
     }
-    
+
     throw new Error('Invalid response format');
   } catch (error) {
     console.error(`❌ Error searching:`, error);
@@ -214,17 +198,17 @@ export async function searchNews(keyword: string, page = 0, size = 10): Promise<
  */
 export async function getNewsBySlug(slug: string): Promise<NewsArticle | null> {
   try {
-    const response = await fetch(`/backend-api/news/filter`, {
+    const response = await apiFetch(`/api/v1/news/filter`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ slug, page: 0, size: 1 })
     });
-    
+
     if (!response.ok) {
       if (response.status === 404) return null;
       throw new Error(`API error ${response.status}`);
     }
-    
+
     const result = await response.json();
     if (result.success && result.data) {
       const newsData = Array.isArray(result.data) ? result.data : [];

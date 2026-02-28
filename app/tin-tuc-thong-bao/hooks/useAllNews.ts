@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import type { TypedNewsArticle } from '../utils/newsFilter';
+import { apiFetch } from '@/lib/api/base';
 
 interface UseAllNewsReturn {
   allNews: TypedNewsArticle[];
@@ -24,9 +25,9 @@ export function useAllNews(): UseAllNewsReturn {
     const loadNews = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
-        const response = await fetch('/backend-api/news/filter', {
+        const response = await apiFetch('/api/v1/news/filter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -40,18 +41,21 @@ export function useAllNews(): UseAllNewsReturn {
         }
 
         const result = await response.json();
-        
+
         if (result.success && result.data) {
-          const articles = result.data.map((item: any) => ({
-            id: item.id,
-            title: item.title,
-            description: item.summary || '',
-            date: item.createdAt,
-            image: item.imageUrl || '',
-            category: item.category, // NEWS, ANNOUNCEMENT, EVENT
-            type: item.type, // IT, SOFT_SKILLS
-            slug: item.slug || ''
-          }));
+          // CHỈ lấy các bài viết đã PUBLISHED
+          const articles = result.data
+            .filter((item: any) => item.status === 'PUBLISHED')
+            .map((item: any) => ({
+              id: item.id,
+              title: item.title,
+              description: item.summary || '',
+              date: item.createdAt,
+              image: item.imageUrl || '',
+              category: item.type, // Map backend 'type' (NEWS/ANNOUNCEMENT) to frontend 'category'
+              type: item.category, // Map backend 'category' (IT/SOFT_SKILLS) to frontend 'type'
+              slug: item.slug || ''
+            }));
           setAllNews(articles);
         }
       } catch (err) {

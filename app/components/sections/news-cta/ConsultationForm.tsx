@@ -4,6 +4,7 @@ import { ConsultationFormData } from "./types";
 import { brandColors } from "@/lib/brandColors";
 import { CourseBasicInfo } from "@/lib/api/types";
 import { submitConsultation } from "@/lib/api/consultation";
+import { getCoursesBasicInfo } from "@/lib/api/courses";
 import { getCoursesFromCache, saveCoursesToCache } from "@/lib/cache/coursesCache";
 
 // Validation regex
@@ -49,13 +50,9 @@ export const ConsultationForm = () => {
 
       // If no cache, fetch from API
       setIsLoadingCourses(true);
-      const response = await fetch('/api/courses/basic-info');
-      const result = await response.json();
-      
-      if (result.success && result.data) {
-        setCourses(result.data);
-        saveCoursesToCache(result.data);
-      }
+      const data = await getCoursesBasicInfo();
+      setCourses(data);
+      saveCoursesToCache(data);
     } catch (error) {
       console.error('Error loading courses:', error);
     } finally {
@@ -269,7 +266,7 @@ export const ConsultationForm = () => {
         )}
       </div>
 
-      <div>
+      {/* <div>
         <textarea
           name="message"
           placeholder="Lời nhắn (tùy chọn)"
@@ -279,7 +276,7 @@ export const ConsultationForm = () => {
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all resize-none"
           style={{ '--tw-ring-color': brandColors.primary } as React.CSSProperties}
         />
-      </div>
+      </div> */}
 
       <motion.button
         type="submit"
