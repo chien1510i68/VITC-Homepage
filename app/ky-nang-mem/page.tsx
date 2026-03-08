@@ -5,6 +5,7 @@ import IntroductionSection from './sections/IntroductionSection';
 import type { Metadata } from 'next';
 import NewsAndFormSection from './sections/NewsAndFormSection';
 import CoursesByTypeSection from './sections/CoursesByTypeSection';
+import InstructorsSection from './sections/InstructorsSection';
 import PartnersSection from './sections/PartnersSection';
 import ThuVienSection from './sections/ThuVienSection';
 
@@ -24,6 +25,7 @@ export default function KyNangMemPage() {
                 <CoursesByTypeSection />
                 <NewsAndFormSection />
                 <ThuVienSection />
+                <InstructorsSection />
                 <PartnersSection />
             </main>
 

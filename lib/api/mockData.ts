@@ -165,7 +165,8 @@ export const mockPrograms: Program[] = [
     id: 1,
     title: 'Chuẩn đầu ra Tin học VNUA',
     category: 'Chứng chỉ',
-    description: 'Chương trình đào tạo theo chuẩn đầu ra của Trường Đại học Nông nghiệp Hà Nội, bao gồm kiến thức tin học văn phòng và ứng dụng cơ bản',
+    type: 'IT',
+    description: 'Chương trình đào tạo theo chuẩn đầu ra của Trường Đại học Nông nghiệp Hà Nội, bao gồm kiến thức tin học văn phōng và ứng dụng cơ bản',
     fullDescription: 'Khóa học Chuẩn đầu ra Tin học VNUA được thiết kế đặc biệt cho sinh viên Trường Đại học Nông nghiệp Hà Nội nhằm đáp ứng chuẩn đầu ra về tin học. Chương trình cung cấp kiến thức toàn diện về tin học văn phòng, giúp sinh viên nắm vững các kỹ năng cần thiết để làm việc hiệu quả với máy tính và các phần mềm ứng dụng phổ biến.',
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=600&fit=crop',
     duration: '60 giờ',
@@ -219,6 +220,7 @@ export const mockPrograms: Program[] = [
     id: 2,
     title: 'Chứng chỉ Quốc tế ICDL',
     category: 'Chứng chỉ Quốc tế',
+    type: 'IT',
     description: 'Chứng chỉ Tin học Quốc tế ICDL (International Computer Driving Licence) được công nhận toàn cầu',
     fullDescription: 'ICDL (International Computer Driving Licence) là chứng chỉ tin học quốc tế được công nhận tại hơn 150 quốc gia trên thế giới. Khóa học giúp bạn nắm vững các kỹ năng tin học cơ bản và nâng cao, đáp ứng tiêu chuẩn quốc tế về năng lực tin học.',
     image: 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=800&h=600&fit=crop',
@@ -273,6 +275,7 @@ export const mockPrograms: Program[] = [
     id: 3,
     title: 'Ứng dụng CNTT cơ bản & Nâng cao',
     category: 'Tin học văn phòng',
+    type: 'IT',
     description: 'Khóa học toàn diện về tin học văn phòng từ cơ bản đến nâng cao, phù hợp cho mọi đối tượng',
     fullDescription: 'Khóa học Ứng dụng CNTT cơ bản & Nâng cao được thiết kế để cung cấp kiến thức toàn diện về tin học văn phòng, từ những kỹ năng cơ bản nhất đến các tính năng nâng cao của Microsoft Office. Phù hợp cho mọi đối tượng từ người mới bắt đầu đến người đã có kiến thức muốn nâng cao kỹ năng.',
     image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop',
@@ -326,6 +329,7 @@ export const mockPrograms: Program[] = [
     id: 4,
     title: 'Tin học văn phòng nâng cao',
     category: 'Tin học văn phòng',
+    type: 'IT',
     description: 'Nâng cao kỹ năng tin học văn phòng với các tính năng nâng cao của Microsoft Office và Google Workspace',
     fullDescription: 'Khóa học Tin học văn phòng nâng cao dành cho những người đã có kiến thức cơ bản và muốn nâng cao kỹ năng để làm việc hiệu quả hơn. Khóa học tập trung vào các tính năng nâng cao của Excel, Access và Google Workspace.',
     image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&h=600&fit=crop',
@@ -379,6 +383,7 @@ export const mockPrograms: Program[] = [
     id: 5,
     title: 'Photoshop & Thiết kế đồ họa',
     category: 'Thiết kế',
+    type: 'IT',
     description: 'Học Photoshop từ cơ bản đến nâng cao, thiết kế banner, poster, và các sản phẩm đồ họa chuyên nghiệp',
     fullDescription: 'Khóa học Photoshop & Thiết kế đồ họa giúp bạn nắm vững các kỹ năng thiết kế đồ họa từ cơ bản đến nâng cao. Bạn sẽ học cách sử dụng Photoshop một cách chuyên nghiệp để tạo ra các sản phẩm đồ họa đẹp mắt và ấn tượng.',
     image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&h=600&fit=crop',
@@ -433,6 +438,7 @@ export const mockPrograms: Program[] = [
     id: 6,
     title: 'Lập trình Web cơ bản',
     category: 'Lập trình',
+    type: 'IT',
     description: 'Khóa học lập trình web với HTML, CSS, JavaScript cơ bản để xây dựng website đơn giản',
     fullDescription: 'Khóa học Lập trình Web cơ bản là bước đầu tiên để trở thành một Web Developer. Bạn sẽ học các ngôn ngữ lập trình web cơ bản như HTML, CSS, JavaScript và cách tạo ra các trang web responsive, hiện đại.',
     image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop',
@@ -480,6 +486,112 @@ export const mockPrograms: Program[] = [
       'Code trên GitHub',
       'Hỗ trợ tìm việc',
       'Cộng đồng developer'
+    ]
+  },
+  {
+    id: 7,
+    title: 'Kỹ năng giao tiếp hiệu quả',
+    category: 'Kỹ năng mềm',
+    type: 'SOFT_SKILLS',
+    description: 'Nâng cao kỹ năng giao tiếp, thuyết trình và làm việc nhóm để phát triển sự nghiệp',
+    fullDescription: 'Khóa học Kỹ năng giao tiếp hiệu quả giúp bạn tự tin trong giao tiếp, thuyết trình và làm việc nhóm. Đây là những kỹ năng cốt lõi cần thiết cho mọi nghề nghiệp trong thời đại hiện đại.',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop',
+    duration: '30 giờ',
+    students: '650+',
+    sessions: '2 tháng',
+    level: 'Cơ bản',
+    rating: 4.8,
+    price: '1.500.000đ',
+    completionRate: '92%',
+    highlights: [
+      'Giao tiếp trong công việc',
+      'Kỹ năng thuyết trình',
+      'Làm việc nhóm hiệu quả',
+      'Xử lý xung đột',
+      'Thực hành trực tiếp'
+    ],
+    instructor: {
+      name: 'ThS. Lê Thị Hoa',
+      title: 'Chuyên gia Kỹ năng mềm',
+      bio: 'Thạc sĩ Tâm lý học, chuyên gia đào tạo kỹ năng mềm với hơn 12 năm kinh nghiệm.',
+      experience: '12+ năm',
+      students: '3000+',
+      courses: 8,
+      rating: 4.9,
+      specialties: ['Giao tiếp', 'Thuyết trình', 'Teamwork'],
+      education: ['Thạc sĩ Tâm lý học - ĐH Sư phạm HN'],
+      achievements: ['Master Trainer Soft Skills', 'Giảng viên xuất sắc 2023']
+    },
+    isHot: false,
+    syllabus: [
+      { module: 'Module 1', title: 'Nguyên tắc giao tiếp hiệu quả', hours: 8 },
+      { module: 'Module 2', title: 'Kỹ năng thuyết trình', hours: 10 },
+      { module: 'Module 3', title: 'Làm việc nhóm và xử lý xung đột', hours: 12 }
+    ],
+    requirements: [
+      'Không yêu cầu kiến thức trước',
+      'Tinh thần học hỏi',
+      'Sẵn sàng thực hành'
+    ],
+    benefits: [
+      'Tự tin giao tiếp',
+      'Thuyết trình chuyên nghiệp', 
+      'Làm việc nhóm hiệu quả',
+      'Chứng nhận kỹ năng mềm',
+      'Networking cơ hội'
+    ]
+  },
+  {
+    id: 8,
+    title: 'Quản lý thời gian và stress',
+    category: 'Kỹ năng mềm',
+    type: 'SOFT_SKILLS',
+    description: 'Học cách quản lý thời gian hiệu quả và giảm thiểu stress trong công việc và cuộc sống',
+    fullDescription: 'Khóa học Quản lý thời gian và stress giúp bạn tối ưu hóa thời gian, tăng năng suất làm việc và duy trì sự cân bằng trong cuộc sống. Bạn sẽ học các phương pháp khoa học để quản lý stress hiệu quả.',
+    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
+    duration: '25 giờ',
+    students: '420+',
+    sessions: '1.5 tháng',
+    level: 'Cơ bản',
+    rating: 4.7,
+    price: '1.200.000đ',
+    completionRate: '89%',
+    highlights: [
+      'Phương pháp GTD',
+      'Ma trận Eisenhower',
+      'Kỹ thuật Pomodoro',
+      'Quản lý stress',
+      'Work-life balance'
+    ],
+    instructor: {
+      name: 'ThS. Nguyễn Minh Tuệ',
+      title: 'Chuyên gia Productivity & Wellness',
+      bio: 'Thạc sĩ Quản trị kinh doanh, chuyên gia năng suất và sức khỏe tinh thần.',
+      experience: '8+ năm',
+      students: '1500+',
+      courses: 6,
+      rating: 4.8,
+      specialties: ['Time Management', 'Stress Management', 'Productivity'],
+      education: ['Thạc sĩ Quản trị - ĐH Ngoại thương'],
+      achievements: ['Certified Productivity Coach', 'Wellness Expert']
+    },
+    isHot: true,
+    syllabus: [
+      { module: 'Module 1', title: 'Nguyên lý quản lý thời gian', hours: 8 },
+      { module: 'Module 2', title: 'Các công cụ và phương pháp', hours: 10 },
+      { module: 'Module 3', title: 'Quản lý stress và cân bằng cuộc sống', hours: 7 }
+    ],
+    requirements: [
+      'Mong muốn cải thiện năng suất',
+      'Cam kết thực hành',
+      'Không yêu cầu kinh nghiệm trước'
+    ],
+    benefits: [
+      'Tăng năng suất 50%',
+      'Giảm stress công việc',
+      'Cân bằng cuộc sống',
+      'Công cụ quản lý hiệu quả',
+      'Sức khỏe tinh thần tốt hơn'
     ]
   }
 ];

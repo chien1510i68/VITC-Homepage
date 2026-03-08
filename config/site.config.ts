@@ -11,7 +11,7 @@ export const siteConfig = {
   fullNameEn: process.env.NEXT_PUBLIC_CENTER_NAME_EN || 'VNUA Centre for Information Technology and Soft Skills - VISC',
   description: 'Trung tâm đào tạo tin học và kỹ năng mềm chuyên nghiệp thuộc Học viện Nông nghiệp Việt Nam. Cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm, chương trình đào tạo chuẩn quốc tế và hiện đại.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-  ogImage: '/images/og-image.jpg',
+  ogImage: '/images/logo.png',
   
   // Contact Information
   contact: {
@@ -39,7 +39,7 @@ export const siteConfig = {
   
   // Google Maps
   googleMapsUrl: process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_URL || '',
-} as const;
+};
 
 export const seoConfig = {
   keywords: [
@@ -77,14 +77,28 @@ export const seoConfig = {
       index: true,
       follow: true,
       'max-video-preview': -1,
-      'max-image-preview': 'large',
+      'max-image-preview': 'large' as const,
       'max-snippet': -1,
     },
   },
   icons: {
-    icon: '/images/logo.jpg',
-    shortcut: '/images/logo.jpg',
-    apple: '/images/logo.jpg',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/images/logo.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/logo.png', sizes: '16x16', type: 'image/png' }
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/images/logo.png', sizes: '180x180', type: 'image/png' },
+      { url: '/images/logo.png', sizes: '152x152', type: 'image/png' },
+      { url: '/images/logo.png', sizes: '120x120', type: 'image/png' }
+    ],
+    other: [
+      {
+        rel: 'apple-touch-icon-precomposed',
+        url: '/images/logo.png',
+      },
+    ],
   },
   openGraph: {
     type: 'website',
@@ -103,7 +117,7 @@ export const seoConfig = {
     ],
   },
   twitter: {
-    card: 'summary_large_image' as const,
+    card: 'summary_large_image',
     title: siteConfig.fullName,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
@@ -113,7 +127,7 @@ export const seoConfig = {
     yandex: '',
     bing: '',
   },
-} as const;
+};
 
 /**
  * Helper function to generate metadata for pages

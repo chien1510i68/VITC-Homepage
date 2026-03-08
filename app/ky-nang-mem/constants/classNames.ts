@@ -1,6 +1,6 @@
 // Common CSS class combinations for consistency
-export const SECTION_PADDING = 'py-10 lg:py-16';
-export const SECTION_PADDING_LG = 'py-10 lg:py-20';
+export const SECTION_PADDING = 'py-6 lg:py-12';
+export const SECTION_PADDING_LG = 'py-8 lg:py-14';
 
 export const CONTAINER_BASE = 'container mx-auto px-4 sm:px-6 md:px-8 lg:px-12';
 export const CONTAINER_NARROW = `${CONTAINER_BASE} max-w-4xl`;

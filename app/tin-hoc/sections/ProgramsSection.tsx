@@ -225,8 +225,8 @@ export default function ProgramsSection() {
     const loadPrograms = async () => {
       setIsLoading(true);
       try {
-        // Gọi API lấy khóa học tin học với categoryCode = IT
-        const data = await api.getCoursesByCategory('IT', 0, 50);
+        // Gọi API lấy khóa học tin học với type = IT (thay vì categoryCode)
+        const data = await api.getCoursesByType('IT', 0, 50);
         setPrograms(data);
         if (data && data.length > 0) {
           setSelectedProgram(data[0] || null);

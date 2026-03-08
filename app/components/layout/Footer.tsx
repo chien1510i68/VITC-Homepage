@@ -1,16 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { MapPin, Phone, Mail, Facebook, Youtube, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Clock } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';
 
 export default function Footer() {
   const quickLinks = [
     { title: 'Trang chủ', href: '/' },
-    { title: 'Trung tâm tin học', href: '/tin-hoc' },
-    { title: 'Trung tâm kỹ năng mềm', href: '/ky-nang-mem' },
+    { title: 'Trung tâm tin học', href: 'https://vitc.edu.vn/' },
+    { title: 'Trung tâm ĐT kỹ năng mềm', href: 'https://trungtamkynangmem.vnua.edu.vn' },
     { title: 'Tin tức', href: '/tin-tuc-thong-bao' },
-    { title: 'Tiện ích - Dịch vụ', href: '/tien-ich-dich-vu' },
-    { title: 'Liên hệ', href: '/lien-he' },
+    { title: 'Tra cứu', href: '/tien-ich-dich-vu' },
   ];
 
   const utilities = [
@@ -33,13 +32,14 @@ export default function Footer() {
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Company Info */}
           <div className="space-y-4 text-left">
-            <div className="flex items-start  ">
-
-
-            </div>
+            <h4 className="text-white font-semibold text-lg mb-4 relative inline-block">
+              THÔNG TIN LIÊN HỆ
+              <span className={`absolute bottom-0 left-0 w-12 h-0.5 ${TAILWIND_COLORS.bgPrimary}`}></span>
+            </h4>
 
             {/* Contact Info */}
             <div className="space-y-3 pt-4">
+
               <div className="flex items-start gap-3 group">
                 <Image
                   src="/images/logo.png"
@@ -50,7 +50,7 @@ export default function Footer() {
                 />
                 {/* <MapPin className={`w-5 h-5 mt-0.5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} /> */}
                 <p className="text-sm group-hover:text-white transition-colors">
-                  Trung tâm Tin học và Kỹ năng mềm VNUA cung cấp các khóa học chất lượng cao với đội ngũ giảng viên giàu kinh nghiệm.
+                  Trung tâm Tin học và Kỹ năng mềm VNUA
                 </p>
               </div>
 
@@ -98,7 +98,7 @@ export default function Footer() {
           {/* Quick Links */}
           <div className="text-left pl-8 lg:pl-12">
             <h4 className="text-white font-semibold text-lg mb-4 relative inline-block">
-              Liên kết nhanh
+              LIÊN KẾT NHANH
               <span className={`absolute bottom-0 left-0 w-12 h-0.5 ${TAILWIND_COLORS.bgPrimary}`}></span>
             </h4>
             <ul className="space-y-2.5 mb-6 text-left">
@@ -129,13 +129,15 @@ export default function Footer() {
                   <Facebook className="w-5 h-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.tiktok.com/@visc.vnua?_r=1&_t=ZS-93Ik7yAfzxo"
                   className={`w-10 h-10 border-2 border-gray-600 rounded-lg flex items-center justify-center hover:${TAILWIND_COLORS.borderPrimary} hover:${TAILWIND_COLORS.textPrimary} transition-all hover:scale-110`}
-                  aria-label="YouTube"
+                  aria-label="TikTok"
                 >
-                  <Youtube className="w-5 h-5" />
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.13-1.47-.14-.1-.28-.21-.42-.32v5.18c.01 2.43-.91 4.93-2.81 6.48-1.79 1.44-4.22 1.98-6.38 1.4-2.16-.58-4-2.22-4.72-4.32-.72-2.1-.21-4.66 1.34-6.36 1.55-1.7 4.1-2.48 6.27-1.99.16.03.31.07.47.11V12.1c-.81-.24-1.72-.21-2.49.12-.87.41-1.5 1.23-1.6 2.19-.01.07-.01.14-.01.21.02 1.42 1.63 2.5 2.92 1.94 1.29-.56 1.6-2.13 1.6-3.41V0h-.01z" />
+                  </svg>
                 </a>
-                <a
+                {/* <a
                   href="#"
                   className={`w-10 h-10 border-2 border-gray-600 rounded-lg flex items-center justify-center hover:${TAILWIND_COLORS.borderPrimary} hover:${TAILWIND_COLORS.textPrimary} transition-all hover:scale-110`}
                   aria-label="Zalo"
@@ -143,7 +145,7 @@ export default function Footer() {
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 14.5c-.405.488-1.26 1.03-2.483 1.03-1.511 0-2.647-.736-2.647-1.865 0-.736.488-1.26 1.236-1.26.713 0 1.236.488 1.236 1.236 0 .372-.186.713-.511.93.326.093.713.14 1.116.14.791 0 1.329-.302 1.609-.651.326-.419.488-.977.488-1.609 0-1.329-.837-2.18-2.18-2.18h-.14c-.744 0-1.329.279-1.748.837l-.372.511c-.279.419-.744.651-1.236.651-.791 0-1.423-.651-1.423-1.423 0-.372.14-.744.419-1.023l.884-1.023c.837-.977 2.087-1.539 3.416-1.539 2.273 0 3.881 1.609 3.881 3.881 0 1.023-.326 1.934-.93 2.623z" />
                   </svg>
-                </a>
+                </a> */}
               </div>
             </div>
           </div>
@@ -172,12 +174,12 @@ export default function Footer() {
           {/* Map */}
           <div className="flex flex-col items-center">
             <h4 className="text-white font-semibold text-lg mb-4 relative inline-block">
-              Vị trí trên bản đồ
+              VỊ TRÍ TRÊN BẢN ĐỒ
               <span className={`absolute bottom-0 left-0 w-12 h-0.5 ${TAILWIND_COLORS.bgPrimary}`}></span>
             </h4>
             <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg">
               <iframe
-                src={process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_URL || 'https://www.google.com/maps?ll=21.006125,105.932474&z=15&t=m&hl=vi&gl=US&mapclient=embed&cid=7854680610929000262&output=embed'}
+                src={ 'https://www.google.com/maps?ll=21.0032365,105.9339706&z=15&t=m&hl=vi&gl=US&mapclient=embed&cid=7854680610929000262&output=embed'}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

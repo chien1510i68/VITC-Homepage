@@ -74,6 +74,13 @@ export default function CoCauToChucPage() {
         position: 'Chuyên viên',
         email: 'quynhnt@vnua.edu.vn',
         image: '/images/instructors/placeholder.jpg'
+      },
+      {
+        name: 'CN. Nguyễn Thị Thanh Huyền',
+        degree: 'CN',
+        position: 'Chuyên viên',
+        email: 'nthanhhuyen@vnua.edu.vn',
+        image: '/images/instructors/placeholder.jpg'
       }
     ],
     kyNangMem: [

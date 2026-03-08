@@ -45,6 +45,7 @@ export const metadata: Metadata = {
   publisher: seoConfig.publisher,
   robots: seoConfig.robots,
   icons: seoConfig.icons,
+  manifest: '/manifest.json',
   openGraph: {
     ...seoConfig.openGraph,
     images: seoConfig.openGraph.images ? [...seoConfig.openGraph.images] : undefined,

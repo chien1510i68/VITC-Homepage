@@ -17,7 +17,7 @@ export default function CoursesByTypeSection() {
       try {
         setLoading(true);
         // Gọi API lấy khóa học kỹ năng mềm với categoryCode = SOFT_SKILLS
-        const programs = await api.getCoursesByCategory('SOFT_SKILLS', 0, 50);
+        const programs = await api.getCoursesByType('SOFT_SKILLS', 0, 50);
 
         // Convert sang định dạng Course
         const softSkillsCourses: Course[] = programs.map((program) => ({
@@ -51,7 +51,7 @@ export default function CoursesByTypeSection() {
   }, [allCourses, searchTerm]);
 
   return (
-    <section id="courses" className="py-10 lg:py-16 bg-slate-50/50">
+    <section id="courses" className="py-6 lg:py-12 bg-slate-50/50">
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
         <div className="mb-10 text-center">
           <h3 className="text-2xl font-bold text-slate-900">Khóa học kỹ năng mềm</h3>

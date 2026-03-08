@@ -18,6 +18,7 @@ interface CourseScheduleSectionProps {
   onClearFilters: () => void;
   isLoading: boolean;
   hasActiveFilters: boolean;
+  onRegister?: (schedule: CourseSchedule) => void;
 }
 
 export default function CourseScheduleSection({
@@ -33,6 +34,7 @@ export default function CourseScheduleSection({
   onClearFilters,
   isLoading,
   hasActiveFilters,
+  onRegister,
 }: CourseScheduleSectionProps) {
   return (
     <section className="py-16 bg-white">
@@ -203,8 +205,10 @@ export default function CourseScheduleSection({
                         <Button 
                           size="sm" 
                           className={`${TAILWIND_COLORS.bgPrimary} ${TAILWIND_COLORS.bgPrimaryHover}`}
+                          onClick={() => onRegister?.(schedule)}
+                          disabled={schedule.status === 'Đã đầy'}
                         >
-                          Đăng ký
+                          {schedule.status === 'Đã đầy' ? 'Hết chỗ' : 'Đăng ký'}
                         </Button>
                       </td>
                     </tr>

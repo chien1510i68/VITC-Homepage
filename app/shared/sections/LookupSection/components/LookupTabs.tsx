@@ -5,7 +5,7 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Award, Download } from 'lucide-react';
+import { FileBarChart, BadgeCheck } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';
 import { LookupType } from '../types';
 
@@ -26,13 +26,13 @@ export const LookupTabs = ({
     {
       id: 'score' as LookupType,
       label: 'Tra cứu điểm thi',
-      icon: Award,
+      icon: FileBarChart,
       show: showScoreTab
     },
     {
       id: 'certificate' as LookupType,
       label: 'Tra cứu chứng chỉ',
-      icon: Download,
+      icon: BadgeCheck,
       show: showCertificateTab
     }
   ];

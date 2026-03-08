@@ -40,7 +40,7 @@ export default function NewsAndConsultation() {
                 const newsResponse = await apiFetch('/api/v1/news/filter', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ page: 0, type: 'IT', size: 8 })
+                    body: JSON.stringify({ page: 0, category: 'IT', size: 8 })
                 });
                 if (newsResponse.ok) {
                     const result = await newsResponse.json();
@@ -126,7 +126,7 @@ export default function NewsAndConsultation() {
                             )}
                         </div>
 
-                        <Link href="/tin-tuc-thong-bao" className="inline-flex items-center gap-2 font-bold text-slate-900 border-b-2 border-green-500 pb-1 hover:text-green-600 transition-colors uppercase text-sm tracking-normal">
+                        <Link href="/tin-tuc-thong-bao?category=IT" className="inline-flex items-center gap-2 font-bold text-slate-900 border-b-2 border-green-500 pb-1 hover:text-green-600 transition-colors uppercase text-sm tracking-normal">
                             Tất cả bài viết <ArrowRight className="w-5 h-5" />
                         </Link>
                     </div>

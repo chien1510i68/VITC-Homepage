@@ -1,0 +1,33 @@
+{
+  "name": "Trung tâm Tin học và Kỹ năng mềm VNUA",
+  "short_name": "VISC",
+  "description": "Trung tâm đào tạo tin học và kỹ năng mềm chuyên nghiệp thuộc Học viện Nông nghiệp Việt Nam",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["education", "business"],
+  "lang": "vi",
+  "scope": "/",
+  "id": "vnua-visc-app"
+}

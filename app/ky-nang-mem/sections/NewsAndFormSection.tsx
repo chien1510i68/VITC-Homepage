@@ -32,7 +32,7 @@ export default function NewsAndFormSection() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         page: 0,
-                        type: 'SOFT_SKILLS',
+                        category: 'SOFT_SKILLS',
                         size: 20
                     })
                 });
@@ -97,7 +97,7 @@ export default function NewsAndFormSection() {
     }
 
     return (
-        <section id="news-registration" className="py-16 bg-white">
+        <section id="news" className="py-8 lg:py-12 bg-white">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="grid lg:grid-cols-2 gap-12 items-start">
                     {/* Left: News & Announcements */}
@@ -145,7 +145,7 @@ export default function NewsAndFormSection() {
                         </div>
 
                         <Link
-                            href="/tin-tuc-thong-bao"
+                            href="/tin-tuc-thong-bao?category=SOFT_SKILLS"
                             className="inline-flex items-center gap-2 text-green-600 font-bold hover:gap-3 transition-all"
                         >
                             Xem tất cả tin tức
@@ -154,7 +154,7 @@ export default function NewsAndFormSection() {
                     </div>
 
                     {/* Right: Registration Form */}
-                    <div className="sticky top-24">
+                    <div id="contact" className="sticky top-24">
                         <ConsultationForm isSubSection={true} />
                     </div>
                 </div>

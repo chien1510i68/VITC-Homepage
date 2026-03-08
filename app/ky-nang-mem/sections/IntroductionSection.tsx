@@ -23,7 +23,7 @@ export default function IntroductionSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-8 lg:py-12"
+      className="bg-white py-6 lg:py-10"
     >
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl">
 

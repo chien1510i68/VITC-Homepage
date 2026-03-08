@@ -5,10 +5,10 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { api, LookupResult } from '@/lib/api';
-import { LookupSectionProps, LookupType } from './types';
+import { LookupSectionProps, LookupType, CertificateType } from './types';
 import { DEFAULT_PROPS } from './constants';
 import { 
   LookupHeader, 
@@ -46,9 +46,46 @@ export default function LookupSection({
 }: LookupSectionProps) {
   const [lookupType, setLookupType] = useState<LookupType>('score');
   const [cccd, setCccd] = useState('');
+  const [certificateType, setCertificateType] = useState<CertificateType>('all');
   const [results, setResults] = useState<LookupResult[]>([]);
+  const [allResults, setAllResults] = useState<LookupResult[]>([]); // Store all results for filtering
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Debug: Monitor state changes to ensure UI updates correctly
+  useEffect(() => {
+    console.log(`📊 State update: lookupType=${lookupType}, hasSearched=${hasSearched}, results.length=${results.length}`);
+  }, [lookupType, hasSearched, results.length]);
+
+  // Filter results when certificate type changes
+  useEffect(() => {
+    if (allResults.length > 0 && lookupType === 'certificate') {
+      const filtered = certificateType === 'all' 
+        ? allResults 
+        : allResults.filter(result => result.certificateType === certificateType);
+      setResults(filtered);
+    }
+  }, [certificateType, allResults, lookupType]);
+
+  // Handle tab change and clear previous results
+  const handleTabChange = (newLookupType: LookupType) => {
+    // Only clear if actually switching to different tab
+    if (newLookupType !== lookupType) {
+      console.log(`🔄 Switching from ${lookupType} to ${newLookupType} - clearing results`);
+      
+      // Clear all states immediately to hide results table
+      setResults([]);
+      setAllResults([]);
+      setHasSearched(false);
+      setCccd('');
+      setCertificateType('all'); // Reset certificate type
+      
+      // Then update the lookup type
+      setLookupType(newLookupType);
+      
+      console.log(`✅ Tab switched to ${newLookupType} - UI should be cleared`);
+    }
+  };
 
   const handleSearch = async () => {
     if (!cccd.trim()) return;
@@ -61,10 +98,19 @@ export default function LookupSection({
       if (lookupType === 'score') {
         // Use new API for exam results
         data = await api.lookupExamResultsByCCCD(cccd);
+        setResults(data);
+        setAllResults(data);
       } else {
+        // Certificate lookup - get all results and filter
         data = await api.lookupCertificate(cccd);
+        setAllResults(data); // Store all results for filtering
+        
+        // Filter immediately based on selected certificate type
+        const filtered = certificateType === 'all' 
+          ? data 
+          : data.filter(result => result.certificateType === certificateType);
+        setResults(filtered);
       }
-      setResults(data);
       setHasSearched(true);
       
       // Call callback if provided
@@ -72,6 +118,7 @@ export default function LookupSection({
     } catch (error) {
       console.error('Error searching:', error);
       setResults([]);
+      setAllResults([]);
       setHasSearched(true);
     } finally {
       setIsLoading(false);
@@ -81,7 +128,9 @@ export default function LookupSection({
   const handleReset = () => {
     setCccd('');
     setResults([]);
+    setAllResults([]);
     setHasSearched(false);
+    setCertificateType('all');
   };
 
   return (
@@ -104,7 +153,7 @@ export default function LookupSection({
         {/* Lookup Type Tabs */}
         <LookupTabs
           lookupType={lookupType}
-          setLookupType={setLookupType}
+          setLookupType={handleTabChange}
           showScoreTab={showScoreTab}
           showCertificateTab={showCertificateTab}
         />
@@ -114,6 +163,8 @@ export default function LookupSection({
           lookupType={lookupType}
           cccd={cccd}
           setCccd={setCccd}
+          certificateType={certificateType}
+          setCertificateType={setCertificateType}
           isLoading={isLoading}
           onSearch={handleSearch}
           onReset={handleReset}
@@ -124,6 +175,7 @@ export default function LookupSection({
           results={results}
           hasSearched={hasSearched}
           lookupType={lookupType}
+          certificateType={certificateType}
         />
 
         {/* Help Section */}

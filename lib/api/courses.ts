@@ -19,7 +19,25 @@ import { mockFeaturedCourses, Course } from '@/data/courses';
  * @internal
  */
 const convertCourseToProgram = (course: Course): Program => {
-  // Determine category from type
+  // Determine type - prioritize course.type, fallback to categoryCode mapping
+  let courseType = course.type;
+  
+  if (!courseType && course.categoryCode) {
+    // Map categoryCode to type for courses without explicit type
+    const categoryToTypeMap: Record<string, string> = {
+      'IT': 'IT',
+      'OFFICE': 'IT', 
+      'PROGRAMMING': 'IT',
+      'SOFT_SKILLS': 'SOFT_SKILLS',
+      'SOFTSKILLS': 'SOFT_SKILLS'
+    };
+    courseType = categoryToTypeMap[course.categoryCode] || 'IT';
+  }
+  
+  // Default to 'IT' if no type can be determined
+  courseType = courseType || 'IT';
+
+  // Determine display category from type
   const categoryMap: Record<string, string> = {
     'OFFICE': 'Tin học văn phòng',
     'PROGRAMMING': 'Lập trình',
@@ -35,7 +53,7 @@ const convertCourseToProgram = (course: Course): Program => {
     'MANAGEMENT': 'Quản lý'
   };
 
-  const category = categoryMap[course.type || ''] || 'Khác';
+  const category = categoryMap[courseType] || categoryMap[course.categoryCode || ''] || 'Khác';
 
   // Format price
   const priceFormatted = course.price > 0
@@ -53,7 +71,7 @@ const convertCourseToProgram = (course: Course): Program => {
     id: course.id, // Keep as string (UUID)
     title: course.title,
     category: category,
-    type: course.type,
+    type: courseType, // Use computed courseType instead of course.type
     description: course.descriptionHtml?.replace(/<[^>]*>/g, '').substring(0, 150) + '...' || '',
     fullDescription: course.descriptionHtml || '',
     image: course.thumbnailUrl || 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=600&fit=crop',
@@ -154,8 +172,8 @@ export async function getCourses(page = 0, size = 10): Promise<Program[]> {
     const result = await response.json();
     if (result.success && result.data) {
       console.log('✅ Courses loaded from API');
-      // Backend trả về data.data hoặc data.items
-      const items = result.data.data || result.data.items || [];
+      // Backend trả về data.items hoặc data.data
+      const items = result.data.items || result.data.data || [];
       return items.map(convertCourseToProgram);
     }
 
@@ -207,7 +225,7 @@ export async function getCoursesByCategory(categoryCode: string, page = 0, size 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        category: categoryCode,
+        categoryCode: categoryCode, // Use categoryCode for filtering
         status: 'ACTIVE',
         page,
         size
@@ -221,7 +239,7 @@ export async function getCoursesByCategory(categoryCode: string, page = 0, size 
     const result = await response.json();
     if (result.success && result.data) {
       console.log(`✅ Courses for category "${categoryCode}" loaded from API`);
-      const items = result.data.data || result.data.items || [];
+      const items = result.data.items || result.data.data || [];
       return items.map(convertCourseToProgram);
     }
 
@@ -267,6 +285,67 @@ export async function getFeaturedCourses(limit = 6): Promise<Program[]> {
   } catch (error) {
     console.error('❌ Error fetching featured courses:', error);
     throw error;
+  }
+}
+
+/**
+ * Get courses by type (IT, SOFT_SKILLS, etc.)
+ * Falls back to mock data if API fails
+ * 
+ * API Endpoint: POST /api/v1/courses/filter
+ * Response format: { status: "success", data: { items: [...], total: number } }
+ */
+export async function getCoursesByType(type: string, page = 0, size = 20): Promise<Program[]> {
+  try {
+    // Map type to categoryCode for API filtering
+    const typeToCategoryMap: Record<string, string> = {
+      'IT': 'IT',
+      'SOFT_SKILLS': 'SOFT_SKILLS'
+    };
+    
+    const categoryCode = typeToCategoryMap[type] || type;
+    
+    const response = await apiFetch(`/api/v1/courses/filter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        categoryCode: categoryCode, // Use categoryCode instead of type
+        status: 'ACTIVE',
+        page,
+        size
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    if (result.success && result.data) {
+      console.log(`✅ Courses loaded from API for categoryCode "${categoryCode}" (type: "${type}")`);
+      const items = result.data.items || result.data.data || [];
+      
+      // Convert to Program objects
+      const programs = items.map(convertCourseToProgram);
+      
+      // Filter by type on client side to ensure accuracy (since we mapped type to categoryCode)
+      const filteredPrograms = programs.filter((program: Program) => {
+        return program.type === type;
+      });
+      
+      console.log(`📚 Filtered ${filteredPrograms.length}/${programs.length} courses for type "${type}"`);
+      return filteredPrograms;
+    }
+
+    throw new Error('Invalid response format');
+  } catch (error) {
+    console.error(`❌ Error fetching courses by type ${type}:`, error);
+    
+    // Fallback to mock data filtered by type
+    console.log(`🔄 Using mock data filtered by type "${type}"`);
+    const filteredMockPrograms = mockPrograms.filter(program => program.type === type);
+    console.log(`📚 Mock data: Found ${filteredMockPrograms.length} courses for type "${type}"`);
+    return filteredMockPrograms;
   }
 }
 

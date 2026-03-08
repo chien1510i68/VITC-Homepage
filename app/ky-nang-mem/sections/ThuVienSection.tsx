@@ -111,7 +111,7 @@ export default function ThuVienSection() {
   }, []);
 
   return (
-    <section id="resources" className="py-10 lg:py-16 bg-white">
+    <section id="resources" className="py-6 lg:py-12 bg-white">
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-10">

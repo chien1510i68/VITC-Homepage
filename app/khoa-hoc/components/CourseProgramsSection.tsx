@@ -20,6 +20,7 @@ interface CourseProgramsSectionProps {
   onClearFilters: () => void;
   isLoading: boolean;
   hasActiveFilters: boolean;
+  onRegister?: (program: Program) => void;
 }
 
 export default function CourseProgramsSection({
@@ -34,10 +35,8 @@ export default function CourseProgramsSection({
   onClearFilters,
   isLoading,
   hasActiveFilters,
+  onRegister,
 }: CourseProgramsSectionProps) {
-  const handleRegister = () => {
-    alert('Chức năng đăng ký đang được phát triển');
-  };
 
   return (
     <section className="py-16 bg-gradient-to-b from-white to-gray-50">
@@ -198,7 +197,7 @@ export default function CourseProgramsSection({
                       </Link>
                       <Button 
                         size="sm" 
-                        onClick={handleRegister}
+                        onClick={() => onRegister?.(program)}
                         className={`${TAILWIND_COLORS.bgPrimary} ${TAILWIND_COLORS.bgPrimaryHover}`}
                       >
                         Đăng ký

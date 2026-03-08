@@ -24,9 +24,10 @@ export const DEFAULT_PROPS: Required<Omit<LookupSectionProps, 'className' | 'onS
  */
 export const CERTIFICATE_TYPES = [
   { value: 'all', label: 'Tất cả loại chứng chỉ' },
-  { value: 'basic', label: 'Cơ bản' },
-  { value: 'advanced', label: 'Nâng cao' },
-  { value: 'standard', label: 'Chuẩn đầu ra tin học' },
+  { value: 'Chứng chỉ UDCNTT cơ bản TT 03 của Bộ TT&TT', label: 'UDCNTT Cơ bản' },
+  { value: 'Chứng chỉ UDCNTT nâng cao TT 03 của Bộ TT&TT', label: 'UDCNTT Nâng cao' },
+  { value: 'Chuẩn đầu ra Tin học', label: 'Chuẩn đầu ra Tin học' },
+  { value: 'Chuẩn đầu ra KNM', label: 'Chuẩn đầu ra KNM' },
 ] as const;
 
 /**

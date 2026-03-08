@@ -8,13 +8,15 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';
-import { LookupType } from '../types';
-import { HELP_TEXT } from '../constants';
+import { LookupType, CertificateType } from '../types';
+import { HELP_TEXT, CERTIFICATE_TYPES } from '../constants';
 
 interface LookupFormProps {
   lookupType: LookupType;
   cccd: string;
   setCccd: (value: string) => void;
+  certificateType: CertificateType;
+  setCertificateType: (value: CertificateType) => void;
   isLoading: boolean;
   onSearch: () => void;
   onReset: () => void;
@@ -24,6 +26,8 @@ export const LookupForm = ({
   lookupType,
   cccd,
   setCccd,
+  certificateType,
+  setCertificateType,
   isLoading,
   onSearch,
   onReset
@@ -65,6 +69,27 @@ export const LookupForm = ({
               className="flex-1 px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm sm:text-base transition-all duration-200"
               required
             />
+            
+            {/* Certificate Type Filter - Only show for certificate lookup and on same row */}
+            {lookupType === 'certificate' && (
+              <motion.select
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.45 }}
+                whileFocus={{ scale: 1.01 }}
+                value={certificateType}
+                onChange={(e) => setCertificateType(e.target.value as CertificateType)}
+                className="w-full sm:w-64 px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm sm:text-base transition-all duration-200 bg-white"
+              >
+                {CERTIFICATE_TYPES.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </motion.select>
+            )}
+            
             <div className="flex gap-2 sm:gap-3">
               <motion.div
                 whileHover={{ scale: 1.02 }}

@@ -10,12 +10,24 @@ export async function submitConsultationForm(formData: {
   phone: string;
   email: string;
   program: string;
+  type?: string; // Course type (IT, SOFT_SKILLS, etc.)
 }): Promise<ApiResponse<{ message: string }>> {
   const url = '/api/consultation';
   
+  // Transform to match backend expected format
+  const requestBody = {
+    username: formData.name,
+    phoneNumber: formData.phone,
+    email: formData.email,
+    course: formData.program,
+    type: formData.type || '', // Include course type
+    note: '',
+    action: 'TU_VAN'
+  };
+  
   console.log('📤 Submitting consultation form');
   console.log('🔗 Endpoint:', url);
-  console.log('📦 Request body:', JSON.stringify(formData, null, 2));
+  console.log('📦 Request body:', JSON.stringify(requestBody, null, 2));
   
   try {
     const response = await fetch(url, {
@@ -24,7 +36,7 @@ export async function submitConsultationForm(formData: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(requestBody)
     });
     
     console.log('📡 Response status:', response.status, response.statusText);

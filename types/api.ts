@@ -178,6 +178,7 @@ export interface LookupResult {
   examDate: string;
   issueDate: string;
   certificateId: string;
+  xepLoai?: string; // Field for ranking (Chuẩn đầu ra KNM)
 }
 
 /**

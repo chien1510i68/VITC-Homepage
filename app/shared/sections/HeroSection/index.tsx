@@ -67,22 +67,22 @@ export default function HeroSection({
   }, []);
 
   // Use API slides if available, otherwise fall back to props/default
-  const displaySlides = apiSlides.length > 0
+  const displaySlides = apiSlides.length > 0 
     ? apiSlides.map(slide => {
-      // Strip query params from image URLs to prevent conflicts with Next.js Image Optimizer
-      const cleanImageUrl = slide.imageUrl?.split('?')[0] || slide.imageUrl;
-      return {
-        id: slide.id,
-        image: cleanImageUrl,
-        title: slide.content || '',
-      };
-    })
+        // Strip query params from image URLs to prevent conflicts with Next.js Image Optimizer
+        const cleanImageUrl = slide.imageUrl?.split('?')[0] || slide.imageUrl;
+        return {
+          id: slide.id,
+          image: cleanImageUrl,
+          title: slide.content || '',
+        };
+      })
     : slides;
 
   // Auto-play effect
   useEffect(() => {
     if (!isAutoPlaying || autoPlayInterval === 0 || isLoading) return;
-
+    
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % displaySlides.length);
     }, autoPlayInterval);
@@ -122,29 +122,30 @@ export default function HeroSection({
           <div className="text-gray-400">Loading...</div>
         </div>
       )}
-
+      
       {/* Slides */}
       {!isLoading && displaySlides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`absolute inset-0 transition-opacity ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
-            }`}
+          className={`absolute inset-0 transition-opacity ${
+            index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
           style={{ transitionDuration: `${transitionDuration}ms` }}
         >
+          {/* Background Image */}
           <div className="absolute inset-0">
-            <div className="relative w-full h-full">
-              <Image
-                src={slide.image}
-                alt={slide.title || `Slide ${index + 1}`}
-                fill
-                className="object-cover object-center"
-                priority={index === 0}
-                unoptimized
-                sizes="100vw"
-                quality={imageQuality}
-              />
-            </div>
+            <Image
+              src={slide.image}
+              alt={slide.title || `Slide ${index + 1}`}
+              fill
+              className="object-cover object-center sm:object-center md:object-center"
+              priority={index === 0}
+              unoptimized
+              sizes="100vw"
+              quality={imageQuality}
+            />
           </div>
+
         </div>
       ))}
 
@@ -163,7 +164,7 @@ export default function HeroSection({
           >
             <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
           </Button>
-
+          
           <Button
             type="button"
             variant="ghost"
@@ -186,10 +187,11 @@ export default function HeroSection({
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`h-2 sm:h-2.5 md:h-3 rounded-full transition-all ${index === currentSlide
-                ? 'bg-white w-6 sm:w-7 md:w-8'
-                : 'bg-white/50 hover:bg-white/70 w-2 sm:w-2.5 md:w-3'
-                }`}
+              className={`h-2 sm:h-2.5 md:h-3 rounded-full transition-all ${
+                index === currentSlide
+                  ? 'bg-white w-6 sm:w-7 md:w-8'
+                  : 'bg-white/50 hover:bg-white/70 w-2 sm:w-2.5 md:w-3'
+              }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}

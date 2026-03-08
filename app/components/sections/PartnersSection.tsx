@@ -12,7 +12,7 @@ export default function PartnersSection() {
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
-    
+
     // If the user prefers reduced motion, don't start the automatic scrolling
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
@@ -51,7 +51,7 @@ export default function PartnersSection() {
   const duplicatedPartners = [...partners, ...partners];
 
   return (
-    <section className="py-10 md:py-16 bg-white">
+    <section id="partners" className="py-6 md:py-12 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">

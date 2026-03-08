@@ -135,12 +135,12 @@ export default function Header() {
       <div className="bg-[#07314e] relative font-roboto">
         <div className="w-full px-4 py-2 md:py-4">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex-shrink-0 w-20 sm:w-32 md:w-44 lg:w-52 flex justify-start items-center">
+            <div className="flex-shrink-0 w-20 sm:w-32 md:w-44 lg:w-52 flex justify-end items-center">
               <Image
                 src="/images/hvnn-logo.png"
                 alt="HVNN Logo"
-                width={150}
-                height={150}
+                width={50}
+                height={50}
                 className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 object-contain"
               />
             </div>
@@ -154,12 +154,12 @@ export default function Header() {
               </h2>
             </div>
 
-            <div className="flex-shrink-0 w-20 sm:w-32 md:w-44 lg:w-52 flex justify-end items-center">
+            <div className="flex-shrink-0 w-20 sm:w-32 md:w-44 lg:w-52 flex justify-start items-center">
               <Image
                 src="/images/logo.png"
                 alt="CSST Logo"
-                width={150}
-                height={150}
+                width={50}
+                height={50}
                 className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 object-contain"
               />
             </div>

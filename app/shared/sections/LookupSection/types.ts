@@ -75,4 +75,4 @@ export type LookupType = 'score' | 'certificate';
 /**
  * Certificate type options
  */
-export type CertificateType = 'all' | 'basic' | 'advanced' | 'standard';
+export type CertificateType = 'all' | 'Chứng chỉ UDCNTT cơ bản TT 03 của Bộ TT&TT' | 'Chứng chỉ UDCNTT nâng cao TT 03 của Bộ TT&TT' | 'Chuẩn đầu ra Tin học' | 'Chuẩn đầu ra KNM';

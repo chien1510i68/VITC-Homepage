@@ -8,25 +8,34 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';
 import { LookupResult } from '@/lib/api';
-import { LookupType } from '../types';
+import { LookupType, CertificateType } from '../types';
 
 interface LookupResultsProps {
   results: LookupResult[];
   hasSearched: boolean;
   lookupType: LookupType;
+  certificateType?: CertificateType;
 }
 
-export const LookupResults = ({ results, hasSearched, lookupType }: LookupResultsProps) => {
-  if (!hasSearched) return null;
+export const LookupResults = ({ results, hasSearched, lookupType, certificateType }: LookupResultsProps) => {
+  // Don't render anything if user hasn't performed a search yet
+  if (!hasSearched) {
+    return null;
+  }
+
+  // Check if current certificate type is "Chuẩn đầu ra KNM"
+  const isKNMType = certificateType === 'Chuẩn đầu ra KNM' || 
+                   (results.length > 0 && results.some(r => r.certificateType === 'Chuẩn đầu ra KNM'));
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -30 }}
         transition={{ duration: 0.6 }}
         className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 overflow-hidden"
+        key={`results-${lookupType}-${hasSearched}`} // Key để force re-render khi chuyển tab
       >
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -68,8 +77,15 @@ export const LookupResults = ({ results, hasSearched, lookupType }: LookupResult
                       <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-700">Ngày sinh</th>
                       <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-700">Nơi sinh</th>
                       <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-700">Số vào sổ</th>
-                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-gray-700">Điểm LT</th>
-                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-gray-700">Điểm TH</th>
+                      {!isKNMType && (
+                        <>
+                          <th className="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-gray-700">Xếp loại LT</th>
+                          <th className="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-gray-700">Xếp loại TH</th>
+                        </>
+                      )}
+                      {isKNMType && (
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-gray-700">Xếp loại</th>
+                      )}
                       <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-700">Ngày cấp</th>
                       <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-700">Loại CC</th>
                     </>
@@ -123,8 +139,24 @@ export const LookupResults = ({ results, hasSearched, lookupType }: LookupResult
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 whitespace-nowrap">{result.birthDate || '-'}</td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700">{result.birthPlace}</td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 font-medium">{result.entryNumber}</td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs sm:text-sm font-semibold text-gray-900">{result.theoryScore}</td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs sm:text-sm font-semibold text-gray-900">{result.practiceScore}</td>
+                        {!isKNMType && (
+                          <>
+                            <td className="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs sm:text-sm font-semibold text-gray-900">{result.theoryScore}</td>
+                            <td className="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs sm:text-sm font-semibold text-gray-900">{result.practiceScore}</td>
+                          </>
+                        )}
+                        {isKNMType && (
+                          <td className="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs sm:text-sm">
+                            <motion.span
+                              initial={{ scale: 0, rotate: -180 }}
+                              animate={{ scale: 1, rotate: 0 }}
+                              transition={{ duration: 0.4, delay: 0.6 }}
+                              className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[10px] sm:text-xs font-semibold whitespace-nowrap bg-blue-100 text-blue-700"
+                            >
+                              {result.xepLoai || '-'}
+                            </motion.span>
+                          </td>
+                        )}
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 whitespace-nowrap">{result.issueDate || '-'}</td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700">{result.certificateType}</td>
                       </>
