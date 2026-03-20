@@ -12,9 +12,6 @@ export async function getCourseSchedules(options: { page?: number; size?: number
   const { page = 0, size = 100 } = options;
   const url = '/api/v1/classes/filter';
   
-  console.log('🔵 Calling Schedules API:', url);
-  console.log('📦 Request body:', { status: 'OPEN', page, size });
-  
   try {
     const response = await apiFetch(url, {
       method: 'POST',
@@ -29,8 +26,6 @@ export async function getCourseSchedules(options: { page?: number; size?: number
       })
     });
     
-    console.log('📡 Response status:', response.status, response.statusText);
-    
     if (!response.ok) {
       const errorText = await response.text();
       console.error('❌ Error response:', errorText);
@@ -38,17 +33,14 @@ export async function getCourseSchedules(options: { page?: number; size?: number
     }
     
     const result = await response.json();
-    console.log('✅ Response data:', JSON.stringify(result, null, 2));
     
     if (result.success && result.data) {
-      console.log('✅ Course schedules loaded from API');
       // API có thể trả về array trực tiếp hoặc {items, total} hoặc {data, total}
       const classes = Array.isArray(result.data) 
         ? result.data 
         : (result.data.data || result.data.items || []);
       
       const total = result.data.total || classes.length;
-      console.log(`📊 Found ${classes.length} classes, total: ${total}`);
       
       // Map backend Class to frontend CourseSchedule
       const schedules = classes.map((cls: any) => ({
@@ -65,7 +57,6 @@ export async function getCourseSchedules(options: { page?: number; size?: number
         location: cls.location || 'Chưa xác định'
       }));
       
-      console.log('✅ Mapped schedules:', schedules);
       return { data: schedules, total };
     }
     

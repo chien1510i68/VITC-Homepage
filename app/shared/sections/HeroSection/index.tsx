@@ -54,8 +54,10 @@ export default function HeroSection({
       try {
         setIsLoading(true);
         const data = await fetchActiveSlidesByType('IT');
-        if (data && data.length > 0) {
-          setApiSlides(data);
+        // Double check filtering for ACTIVE status on client side
+        const activeData = (data || []).filter(s => s.status === 'ACTIVE');
+        if (activeData && activeData.length > 0) {
+          setApiSlides(activeData);
         }
       } catch (error) {
         console.error('Failed to load hero slides:', error);

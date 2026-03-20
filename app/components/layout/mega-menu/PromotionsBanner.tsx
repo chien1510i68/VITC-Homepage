@@ -27,7 +27,9 @@ export function PromotionsBanner({ onOpen }: PromotionsBannerProps) {
       try {
         setIsLoading(true);
         const data = await fetchActiveSlidesByType('IT-KM');
-        setSlides(data || []);
+        // Double check filtering for ACTIVE status on client side
+        const activeSlides = (data || []).filter(s => s.status === 'ACTIVE');
+        setSlides(activeSlides);
       } catch (error) {
         console.error('Failed to load IT-KM slides:', error);
       } finally {
@@ -54,7 +56,7 @@ export function PromotionsBanner({ onOpen }: PromotionsBannerProps) {
       {(slides.length === 1 && slides[0]) ? (() => {
         const slide = slides[0];
         return (
-          <div className="relative w-full aspect-[16/4.5] overflow-hidden rounded-xl shadow-md group">
+          <div className="relative w-full aspect-[5/1] overflow-hidden rounded-xl shadow-md group">
             <Image
               src={slide.imageUrl}
               alt={slide.content || 'Promotion'}
@@ -70,7 +72,7 @@ export function PromotionsBanner({ onOpen }: PromotionsBannerProps) {
           </div>
         );
       })() : (
-        <div className="relative w-full aspect-[16/4.5] overflow-hidden rounded-xl shadow-md bg-white group">
+        <div className="relative w-full aspect-[5/1] overflow-hidden rounded-xl shadow-md bg-white group">
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             slidesPerView={1}

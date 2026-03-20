@@ -48,7 +48,6 @@ export async function getInstructors(type: string = 'IT'): Promise<Instructor[]>
     const result = await response.json();
     
     if (result.success && result.data && Array.isArray(result.data)) {
-      console.log('✅ Instructors loaded from API');
       return result.data.map((user: BackendUser, index: number) => 
         convertUserToInstructor(user, index)
       );
@@ -69,7 +68,6 @@ export async function getInstructorById(id: number): Promise<Instructor | null> 
     const response = await fetchWithTimeout<Instructor>(`/api/v1/instructors/${id}`);
     
     if (response.success && response.data) {
-      console.log(`✅ Instructor ${id} loaded from API`);
       return response.data;
     }
     

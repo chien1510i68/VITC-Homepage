@@ -114,7 +114,6 @@ export async function getNewsById(id: number | string): Promise<NewsArticle | nu
 
     const result = await response.json();
     if (result.success && result.data) {
-      console.log(`✅ News ${id} loaded`);
       return convertBackendNewsToArticle(result.data);
     }
 

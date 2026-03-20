@@ -42,7 +42,6 @@ export function useCertificateLookup(onSearch?: (cccd: string) => void): UseCert
     
     try {
       const data = await api.lookupCertificateByCCCD(cccd);
-      console.log('📋 Certificate data received:', data);
       
       setResults(data);
       setHasSearched(true);

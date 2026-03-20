@@ -25,10 +25,6 @@ export async function submitConsultationForm(formData: {
     action: 'TU_VAN'
   };
   
-  console.log('📤 Submitting consultation form');
-  console.log('🔗 Endpoint:', url);
-  console.log('📦 Request body:', JSON.stringify(requestBody, null, 2));
-  
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -39,8 +35,6 @@ export async function submitConsultationForm(formData: {
       body: JSON.stringify(requestBody)
     });
     
-    console.log('📡 Response status:', response.status, response.statusText);
-    
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: response.statusText }));
       console.error('❌ Error response:', errorData);
@@ -48,10 +42,8 @@ export async function submitConsultationForm(formData: {
     }
     
     const result = await response.json();
-    console.log('✅ Response data:', JSON.stringify(result, null, 2));
     
     if (result.success || result.status === 'success') {
-      console.log('✅ Consultation form submitted successfully');
       return {
         success: true,
         data: result.data || { message: 'Gửi thành công' },
@@ -88,10 +80,6 @@ export async function submitCourseRegistration(formData: {
   // Use Next.js API route instead of direct backend call
   const url = '/api/registrations';
   
-  console.log('📤 Submitting course registration');
-  console.log('🔗 Endpoint:', url);
-  console.log('📦 Request body:', JSON.stringify(formData, null, 2));
-  
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -102,14 +90,10 @@ export async function submitCourseRegistration(formData: {
       body: JSON.stringify(formData)
     });
     
-    console.log('📡 Response status:', response.status, response.statusText);
-    
     const result = await response.json();
-    console.log('✅ Response data:', JSON.stringify(result, null, 2));
     
     // Handle success case
     if (response.ok && result.isRegistered === true) {
-      console.log('✅ Course registration submitted successfully');
       return {
         success: true,
         data: { isRegistered: true },

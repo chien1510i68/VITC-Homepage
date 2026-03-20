@@ -52,10 +52,7 @@ export default function LookupSection({
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Debug: Monitor state changes to ensure UI updates correctly
-  useEffect(() => {
-    console.log(`📊 State update: lookupType=${lookupType}, hasSearched=${hasSearched}, results.length=${results.length}`);
-  }, [lookupType, hasSearched, results.length]);
+
 
   // Filter results when certificate type changes
   useEffect(() => {
@@ -71,7 +68,6 @@ export default function LookupSection({
   const handleTabChange = (newLookupType: LookupType) => {
     // Only clear if actually switching to different tab
     if (newLookupType !== lookupType) {
-      console.log(`🔄 Switching from ${lookupType} to ${newLookupType} - clearing results`);
       
       // Clear all states immediately to hide results table
       setResults([]);
@@ -82,8 +78,6 @@ export default function LookupSection({
       
       // Then update the lookup type
       setLookupType(newLookupType);
-      
-      console.log(`✅ Tab switched to ${newLookupType} - UI should be cleared`);
     }
   };
 

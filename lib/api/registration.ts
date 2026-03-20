@@ -63,7 +63,6 @@ export async function fetchCoursesBasicInfo(): Promise<ApiResponse<CourseBasicIn
   // Try to get from cache first
   const cached = getCoursesFromCache();
   if (cached) {
-    console.log('✅ Using cached courses data');
     return {
       success: true,
       data: cached,
@@ -74,9 +73,6 @@ export async function fetchCoursesBasicInfo(): Promise<ApiResponse<CourseBasicIn
   // If no cache, fetch from API
   const url = '/api/courses/basic-info'; // Next.js API route
   
-  console.log('📤 Fetching courses basic info from API');
-  console.log('🔗 Endpoint:', url);
-  
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -85,8 +81,6 @@ export async function fetchCoursesBasicInfo(): Promise<ApiResponse<CourseBasicIn
       },
     });
     
-    console.log('📡 Response status:', response.status, response.statusText);
-    
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ message: response.statusText }));
       console.error('❌ Error response:', errorData);
@@ -94,10 +88,8 @@ export async function fetchCoursesBasicInfo(): Promise<ApiResponse<CourseBasicIn
     }
     
     const result: CoursesBasicInfoResponse = await response.json();
-    console.log('✅ Response data:', JSON.stringify(result, null, 2));
     
     if (result.success && result.data) {
-      console.log(`✅ Fetched ${result.data.length} courses`);
       // Save to cache for future use
       saveCoursesToCache(result.data);
       return {
@@ -132,10 +124,6 @@ export async function submitCourseRegistration(
     action: 'DANG_KY',
   };
   
-  console.log('📤 Submitting course registration');
-  console.log('🔗 Endpoint:', url);
-  console.log('📦 Request body:', JSON.stringify(requestData, null, 2));
-  
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -145,10 +133,7 @@ export async function submitCourseRegistration(
       body: JSON.stringify(requestData),
     });
     
-    console.log('📡 Response status:', response.status, response.statusText);
-    
     const result = await response.json();
-    console.log('📦 Response data:', JSON.stringify(result, null, 2));
     
     if (!response.ok) {
       console.error('❌ Registration failed:', result);
@@ -160,7 +145,6 @@ export async function submitCourseRegistration(
     }
     
     if (result.isRegistered) {
-      console.log('✅ Course registration successful');
       return {
         success: true,
         data: result,

@@ -88,8 +88,6 @@ export async function fetchWithTimeout<T>(
 
     const result = await response.json();
     
-    console.log('🔍 API Response:', { url, result });
-    
     // Check backend response format - can be either:
     // { success: true, data: {...} } or { status: "success", data: {...} }
     if (result.success === true || result.status === 'success') {

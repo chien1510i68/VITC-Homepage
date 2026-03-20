@@ -44,10 +44,6 @@ export async function submitConsultation(
     action: 'TU_VAN',
   };
   
-  console.log('📤 Submitting consultation request');
-  console.log('🔗 Endpoint:', url);
-  console.log('📦 Request body:', JSON.stringify(requestData, null, 2));
-  
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -57,10 +53,7 @@ export async function submitConsultation(
       body: JSON.stringify(requestData),
     });
     
-    console.log('📡 Response status:', response.status, response.statusText);
-    
     const result = await response.json();
-    console.log('📦 Response data:', JSON.stringify(result, null, 2));
     
     if (!response.ok) {
       console.error('❌ Consultation request failed:', result);
@@ -71,7 +64,6 @@ export async function submitConsultation(
       };
     }
     
-    console.log('✅ Consultation request successful');
     return {
       success: true,
       data: result,

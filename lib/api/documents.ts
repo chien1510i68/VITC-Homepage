@@ -51,7 +51,6 @@ export async function fetchDocuments(
   
   try {
     const requestBody = { page, size, type };
-    console.log('📦 Request body:', requestBody);
     
     const response = await fetchWithTimeout<DocumentsResponse>(
       `/api/v1/documents/filter`,

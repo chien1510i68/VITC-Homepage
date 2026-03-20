@@ -48,11 +48,47 @@ export async function fetchSlides(
   }
 }
 
+import { getSlidesFromCache, saveSlidesToCache } from '@/lib/cache/slidesCache';
+
+// Memory cache for ongoing requests to prevent duplicates
+const ongoingRequests = new Map<string, Promise<BackendSlide[]>>();
+
 /**
- * Fetch active slides for a specific type
+ * Fetch active slides for a specific type with caching and deduplication
  */
 export async function fetchActiveSlidesByType(
   type: 'IT' | 'SOFT_SKILLS' | 'HOME' | 'BANNER' | 'IT-KM'
 ): Promise<BackendSlide[]> {
-  return fetchSlides({ type, status: 'ACTIVE' });
+  // SSR check - no cache on server
+  if (typeof window === 'undefined') {
+    return fetchSlides({ type, status: 'ACTIVE' });
+  }
+
+  // 1. Try to get from cache first for instant UI response
+  const cachedData = getSlidesFromCache(type);
+
+  if (cachedData && cachedData.length > 0) {
+    // Return cached data immediately and DON'T call API if fresh
+    return cachedData;
+  }
+
+  // 2. If no cache, check if there's already an active request for this type
+  if (ongoingRequests.has(type)) {
+     return ongoingRequests.get(type)!;
+  }
+
+  // 3. Fire new request
+  const requestPromise = (async () => {
+    try {
+      const data = await fetchSlides({ type, status: 'ACTIVE' });
+      saveSlidesToCache(type, data);
+      return data;
+    } finally {
+      // Clean up deduplication map
+      ongoingRequests.delete(type);
+    }
+  })();
+
+  ongoingRequests.set(type, requestPromise);
+  return requestPromise;
 }

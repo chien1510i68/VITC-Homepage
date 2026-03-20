@@ -26,10 +26,8 @@ export function getCoursesFromCache(): CourseBasicInfo[] | null {
 
     // Check if cache is still valid
     if (now - timestamp < CACHE_DURATION) {
-      console.log('✅ Using cached courses data');
       return data;
     } else {
-      console.log('⏰ Cache expired, removing old data');
       sessionStorage.removeItem(CACHE_KEY);
       return null;
     }
@@ -49,7 +47,6 @@ export function saveCoursesToCache(courses: CourseBasicInfo[]): void {
       timestamp: Date.now(),
     };
     sessionStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-    console.log('✅ Courses saved to cache');
   } catch (error) {
     console.error('❌ Error saving courses to cache:', error);
   }

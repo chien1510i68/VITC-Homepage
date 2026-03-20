@@ -10,7 +10,6 @@ export async function getAboutTimeline(): Promise<AboutTimeline[]> {
     const response = await fetchWithTimeout<AboutTimeline[]>(`/api/v1/about/timeline`);
     
     if (response.success && response.data) {
-      console.log('✅ About timeline loaded from API');
       return response.data;
     }
     

@@ -15,33 +15,26 @@ import { useSchedules } from './hooks/useSchedules';
  * Responsibility: Compose and render all homepage sections
  */
 export default function Home() {
-  const { schedules, isLoading: schedulesLoading } = useSchedules({ 
-    page: 0, 
-    size: 10 
+  const { schedules, isLoading: schedulesLoading } = useSchedules({
+    page: 0,
+    size: 10
   });
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main id="main-content">
         <BannerCarouselSection />
         <HeroSection />
-        {/* <StatsSection /> */}
         <SimpleFeaturedCoursesSection />
-        
-        {/* {!schedulesLoading && (
-          <ScheduleSection
-            title="Lịch khai giảng"
-            ctaLink="/khoa-hoc"
-            schedules={schedules}
-          />
-        )} */}
-        
+
+
+
         <NewsCTASection />
         <TestimonialsSection />
       </main>
-      
+
       <Footer />
     </div>
   );

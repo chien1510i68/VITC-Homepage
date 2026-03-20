@@ -12,7 +12,6 @@ export async function lookupExamResults(cccd: string): Promise<LookupResult[]> {
     );
     
     if (response.success && response.data) {
-      console.log(`✅ Exam results for CCCD ${cccd} loaded from API`);
       return response.data;
     }
     
@@ -40,7 +39,6 @@ export async function lookupExamResultsByCCCD(cccd: string): Promise<LookupResul
     
     // Handle the new response format: { success: true, message: null, data: [...] }
     if (result.success && result.data) {
-      console.log(`✅ Exam results for CCCD ${cccd} loaded from Spring Boot API`);
       // Convert ExamResultResponse to LookupResult format
       const lookupResults: LookupResult[] = result.data.map((exam: any) => ({
         id: exam.id,
@@ -90,7 +88,6 @@ export async function lookupCertificate(cccd: string): Promise<LookupResult[]> {
     const result = await response.json();
     
     if (result.success && result.data) {
-      console.log(`✅ Certificate for CCCD ${cccd} loaded from API`);
       // Convert CertificateResponse to LookupResult format
       const lookupResults: LookupResult[] = result.data.map((cert: CertificateResponse) => ({
         id: cert.id,
@@ -136,7 +133,6 @@ export async function lookupCertificateByCCCD(cccd: string): Promise<Certificate
     
     // Handle the new response format: { success: true, message: null, data: [...] }
     if (result.success && result.data) {
-      console.log(`✅ Certificate for CCCD ${cccd} loaded from Spring Boot API`);
       return Array.isArray(result.data) ? result.data : [result.data];
     }
     
