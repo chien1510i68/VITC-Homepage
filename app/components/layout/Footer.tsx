@@ -57,8 +57,8 @@ export default function Footer() {
               <div className="flex items-start gap-3 group">
                 <MapPin className={`w-5 h-5 mt-0.5 ${TAILWIND_COLORS.textPrimary} flex-shrink-0`} />
                 <p className="text-sm group-hover:text-white transition-colors">
-                  {process.env.NEXT_PUBLIC_ADDRESS || 'Phòng 106, Nhà B1 - HVNNVN'}<br />
-                  {process.env.NEXT_PUBLIC_ADDRESS_FULL || 'Trâu Quỳ - Gia Lâm - Hà Nội'}
+                  { 'Phòng 213 - Tòa B1, Khu làm việc các Khoa, Viện, Trung tâm - Học viện Nông nghiệp Việt Nam - Gia Lâm, Hà Nội'}<br />
+                  { ''}
                 </p>
               </div>
 
@@ -179,7 +179,7 @@ export default function Footer() {
             </h4>
             <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg">
               <iframe
-                src={ 'https://www.google.com/maps?ll=21.0032365,105.9339706&z=15&t=m&hl=vi&gl=US&mapclient=embed&cid=7854680610929000262&output=embed'}
+                src="https://www.google.com/maps?q=21.003453,105.9336347&z=17&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

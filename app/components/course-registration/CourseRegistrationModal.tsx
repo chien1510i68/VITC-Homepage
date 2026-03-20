@@ -242,10 +242,10 @@ export default function CourseRegistrationModal({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/30 backdrop-blur-md"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl">
+      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl z-10">
         {/* Close Button */}
         <button
           onClick={handleClose}

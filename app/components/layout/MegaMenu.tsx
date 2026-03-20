@@ -11,9 +11,17 @@ interface MegaMenuProps {
   onMouseLeave: () => void;
   courses: CourseSchedule[];
   coursesBasicInfo: CourseBasicInfo[];
+  onOpenRegistration: (courseId?: string) => void;
 }
 
-export function MegaMenu({ isOpen, onMouseEnter, onMouseLeave, courses, coursesBasicInfo }: MegaMenuProps) {
+export function MegaMenu({ 
+  isOpen, 
+  onMouseEnter, 
+  onMouseLeave, 
+  courses, 
+  coursesBasicInfo,
+  onOpenRegistration
+}: MegaMenuProps) {
   if (!isOpen) return null;
 
   // Group courses by subject
@@ -39,7 +47,7 @@ export function MegaMenu({ isOpen, onMouseEnter, onMouseLeave, courses, coursesB
       onMouseLeave={onMouseLeave}
     >
       {/* Content Container with opacity and blur */}
-      <div className="relative bg-gray/10 backdrop-blur-lg border-b border-gray-200 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300">
+      <div className="relative bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             
@@ -49,7 +57,7 @@ export function MegaMenu({ isOpen, onMouseEnter, onMouseLeave, courses, coursesB
             {/* Right Column - Featured Courses & Promotions */}
             <div className="lg:col-span-3">
               <FeaturedCourses courses={featuredCourses} />
-              <PromotionsBanner />
+              <PromotionsBanner onOpen={() => onOpenRegistration()} />
             </div>
 
           </div>

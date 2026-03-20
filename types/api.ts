@@ -102,7 +102,7 @@ export interface BackendSlide {
   id: string;
   imageUrl: string;
   content?: string;
-  type: 'IT' | 'SOFT_SKILLS' | 'HOME' | 'BANNER';
+  type: 'IT' | 'SOFT_SKILLS' | 'HOME' | 'BANNER' | 'IT-KM';
   orderIndex: number;
   status?: 'ACTIVE' | 'INACTIVE';
 }
@@ -112,7 +112,7 @@ export interface BackendSlide {
  * Used for POST /api/v1/slides/filter
  */
 export interface SlideFilterRequest {
-  type?: 'IT' | 'SOFT_SKILLS' | 'HOME' | 'BANNER';
+  type?: 'IT' | 'SOFT_SKILLS' | 'HOME' | 'BANNER' | 'IT-KM';
   status?: 'ACTIVE' | 'INACTIVE';
 }
 

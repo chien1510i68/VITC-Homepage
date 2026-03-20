@@ -1,112 +1,185 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import Header from '../../components/layout/Header';
 import Footer from '../../components/layout/Footer';
 import Link from 'next/link';
-import { ArrowLeft, Users, User, Mail } from 'lucide-react';
+import { Users, User, Mail } from 'lucide-react';
+import { fetchWithTimeout } from '@/lib/api/base';
+
+interface OrgMember {
+  name: string;
+  position: string;
+  email: string;
+  degree?: string;
+  image?: string;
+}
+
+interface OrgTeam {
+  key: string;
+  name: string;
+  icon?: string;
+  description?: string;
+  members: OrgMember[];
+}
+
+interface OrgStructureValue {
+  leader: OrgMember;
+  deputies: OrgMember[];
+  teams: OrgTeam[];
+}
+
+const ORG_STRUCTURE_API_PATH = process.env.NEXT_PUBLIC_ORG_STRUCTURE_API_PATH || '/api/v1/configuration/homepage.org-structure';
+
+const DEFAULT_ORG_STRUCTURE: OrgStructureValue = {
+  leader: {
+    name: '',
+    position: '',
+    email: '',
+    image: ''
+  },
+  deputies: [],
+  teams: []
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function parseJsonIfNeeded(value: unknown): unknown {
+  if (typeof value !== 'string') return value;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+}
+
+function normalizeMember(value: unknown): OrgMember | null {
+  if (!isRecord(value)) return null;
+
+  const name = typeof value.name === 'string' ? value.name : '';
+  const position = typeof value.position === 'string' ? value.position : '';
+  const email = typeof value.email === 'string' ? value.email : '';
+
+  if (!name || !position || !email) return null;
+
+  return {
+    name,
+    position,
+    email,
+    degree: typeof value.degree === 'string' ? value.degree : undefined,
+    image: typeof value.image === 'string' ? value.image : undefined,
+  };
+}
+
+function normalizeTeam(value: unknown, index: number): OrgTeam | null {
+  if (!isRecord(value)) return null;
+
+  const name = typeof value.name === 'string' ? value.name : '';
+  if (!name) return null;
+
+  const membersRaw = Array.isArray(value.members) ? value.members : [];
+  const members = membersRaw
+    .map(normalizeMember)
+    .filter((member): member is OrgMember => member !== null);
+
+  return {
+    key: typeof value.key === 'string' ? value.key : `team-${index}`,
+    name,
+    icon: typeof value.icon === 'string' ? value.icon : '',
+    description: typeof value.description === 'string' ? value.description : '',
+    members,
+  };
+}
+
+function normalizeOrgStructure(value: unknown): OrgStructureValue | null {
+  const parsed = parseJsonIfNeeded(value);
+  if (!isRecord(parsed)) return null;
+
+  const leader = normalizeMember(parsed.leader);
+  if (!leader) return null;
+
+  const deputiesRaw = Array.isArray(parsed.deputies) ? parsed.deputies : [];
+  const teamsRaw = Array.isArray(parsed.teams) ? parsed.teams : [];
+
+  const deputies = deputiesRaw
+    .map(normalizeMember)
+    .filter((member): member is OrgMember => member !== null);
+
+  const teams = teamsRaw
+    .map(normalizeTeam)
+    .filter((team): team is OrgTeam => team !== null);
+
+  return {
+    leader,
+    deputies,
+    teams,
+  };
+}
+
+function extractApiValue(data: unknown): unknown {
+  const parsed = parseJsonIfNeeded(data);
+  if (!isRecord(parsed)) return parsed;
+
+  // New API format: { data: { values: { ... } } } or { values: { ... } }
+  if ('values' in parsed) {
+    return parseJsonIfNeeded(parsed.values);
+  }
+
+  if ('data' in parsed && isRecord(parsed.data) && 'values' in parsed.data) {
+    return parseJsonIfNeeded(parsed.data.values);
+  }
+
+  // Backward compatibility with previous kv format.
+  if ('value' in parsed) {
+    return parseJsonIfNeeded(parsed.value);
+  }
+
+  return parsed;
+}
 
 export default function CoCauToChucPage() {
-  // Level 1: Giám đốc
-  const giamDoc = {
-    name: 'TS.GVCC Ngô Trí Dương',
-    position: 'Giám đốc Trung tâm',
-    email: 'duongnt@vnua.edu.vn',
-    image: '/images/instructors/placeholder.jpg'
-  };
+  const [orgStructure, setOrgStructure] = useState<OrgStructureValue>(DEFAULT_ORG_STRUCTURE);
+  const [isLoadingOrg, setIsLoadingOrg] = useState(true);
+  const [orgError, setOrgError] = useState<string | null>(null);
 
-  // Level 2: Phó Giám đốc
-  const phoGiamDoc = [
-    {
-      name: 'TS. Phạm Quang Dũng',
-      position: 'Phó Giám đốc',
-      email: 'dungpq@vnua.edu.vn',
-      image: '/images/instructors/placeholder.jpg'
-    },
-    {
-      name: 'ThS. Nguyễn Thị Thu Huyền',
-      position: 'Phó Giám đốc',
-      email: 'huyenntt@vnua.edu.vn',
-      image: '/images/instructors/placeholder.jpg'
-    }
-  ];
+  useEffect(() => {
+    let cancelled = false;
 
-  // Level 3: Tổ/Phòng ban
-  const toPhongBan = [
-    {
-      name: 'Tổ Tin học',
-      icon: '',
-      description: 'Đào tạo và phát triển kỹ năng tin học'
-    },
-    {
-      name: 'Tổ Kỹ năng mềm',
-      icon: '',
-      description: 'Đào tạo và phát triển kỹ năng mềm'
-    }
-  ];
+    const loadOrgStructure = async () => {
+      setIsLoadingOrg(true);
+      setOrgError(null);
 
-  // Level 4: Chuyên viên theo tổ
-  const chuyenVien = {
-    tinHoc: [
-      {
-        name: 'CN. Nguyễn Thị Huyền Trang',
-        degree: 'CN',
-        position: 'Chuyên viên',
-        email: 'trangnth@vnua.edu.vn',
-        image: '/images/instructors/placeholder.jpg'
-      },
-      {
-        name: 'CN. Nguyễn Thị Tuyết Lan',
-        degree: 'CN',
-        position: 'Chuyên viên',
-        email: 'lanntt@vnua.edu.vn',
-        image: '/images/instructors/placeholder.jpg'
-      },
-      {
-        name: 'CN. Nguyễn Thị Hoàn',
-        degree: 'CN',
-        position: 'Chuyên viên',
-        email: 'hoantn@vnua.edu.vn',
-        image: '/images/instructors/placeholder.jpg'
-      },
-      {
-        name: 'CN. Nguyễn Thị Quỳnh',
-        degree: 'CN',
-        position: 'Chuyên viên',
-        email: 'quynhnt@vnua.edu.vn',
-        image: '/images/instructors/placeholder.jpg'
-      },
-      {
-        name: 'CN. Nguyễn Thị Thanh Huyền',
-        degree: 'CN',
-        position: 'Chuyên viên',
-        email: 'nthanhhuyen@vnua.edu.vn',
-        image: '/images/instructors/placeholder.jpg'
+      const response = await fetchWithTimeout<unknown>(ORG_STRUCTURE_API_PATH, { method: 'GET' });
+
+      if (cancelled) return;
+
+      if (!response.success) {
+        setOrgStructure(DEFAULT_ORG_STRUCTURE);
+        setOrgError('Không tải được dữ liệu cơ cấu tổ chức từ API. Đang hiển thị dữ liệu mặc định.');
+        setIsLoadingOrg(false);
+        return;
       }
-    ],
-    kyNangMem: [
-      {
-        name: 'ThS. Lê Thị Quỳnh Trang',
-        degree: 'ThS',
-        position: 'Chuyên viên',
-        email: 'trangltq@vnua.edu.vn',
-        image: '/images/instructors/placeholder.jpg'
-      },
-      {
-        name: 'CN. Hà Thủy Tiên',
-        degree: 'CN',
-        position: 'Chuyên viên',
-        email: 'tienht@vnua.edu.vn',
-        image: '/images/instructors/placeholder.jpg'
-      },
-      {
-        name: 'CN. Trần Thị Nhật Minh',
-        degree: 'CN',
-        position: 'Chuyên viên',
-        email: 'minhttn@vnua.edu.vn',
-        image: '/images/instructors/placeholder.jpg'
+
+      const normalized = normalizeOrgStructure(extractApiValue(response.data));
+      if (!normalized) {
+        setOrgStructure(DEFAULT_ORG_STRUCTURE);
+        setOrgError('Dữ liệu cơ cấu tổ chức từ API không đúng định dạng. Đang hiển thị dữ liệu mặc định.');
+        setIsLoadingOrg(false);
+        return;
       }
-    ]
-  };
+
+      setOrgStructure(normalized);
+      setIsLoadingOrg(false);
+    };
+
+    loadOrgStructure();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -156,6 +229,18 @@ export default function CoCauToChucPage() {
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
+              {isLoadingOrg && (
+                <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                  Đang tải dữ liệu cơ cấu tổ chức...
+                </div>
+              )}
+
+              {orgError && (
+                <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                  {orgError}
+                </div>
+              )}
+
               <div className="flex items-center justify-center gap-3 mb-12">
                 <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center">
                   <Users className="w-6 h-6 text-white" />
@@ -173,15 +258,15 @@ export default function CoCauToChucPage() {
                       <User className="w-16 h-16 text-green-600" />
                     </div>
                     <h3 className="text-xl font-bold mb-1 text-center">
-                      {giamDoc.name}
+                      {orgStructure.leader.name}
                     </h3>
                     <p className="text-green-100 font-semibold mb-4 text-lg">
-                      {giamDoc.position}
+                      {orgStructure.leader.position}
                     </p>
                     <div className="w-full bg-white/10 rounded-xl p-4">
-                      <a href={`mailto:${giamDoc.email}`} className="flex items-center justify-center gap-2 text-white/90 hover:text-white transition-colors">
+                      <a href={`mailto:${orgStructure.leader.email}`} className="flex items-center justify-center gap-2 text-white/90 hover:text-white transition-colors">
                         <Mail className="w-5 h-5" />
-                        <span className="text-sm">{giamDoc.email}</span>
+                        <span className="text-sm">{orgStructure.leader.email}</span>
                       </a>
                     </div>
                   </div>
@@ -199,7 +284,7 @@ export default function CoCauToChucPage() {
                 <div className="absolute left-0 right-0 top-0 h-0.5 bg-gray-300"></div>
 
                 <div className="grid md:grid-cols-2 gap-8 pt-8">
-                  {phoGiamDoc.map((pgd, index) => (
+                  {orgStructure.deputies.map((pgd, index) => (
                     <div key={index} className="relative">
                       {/* Vertical line to parent */}
                       <div className="absolute left-1/2 -top-8 w-0.5 h-8 bg-gray-300 -translate-x-1/2"></div>
@@ -228,67 +313,66 @@ export default function CoCauToChucPage() {
                 </div>
               </div>
 
-              {/* Connection lines Level 2 -> 3 */}
-              <div className="grid md:grid-cols-2 gap-8 mb-4">
-                <div className="flex justify-center">
-                  <div className="w-0.5 h-12 bg-gray-300"></div>
-                </div>
-                <div className="flex justify-center">
-                  <div className="w-0.5 h-12 bg-gray-300"></div>
-                </div>
+              {/* Connection lines Level 2 -> 3 (mỗi Phó Giám đốc nối xuống tổ tương ứng) */}
+              <div className="md:hidden flex justify-center mb-6">
+                <div className="w-0.5 h-10 bg-gray-300"></div>
+              </div>
+              <div className="hidden md:grid md:grid-cols-2 gap-8 mb-6">
+                {orgStructure.teams.map((team, index) => (
+                  <div key={`deputy-team-line-${team.key}-${index}`} className="flex justify-center">
+                    <div className="w-0.5 h-10 bg-gray-300"></div>
+                  </div>
+                ))}
               </div>
 
-              {/* Level 3: Banner Tổ/Phòng ban */}
-              <div className="grid md:grid-cols-2 gap-8 mb-8">
-                {toPhongBan.map((to, index) => (
-                  <div key={index}>
+              {/* Level 3 + 4: Hai khối ngang nhau, mỗi khối gồm tổ và danh sách nhân sự */}
+              <div className="grid md:grid-cols-2 gap-8 mb-8 items-start">
+                {orgStructure.teams.map((team) => (
+                  <section key={`team-block-${team.key}`} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                     <div className="bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-400 rounded-xl p-6 text-center shadow-lg">
-                      <div className="text-4xl mb-2">{to.icon}</div>
+                      <div className="text-4xl mb-2">{team.icon || ''}</div>
                       <h3 className="text-xl font-bold text-green-800 mb-1">
-                        {to.name}
+                        {team.name}
                       </h3>
-                      <p className="text-sm text-green-600">{to.description}</p>
+                      <p className="text-sm text-green-600">{team.description || ''}</p>
                     </div>
 
-                    {/* Connection line to Level 4 */}
-                    <div className="flex justify-center my-4">
-                      <div className="w-0.5 h-8 bg-gray-300"></div>
+                    <div className="mt-5 mb-4 flex items-center justify-between border-b border-gray-100 pb-3">
+                      <h4 className="text-base font-bold text-gray-900">Danh sách nhân sự</h4>
+                      <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700">
+                        {team.members.length} nhân sự
+                      </span>
                     </div>
 
-                    {/* Level 4: Chuyên viên */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {(index === 0 ? chuyenVien.tinHoc : chuyenVien.kyNangMem).map((cv, cvIndex) => (
+                    <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
+                      {team.members.map((cv, cvIndex) => (
                         <div
                           key={cvIndex}
-                          className="bg-white rounded-xl p-5 shadow-md border border-gray-200 hover:shadow-xl hover:border-green-400 transition-all group"
+                          className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-lg hover:border-green-400 transition-all group"
                         >
                           <div className="flex flex-col items-center">
-                            <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-3 shadow">
-                              <User className="w-10 h-10 text-gray-600" />
+                            <div className="w-14 h-14 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-2">
+                              <User className="w-7 h-7 text-gray-600" />
                             </div>
-                            <span className="text-xs text-green-600 font-semibold">{cv.degree}</span>
-                            <h4 className="font-bold text-gray-900 text-center mb-1 text-sm">
+                            <span className="text-[10px] text-green-600 font-semibold leading-none mb-1">{cv.degree || ''}</span>
+                            <h5 className="font-bold text-gray-900 text-center text-xs leading-5 min-h-[40px]">
                               {cv.name}
-                            </h4>
-                            <p className="text-xs text-gray-600 mb-3">{cv.position}</p>
+                            </h5>
+                            <p className="text-[10px] text-gray-600 mb-2">{cv.position}</p>
 
-                            <div className="w-full bg-gray-50 rounded-lg p-3 transition-all">
-                              <a
-                                href={`mailto:${cv.email}`}
-                                className="flex items-center justify-center gap-2 text-gray-600 hover:text-green-600 transition-colors"
-                                title={cv.email}
-                              >
-                                <Mail className="w-4 h-4 flex-shrink-0" />
-                                <span className="text-xs truncate group-hover:whitespace-normal group-hover:break-all group-hover:text-center">
-                                  {cv.email}
-                                </span>
-                              </a>
-                            </div>
+                            <a
+                              href={`mailto:${cv.email}`}
+                              className="w-full flex items-start justify-center gap-1 rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-[10px] text-gray-600 hover:text-green-600 hover:border-green-300 transition-colors"
+                              title={cv.email}
+                            >
+                              <Mail className="w-3 h-3 mt-[2px] flex-shrink-0" />
+                              <span className="block break-all leading-4 text-center">{cv.email}</span>
+                            </a>
                           </div>
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </section>
                 ))}
               </div>
 

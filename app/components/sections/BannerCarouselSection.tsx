@@ -65,9 +65,7 @@ export default function BannerCarouselSection({
     const loadBanners = async () => {
       try {
         const data = await fetchActiveSlidesByType('BANNER');
-        if (data?.length > 0) {
-          setBanners(data);
-        }
+        setBanners(data || []);
       } catch (error) {
         console.error('Failed to load banner slides:', error);
       } finally {

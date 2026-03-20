@@ -15,6 +15,7 @@ import LookupMenu from './LookupMenu';
 import { useRef } from 'react';
 import { getCoursesFromCache, saveCoursesToCache } from '@/lib/cache/coursesCache';
 import { motion } from 'framer-motion';
+import { CourseRegistrationModal, useCourseRegistration } from '../course-registration';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,6 +28,11 @@ export default function Header() {
   const [isSoftSkillsMounted, setIsSoftSkillsMounted] = useState(false);
   const [isIntroMounted, setIsIntroMounted] = useState(false);
   const [isLookupMounted, setIsLookupMounted] = useState(false);
+  const { 
+    isOpen: isRegistrationOpen, 
+    openModal: openRegistrationModal, 
+    closeModal: closeRegistrationModal 
+  } = useCourseRegistration();
 
   const [courses, setCourses] = useState<CourseSchedule[]>([]);
   const [coursesBasicInfo, setCoursesBasicInfo] = useState<CourseBasicInfo[]>([]);
@@ -425,8 +431,15 @@ export default function Header() {
           onMouseLeave={() => setShowMegaMenu(false)}
           courses={courses}
           coursesBasicInfo={coursesBasicInfo}
+          onOpenRegistration={openRegistrationModal}
         />
       </header>
+
+      {/* Course Registration Modal */}
+      <CourseRegistrationModal
+        isOpen={isRegistrationOpen}
+        onClose={closeRegistrationModal}
+      />
     </>
   );
 }

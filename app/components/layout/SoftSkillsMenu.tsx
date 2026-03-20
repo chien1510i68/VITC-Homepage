@@ -8,9 +8,11 @@ interface Props {
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   isOpen?: boolean;
+  isMounted?: boolean;
+  onOpenRegistration?: (courseId?: string) => void;
 }
 
-export default function SoftSkillsMenu({ onMouseEnter, onMouseLeave, isOpen = true }: Props) {
+export default function SoftSkillsMenu({ onMouseEnter, onMouseLeave, isOpen = true, onOpenRegistration }: Props) {
   const propsOnMouseEnter = onMouseEnter;
   const propsOnMouseLeave = onMouseLeave;
 

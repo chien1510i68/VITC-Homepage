@@ -27,8 +27,15 @@ export async function fetchSlides(
 
     // Handle backend response format: { success: true, data: [...] }
     if (result.success && Array.isArray(result.data)) {
+      let filteredData = result.data;
+      
+      // Client-side defensive filtering by status if requested
+      if (filters.status) {
+        filteredData = filteredData.filter((slide: BackendSlide) => slide.status === filters.status);
+      }
+
       // Sort by orderIndex ascending
-      return result.data.sort((a: BackendSlide, b: BackendSlide) => 
+      return filteredData.sort((a: BackendSlide, b: BackendSlide) => 
         a.orderIndex - b.orderIndex
       );
     }
@@ -45,7 +52,7 @@ export async function fetchSlides(
  * Fetch active slides for a specific type
  */
 export async function fetchActiveSlidesByType(
-  type: 'IT' | 'SOFT_SKILLS' | 'HOME' | 'BANNER'
+  type: 'IT' | 'SOFT_SKILLS' | 'HOME' | 'BANNER' | 'IT-KM'
 ): Promise<BackendSlide[]> {
   return fetchSlides({ type, status: 'ACTIVE' });
 }
