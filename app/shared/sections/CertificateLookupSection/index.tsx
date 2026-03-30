@@ -57,6 +57,10 @@ export default function CertificateLookupSection({
     setErrorMessage,
     handleSearch,
     handleReset,
+    page,
+    setPage,
+    totalResults,
+    pageSize,
   } = useCertificateLookup(onSearch);
 
   return (
@@ -102,6 +106,10 @@ export default function CertificateLookupSection({
             results={results}
             cccd={cccd}
             onReset={handleReset}
+            page={page}
+            pageSize={pageSize}
+            total={totalResults}
+            onPageChange={setPage}
           />
         )}
 

@@ -3,7 +3,7 @@
  * @module shared/sections/CertificateLookupSection/hooks
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { api, CertificateResponse } from '@/lib/api';
 
 interface UseCertificateLookupReturn {
@@ -16,6 +16,10 @@ interface UseCertificateLookupReturn {
   setErrorMessage: (message: string) => void;
   handleSearch: () => Promise<void>;
   handleReset: () => void;
+  page: number;
+  setPage: (page: number) => void;
+  totalResults: number;
+  pageSize: number;
 }
 
 /**
@@ -28,8 +32,13 @@ export function useCertificateLookup(onSearch?: (cccd: string) => void): UseCert
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  
+  // Pagination state
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(30);
+  const [totalResults, setTotalResults] = useState(0);
 
-  const handleSearch = async () => {
+  const handleSearch = async (targetPage: number = 0) => {
     if (!cccd.trim()) {
       setErrorMessage('Vui lòng nhập số CCCD/CMND');
       setTimeout(() => setErrorMessage(''), 3000);
@@ -37,16 +46,16 @@ export function useCertificateLookup(onSearch?: (cccd: string) => void): UseCert
     }
 
     setIsLoading(true);
-    setHasSearched(false);
     setErrorMessage('');
     
     try {
-      const data = await api.lookupCertificateByCCCD(cccd);
+      const data = await api.lookupCertificateByCCCD(cccd, targetPage, pageSize);
       
-      setResults(data);
+      setResults(data.items);
+      setTotalResults(data.total);
       setHasSearched(true);
       
-      if (data.length === 0) {
+      if (data.items.length === 0) {
         setErrorMessage('Không tìm thấy thông tin chứng chỉ với số CCCD/CMND này');
         setTimeout(() => setErrorMessage(''), 5000);
       }
@@ -56,6 +65,7 @@ export function useCertificateLookup(onSearch?: (cccd: string) => void): UseCert
     } catch (error) {
       console.error('Error searching:', error);
       setResults([]);
+      setTotalResults(0);
       setHasSearched(true);
       setErrorMessage('Có lỗi xảy ra khi tra cứu. Vui lòng thử lại sau');
       setTimeout(() => setErrorMessage(''), 5000);
@@ -64,9 +74,18 @@ export function useCertificateLookup(onSearch?: (cccd: string) => void): UseCert
     }
   };
 
+  // Re-run search when page changes
+  useEffect(() => {
+    if (hasSearched) {
+      handleSearch(page);
+    }
+  }, [page]);
+
   const handleReset = () => {
     setCccd('');
     setResults([]);
+    setTotalResults(0);
+    setPage(0);
     setHasSearched(false);
     setErrorMessage('');
   };
@@ -79,7 +98,15 @@ export function useCertificateLookup(onSearch?: (cccd: string) => void): UseCert
     errorMessage,
     setCccd,
     setErrorMessage,
-    handleSearch,
+    handleSearch: () => {
+      if (page !== 0) setPage(0);
+      else handleSearch(0);
+      return Promise.resolve();
+    },
     handleReset,
+    page,
+    setPage,
+    totalResults,
+    pageSize,
   };
 }

@@ -27,9 +27,18 @@ export async function lookupExamResults(cccd: string): Promise<LookupResult[]> {
  * Calls: /results/cccd/{cccd}
  * Response format: { success: true, message: null, data: [...] }
  */
-export async function lookupExamResultsByCCCD(cccd: string): Promise<LookupResult[]> {
+/**
+ * Lookup exam results by CCCD using new Spring Boot API with pagination
+ * Calls: /api/v1/results/cccd/{cccd}/{page}/{size}
+ * Response format: { success: true, message: null, data: { total: 20, items: [...] } }
+ */
+export async function lookupExamResultsByCCCD(
+  cccd: string,
+  page: number = 0,
+  size: number = 30
+): Promise<{ total: number; items: LookupResult[] }> {
   try {
-    const response = await apiFetch(`/api/v1/results/cccd/${encodeURIComponent(cccd)}`);
+    const response = await apiFetch(`/api/v1/results/cccd/${encodeURIComponent(cccd)}/${page}/${size}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -37,10 +46,10 @@ export async function lookupExamResultsByCCCD(cccd: string): Promise<LookupResul
     
     const result = await response.json();
     
-    // Handle the new response format: { success: true, message: null, data: [...] }
-    if (result.success && result.data) {
-      // Convert ExamResultResponse to LookupResult format
-      const lookupResults: LookupResult[] = result.data.map((exam: any) => ({
+    // Handle the paginated response format: { success: true, message: null, data: { total: 20, items: [...] } }
+    if (result.success && result.data && Array.isArray(result.data.items)) {
+      // Map ExamResultResponse to LookupResult format
+      const lookupResults: LookupResult[] = result.data.items.map((exam: any) => ({
         id: exam.id,
         studentName: exam.username,
         cccd: exam.identifyNumber,
@@ -57,7 +66,11 @@ export async function lookupExamResultsByCCCD(cccd: string): Promise<LookupResul
         issueDate: exam.kyThi,
         certificateId: '-',
       }));
-      return lookupResults;
+      
+      return {
+        total: result.data.total || 0,
+        items: lookupResults
+      };
     }
     
     // If success is false, throw error with message
@@ -65,21 +78,26 @@ export async function lookupExamResultsByCCCD(cccd: string): Promise<LookupResul
       throw new Error(result.message || 'Failed to fetch exam results');
     }
     
-    // Return empty array if no data
-    return [];
+    // Return empty results if no data
+    return { total: 0, items: [] };
   } catch (error) {
-    console.error(`❌ Error looking up exam results for CCCD ${cccd}:`, error);
+    console.error(`❌ Error looking up exam results for CCCD ${cccd} (page ${page}, size ${size}):`, error);
     throw error;
   }
 }
 
 /**
- * Lookup certificate by CCCD
+ * Lookup certificate by CCCD with pagination
+ * Returns LookupResult format for the UI
  */
-export async function lookupCertificate(cccd: string): Promise<LookupResult[]> {
+export async function lookupCertificate(
+  cccd: string,
+  page: number = 0,
+  size: number = 30
+): Promise<{ total: number; items: LookupResult[] }> {
   try {
-    // Call new API endpoint
-    const response = await apiFetch(`/api/v1/certificates/cccd/${encodeURIComponent(cccd)}`);
+    // Call new paginated API endpoint
+    const response = await apiFetch(`/api/v1/certificates/cccd/${encodeURIComponent(cccd)}/${page}/${size}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -87,9 +105,9 @@ export async function lookupCertificate(cccd: string): Promise<LookupResult[]> {
     
     const result = await response.json();
     
-    if (result.success && result.data) {
+    if (result.success && result.data && Array.isArray(result.data.items)) {
       // Convert CertificateResponse to LookupResult format
-      const lookupResults: LookupResult[] = result.data.map((cert: CertificateResponse) => ({
+      const lookupResults: LookupResult[] = result.data.items.map((cert: CertificateResponse) => ({
         id: cert.id,
         studentName: cert.username,
         cccd: cert.identifyNumber,
@@ -106,10 +124,13 @@ export async function lookupCertificate(cccd: string): Promise<LookupResult[]> {
         issueDate: cert.ngayCap,
         certificateId: cert.soHieu,
       }));
-      return lookupResults;
+      return {
+        total: result.data.total || 0,
+        items: lookupResults
+      };
     }
     
-    throw new Error('Invalid response format');
+    return { total: 0, items: [] };
   } catch (error) {
     console.error(`❌ Error looking up certificate for CCCD ${cccd}:`, error);
     throw error;
@@ -117,13 +138,17 @@ export async function lookupCertificate(cccd: string): Promise<LookupResult[]> {
 }
 
 /**
- * Lookup certificate by CCCD using new Spring Boot API
- * Calls: certificates/cccd/{cccd}
- * Response format: { success: true, message: null, data: [...] }
+ * Lookup certificate by CCCD using new Spring Boot API with pagination
+ * Calls: /api/v1/certificates/cccd/{cccd}/{page}/{size}
+ * Response format: { success: true, message: null, data: { total: 20, items: [...] } }
  */
-export async function lookupCertificateByCCCD(cccd: string): Promise<CertificateResponse[]> {
+export async function lookupCertificateByCCCD(
+  cccd: string, 
+  page: number = 0, 
+  size: number = 30
+): Promise<{ total: number; items: CertificateResponse[] }> {
   try {
-    const response = await apiFetch(`/api/v1/certificates/cccd/${encodeURIComponent(cccd)}`);
+    const response = await apiFetch(`/api/v1/certificates/cccd/${encodeURIComponent(cccd)}/${page}/${size}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -131,9 +156,12 @@ export async function lookupCertificateByCCCD(cccd: string): Promise<Certificate
     
     const result = await response.json();
     
-    // Handle the new response format: { success: true, message: null, data: [...] }
+    // Handle the paginated response format: { success: true, message: null, data: { total: 20, items: [...] } }
     if (result.success && result.data) {
-      return Array.isArray(result.data) ? result.data : [result.data];
+      return {
+        total: result.data.total || 0,
+        items: Array.isArray(result.data.items) ? result.data.items : []
+      };
     }
     
     // If success is false, throw error with message
@@ -141,10 +169,10 @@ export async function lookupCertificateByCCCD(cccd: string): Promise<Certificate
       throw new Error(result.message || 'Failed to fetch certificate');
     }
     
-    // Return empty array if no data
-    return [];
+    // Return empty results if no data
+    return { total: 0, items: [] };
   } catch (error) {
-    console.error(`❌ Error looking up certificate for CCCD ${cccd}:`, error);
+    console.error(`❌ Error looking up certificate for CCCD ${cccd} (page ${page}, size ${size}):`, error);
     throw error;
   }
 }

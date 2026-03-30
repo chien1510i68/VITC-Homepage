@@ -65,11 +65,11 @@ export const LookupForm = ({
               value={cccd}
               onChange={(e) => setCccd(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Nhập số CCCD/CMND/MSV"
+              placeholder="Nhập số CCCD/CMND/MSV hoặc tên "
               className="flex-1 px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm sm:text-base transition-all duration-200"
               required
             />
-            
+
             {/* Certificate Type Filter - Only show for certificate lookup and on same row */}
             {lookupType === 'certificate' && (
               <motion.select
@@ -89,7 +89,7 @@ export const LookupForm = ({
                 ))}
               </motion.select>
             )}
-            
+
             <div className="flex gap-2 sm:gap-3">
               <motion.div
                 whileHover={{ scale: 1.02 }}

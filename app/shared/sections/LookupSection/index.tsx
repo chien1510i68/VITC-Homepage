@@ -51,6 +51,11 @@ export default function LookupSection({
   const [allResults, setAllResults] = useState<LookupResult[]>([]); // Store all results for filtering
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(30);
+  const [totalItems, setTotalItems] = useState(0);
 
 
 
@@ -84,25 +89,34 @@ export default function LookupSection({
   const handleSearch = async () => {
     if (!cccd.trim()) return;
     
+    // Reset to first page on new search from form
+    if (!isLoading && hasSearched && currentPage !== 0) {
+      setCurrentPage(0);
+      return; // The useEffect will catch the currentPage change and trigger search
+    }
+
+    executeSearch();
+  };
+
+  const executeSearch = async () => {
     setIsLoading(true);
-    setHasSearched(false);
     
     try {
-      let data: LookupResult[];
       if (lookupType === 'score') {
-        // Use new API for exam results
-        data = await api.lookupExamResultsByCCCD(cccd);
-        setResults(data);
-        setAllResults(data);
+        const responseData = await api.lookupExamResultsByCCCD(cccd, currentPage, pageSize);
+        setResults(responseData.items);
+        setAllResults(responseData.items);
+        setTotalItems(responseData.total);
       } else {
-        // Certificate lookup - get all results and filter
-        data = await api.lookupCertificate(cccd);
-        setAllResults(data); // Store all results for filtering
+        // Certificate lookup - support pagination
+        const responseData = await api.lookupCertificate(cccd, currentPage, pageSize);
+        setAllResults(responseData.items); 
+        setTotalItems(responseData.total);
         
         // Filter immediately based on selected certificate type
         const filtered = certificateType === 'all' 
-          ? data 
-          : data.filter(result => result.certificateType === certificateType);
+          ? responseData.items 
+          : responseData.items.filter(result => result.certificateType === certificateType);
         setResults(filtered);
       }
       setHasSearched(true);
@@ -114,10 +128,18 @@ export default function LookupSection({
       setResults([]);
       setAllResults([]);
       setHasSearched(true);
+      setTotalItems(0);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Re-run search when page changes
+  useEffect(() => {
+    if (hasSearched) {
+      executeSearch();
+    }
+  }, [currentPage]);
 
   const handleReset = () => {
     setCccd('');
@@ -170,6 +192,10 @@ export default function LookupSection({
           hasSearched={hasSearched}
           lookupType={lookupType}
           certificateType={certificateType}
+          totalItems={totalItems}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
         />
 
         {/* Help Section */}

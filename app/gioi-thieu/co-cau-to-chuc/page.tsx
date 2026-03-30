@@ -139,6 +139,46 @@ function extractApiValue(data: unknown): unknown {
   return parsed;
 }
 
+/**
+ * Component to display member avatar with image support and fallback
+ */
+function MemberAvatar({ 
+  image, 
+  name, 
+  sizeClass, 
+  iconSizeClass, 
+  iconColorClass,
+  fallbackBgClass = "bg-white"
+}: { 
+  image?: string; 
+  name: string; 
+  sizeClass: string; 
+  iconSizeClass: string; 
+  iconColorClass: string;
+  fallbackBgClass?: string;
+}) {
+  const [imgError, setImgError] = useState(false);
+
+  if (image && !imgError) {
+    return (
+      <div className={`${sizeClass} ${fallbackBgClass} rounded-full overflow-hidden mb-4 shadow-lg flex items-center justify-center border-2 border-white`}>
+        <img 
+          src={image} 
+          alt={name} 
+          className="w-full h-full object-cover"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className={`${sizeClass} ${fallbackBgClass} rounded-full flex items-center justify-center mb-4 shadow-md overflow-hidden`}>
+      <User className={`${iconSizeClass} ${iconColorClass}`} />
+    </div>
+  );
+}
+
 export default function CoCauToChucPage() {
   const [orgStructure, setOrgStructure] = useState<OrgStructureValue>(DEFAULT_ORG_STRUCTURE);
   const [isLoadingOrg, setIsLoadingOrg] = useState(true);
@@ -254,9 +294,14 @@ export default function CoCauToChucPage() {
               <div className="flex justify-center mb-8">
                 <div className="bg-gradient-to-br from-green-600 to-green-700 text-white rounded-2xl p-8 shadow-2xl w-full max-w-[340px] border-2 border-yellow-400">
                   <div className="flex flex-col items-center">
-                    <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mb-4 shadow-lg">
-                      <User className="w-16 h-16 text-green-600" />
-                    </div>
+                    <MemberAvatar 
+                      image={orgStructure.leader.image}
+                      name={orgStructure.leader.name}
+                      sizeClass="w-32 h-32"
+                      iconSizeClass="w-16 h-16"
+                      iconColorClass="text-green-600"
+                      fallbackBgClass="bg-white"
+                    />
                     <h3 className="text-xl font-bold mb-1 text-center">
                       {orgStructure.leader.name}
                     </h3>
@@ -291,9 +336,14 @@ export default function CoCauToChucPage() {
 
                       <div className="bg-green-500 text-white rounded-2xl p-6 shadow-xl">
                         <div className="flex flex-col items-center">
-                          <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-3 shadow-md">
-                            <User className="w-12 h-12 text-green-500" />
-                          </div>
+                          <MemberAvatar 
+                            image={pgd.image}
+                            name={pgd.name}
+                            sizeClass="w-24 h-24"
+                            iconSizeClass="w-12 h-12"
+                            iconColorClass="text-green-500"
+                            fallbackBgClass="bg-white"
+                          />
                           <h3 className="text-lg font-bold mb-1 text-center">
                             {pgd.name}
                           </h3>
@@ -351,9 +401,14 @@ export default function CoCauToChucPage() {
                           className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 hover:shadow-lg hover:border-green-400 transition-all group"
                         >
                           <div className="flex flex-col items-center">
-                            <div className="w-14 h-14 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-2">
-                              <User className="w-7 h-7 text-gray-600" />
-                            </div>
+                            <MemberAvatar 
+                              image={cv.image}
+                              name={cv.name}
+                              sizeClass="w-14 h-14"
+                              iconSizeClass="w-7 h-7"
+                              iconColorClass="text-gray-600"
+                              fallbackBgClass="bg-gradient-to-br from-gray-100 to-gray-200"
+                            />
                             <span className="text-[10px] text-green-600 font-semibold leading-none mb-1">{cv.degree || ''}</span>
                             <h5 className="font-bold text-gray-900 text-center text-xs leading-5 min-h-[40px]">
                               {cv.name}

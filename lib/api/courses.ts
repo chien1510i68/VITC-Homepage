@@ -171,6 +171,7 @@ export async function getCourses(page = 0, size = 10): Promise<Program[]> {
 
     const result = await response.json();
     if (result.success && result.data) {
+      console.log('✅ Courses loaded from API');
       // Backend trả về data.items hoặc data.data
       const items = result.data.items || result.data.data || [];
       return items.map(convertCourseToProgram);
@@ -200,6 +201,7 @@ export async function getCourseById(id: number | string): Promise<Program | null
 
     const result = await response.json();
     if (result.success && result.data) {
+      console.log(`✅ Course ${id} loaded from API`);
       return convertCourseToProgram(result.data);
     }
 
@@ -236,6 +238,7 @@ export async function getCoursesByCategory(categoryCode: string, page = 0, size 
 
     const result = await response.json();
     if (result.success && result.data) {
+      console.log(`✅ Courses for category "${categoryCode}" loaded from API`);
       const items = result.data.items || result.data.data || [];
       return items.map(convertCourseToProgram);
     }
@@ -273,6 +276,7 @@ export async function getFeaturedCourses(limit = 6): Promise<Program[]> {
 
     const result = await response.json();
     if (result.success && result.data) {
+      console.log('✅ Featured courses loaded from API');
       const items = result.data.data || result.data.items || [];
       return items.map(convertCourseToProgram).slice(0, limit);
     }
@@ -318,14 +322,18 @@ export async function getCoursesByType(type: string, page = 0, size = 20): Promi
 
     const result = await response.json();
     if (result.success && result.data) {
+      console.log(`✅ Courses loaded from API for categoryCode "${categoryCode}" (type: "${type}")`);
       const items = result.data.items || result.data.data || [];
       
       // Convert to Program objects
       const programs = items.map(convertCourseToProgram);
       
+      // Filter by type on client side to ensure accuracy (since we mapped type to categoryCode)
       const filteredPrograms = programs.filter((program: Program) => {
         return program.type === type;
       });
+      
+      console.log(`📚 Filtered ${filteredPrograms.length}/${programs.length} courses for type "${type}"`);
       return filteredPrograms;
     }
 
@@ -334,7 +342,9 @@ export async function getCoursesByType(type: string, page = 0, size = 20): Promi
     console.error(`❌ Error fetching courses by type ${type}:`, error);
     
     // Fallback to mock data filtered by type
+    console.log(`🔄 Using mock data filtered by type "${type}"`);
     const filteredMockPrograms = mockPrograms.filter(program => program.type === type);
+    console.log(`📚 Mock data: Found ${filteredMockPrograms.length} courses for type "${type}"`);
     return filteredMockPrograms;
   }
 }
@@ -375,6 +385,7 @@ export async function searchCourses(params: CourseSearchParams): Promise<Program
 
     const result = await response.json();
     if (result.success && result.data) {
+      console.log('✅ Search results loaded from API');
       const items = result.data.data || result.data.items || [];
       return items.map(convertCourseToProgram);
     }
@@ -412,6 +423,7 @@ export async function getCourseBySlug(slug: string): Promise<Program | null> {
 
     const result = await response.json();
     if (result.success && result.data) {
+      console.log(`✅ Course with slug "${slug}" loaded from API`);
       const items = result.data.data || result.data.items || [];
       if (items.length > 0) {
         return convertCourseToProgram(items[0]);
@@ -443,6 +455,7 @@ export async function getCoursesBasicInfo(): Promise<CourseBasicInfo[]> {
     const result: ApiResponse<CourseBasicInfo[]> = await response.json();
 
     if (result.success && result.data) {
+      console.log('✅ Courses basic info loaded from API');
       return result.data;
     }
 

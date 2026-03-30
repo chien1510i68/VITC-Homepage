@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import Image from 'next/image';
@@ -53,7 +53,7 @@ const normalizeImageUrl = (url: string | undefined): string => {
  * - Responsive scaling maintaining aspect ratio
  * - Auto-play with smooth transitions
  */
-export default function BannerCarouselSection({
+function BannerCarouselSection({
   autoPlayDelay = BANNER_CONFIG.AUTOPLAY_DELAY,
   className = '',
 }: BannerCarouselSectionProps) {
@@ -64,9 +64,11 @@ export default function BannerCarouselSection({
   useEffect(() => {
     const loadBanners = async () => {
       try {
+        console.log('🔄 BannerCarouselSection: Loading BANNER slides...');
         const data = await fetchActiveSlidesByType('BANNER');
         // Double check filtering for ACTIVE status on client side
         const activeBanners = (data || []).filter(s => s.status === 'ACTIVE');
+        console.log(`✅ BannerCarouselSection: Loaded ${activeBanners.length} BANNER slides`);
         setBanners(activeBanners);
       } catch (error) {
         console.error('Failed to load banner slides:', error);
@@ -229,3 +231,6 @@ export default function BannerCarouselSection({
     </section>
   );
 }
+
+// Wrap with memo to prevent unnecessary re-renders from parent components
+export default memo(BannerCarouselSection);

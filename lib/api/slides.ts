@@ -61,6 +61,7 @@ export async function fetchActiveSlidesByType(
 ): Promise<BackendSlide[]> {
   // SSR check - no cache on server
   if (typeof window === 'undefined') {
+    console.log(`🖥️ Server-side fetch for ${type}`);
     return fetchSlides({ type, status: 'ACTIVE' });
   }
 
@@ -69,22 +70,30 @@ export async function fetchActiveSlidesByType(
 
   if (cachedData && cachedData.length > 0) {
     // Return cached data immediately and DON'T call API if fresh
+    console.log(`⚡ fetchActiveSlidesByType('${type}'): Using cached data (${cachedData.length} items)`);
     return cachedData;
   }
 
   // 2. If no cache, check if there's already an active request for this type
   if (ongoingRequests.has(type)) {
-     return ongoingRequests.get(type)!;
+    console.log(`⏳ fetchActiveSlidesByType('${type}'): Waiting for ongoing request...`);
+    return ongoingRequests.get(type)!;
   }
 
   // 3. Fire new request
+  console.log(`🚀 fetchActiveSlidesByType('${type}'): Fetching from API...`);
   const requestPromise = (async () => {
     try {
       const data = await fetchSlides({ type, status: 'ACTIVE' });
       saveSlidesToCache(type, data);
+      console.log(`✅ fetchActiveSlidesByType('${type}'): Fetched ${data.length} items from API & saved to cache`);
       return data;
+    } catch (error) {
+      console.error(`❌ fetchActiveSlidesByType('${type}'): Error fetching slides`, error);
+      return [];
     } finally {
       // Clean up deduplication map
+      console.log(`🧹 fetchActiveSlidesByType('${type}'): Cleaned up ongoing request`);
       ongoingRequests.delete(type);
     }
   })();

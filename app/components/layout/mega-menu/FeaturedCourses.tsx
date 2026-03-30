@@ -47,10 +47,10 @@ export function FeaturedCourses({ courses }: FeaturedCoursesProps) {
                 {course.status && (
                   <div className="absolute bottom-2 left-2">
                     <span className={`px-2 py-0.5 text-xs font-semibold rounded-full shadow-md ${course.status === 'Đang tuyển sinh'
-                        ? 'bg-green-500 text-white'
-                        : course.status === 'Sắp khai giảng'
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-yellow-500 text-white'
+                      ? 'bg-green-500 text-white'
+                      : course.status === 'Sắp khai giảng'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-yellow-500 text-white'
                       }`}>
                       {course.status}
                     </span>

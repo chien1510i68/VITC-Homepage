@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { HeroSectionProps } from './types';
@@ -33,7 +33,7 @@ import type { BackendSlide } from '@/types/api';
  * />
  * ```
  */
-export default function HeroSection({
+function HeroSection({
   slides = DEFAULT_PROPS.slides,
   height = DEFAULT_PROPS.height,
   autoPlayInterval = DEFAULT_PROPS.autoPlayInterval,
@@ -53,11 +53,11 @@ export default function HeroSection({
     async function loadSlides() {
       try {
         setIsLoading(true);
+        console.log('🔄 HeroSection: Loading IT slides...');
         const data = await fetchActiveSlidesByType('IT');
-        // Double check filtering for ACTIVE status on client side
-        const activeData = (data || []).filter(s => s.status === 'ACTIVE');
-        if (activeData && activeData.length > 0) {
-          setApiSlides(activeData);
+        if (data && data.length > 0) {
+          console.log(`✅ HeroSection: Loaded ${data.length} IT slides`);
+          setApiSlides(data);
         }
       } catch (error) {
         console.error('Failed to load hero slides:', error);
@@ -202,3 +202,6 @@ export default function HeroSection({
     </section>
   );
 }
+
+// Wrap with memo to prevent unnecessary re-renders from parent components
+export default memo(HeroSection);
