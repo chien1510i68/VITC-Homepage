@@ -41,7 +41,13 @@ import {
 } from './news';
 import { getCourseSchedules } from './schedules';
 import { getAboutTimeline } from './about';
-import { lookupExamResults, lookupCertificate, lookupCertificateByCCCD, lookupExamResultsByCCCD } from './lookup';
+import { 
+  lookupExamResults, 
+  lookupCertificate, 
+  lookupCertificateByCCCD, 
+  lookupExamResultsByCCCD,
+  getCertificateTypes
+} from './lookup';
 import { submitConsultationForm, submitCourseRegistration } from './forms';
 
 export const api = {
@@ -77,6 +83,7 @@ export const api = {
   lookupExamResultsByCCCD, // New API
   lookupCertificate,
   lookupCertificateByCCCD,
+  getCertificateTypes,
   
   // Forms
   submitConsultationForm,

@@ -9,7 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { TAILWIND_COLORS } from '@/lib/colors';
 import { LookupType, CertificateType } from '../types';
-import { HELP_TEXT, CERTIFICATE_TYPES } from '../constants';
+import { HELP_TEXT } from '../constants';
+import { useEffect, useState } from 'react';
+import { api } from '@/lib/api';
 
 interface LookupFormProps {
   lookupType: LookupType;
@@ -32,6 +34,32 @@ export const LookupForm = ({
   onSearch,
   onReset
 }: LookupFormProps) => {
+  const [certOptions, setCertOptions] = useState<{value: string, label: string}[]>([
+    { value: 'all', label: 'Tất cả loại chứng chỉ' }
+  ]);
+
+  useEffect(() => {
+    if (lookupType === 'certificate') {
+      const fetchTypes = async () => {
+        try {
+          const types = await api.getCertificateTypes();
+          if (types && types.length > 0) {
+            const dynamicOptions = [
+              { value: 'all', label: 'Tất cả loại chứng chỉ' },
+              ...types.map((type: string) => ({
+                value: type,
+                label: type
+              }))
+            ];
+            setCertOptions(dynamicOptions);
+          }
+        } catch (error) {
+          console.error("Failed to fetch certificate types", error);
+        }
+      };
+      fetchTypes();
+    }
+  }, [lookupType]);
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       onSearch();
@@ -82,7 +110,7 @@ export const LookupForm = ({
                 onChange={(e) => setCertificateType(e.target.value as CertificateType)}
                 className="w-full sm:w-64 px-3 py-2.5 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm sm:text-base transition-all duration-200 bg-white"
               >
-                {CERTIFICATE_TYPES.map((type) => (
+                {certOptions.map((type) => (
                   <option key={type.value} value={type.value}>
                     {type.label}
                   </option>

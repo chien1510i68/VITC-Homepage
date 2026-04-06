@@ -10,11 +10,11 @@ export async function lookupExamResults(cccd: string): Promise<LookupResult[]> {
     const response = await fetchWithTimeout<LookupResult[]>(
       `/api/v1/certificates/cccd/?cccd=${encodeURIComponent(cccd)}`
     );
-    
+
     if (response.success && response.data) {
       return response.data;
     }
-    
+
     throw new Error('Invalid response format');
   } catch (error) {
     console.error(`❌ Error looking up exam results for CCCD ${cccd}:`, error);
@@ -39,13 +39,13 @@ export async function lookupExamResultsByCCCD(
 ): Promise<{ total: number; items: LookupResult[] }> {
   try {
     const response = await apiFetch(`/api/v1/results/cccd/${encodeURIComponent(cccd)}/${page}/${size}`);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const result = await response.json();
-    
+
     // Handle the paginated response format: { success: true, message: null, data: { total: 20, items: [...] } }
     if (result.success && result.data && Array.isArray(result.data.items)) {
       // Map ExamResultResponse to LookupResult format
@@ -66,18 +66,18 @@ export async function lookupExamResultsByCCCD(
         issueDate: exam.kyThi,
         certificateId: '-',
       }));
-      
+
       return {
         total: result.data.total || 0,
         items: lookupResults
       };
     }
-    
+
     // If success is false, throw error with message
     if (!result.success) {
       throw new Error(result.message || 'Failed to fetch exam results');
     }
-    
+
     // Return empty results if no data
     return { total: 0, items: [] };
   } catch (error) {
@@ -98,13 +98,13 @@ export async function lookupCertificate(
   try {
     // Call new paginated API endpoint
     const response = await apiFetch(`/api/v1/certificates/cccd/${encodeURIComponent(cccd)}/${page}/${size}`);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const result = await response.json();
-    
+
     if (result.success && result.data && Array.isArray(result.data.items)) {
       // Convert CertificateResponse to LookupResult format
       const lookupResults: LookupResult[] = result.data.items.map((cert: CertificateResponse) => ({
@@ -129,7 +129,7 @@ export async function lookupCertificate(
         items: lookupResults
       };
     }
-    
+
     return { total: 0, items: [] };
   } catch (error) {
     console.error(`❌ Error looking up certificate for CCCD ${cccd}:`, error);
@@ -143,19 +143,19 @@ export async function lookupCertificate(
  * Response format: { success: true, message: null, data: { total: 20, items: [...] } }
  */
 export async function lookupCertificateByCCCD(
-  cccd: string, 
-  page: number = 0, 
+  cccd: string,
+  page: number = 0,
   size: number = 30
 ): Promise<{ total: number; items: CertificateResponse[] }> {
   try {
     const response = await apiFetch(`/api/v1/certificates/cccd/${encodeURIComponent(cccd)}/${page}/${size}`);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const result = await response.json();
-    
+
     // Handle the paginated response format: { success: true, message: null, data: { total: 20, items: [...] } }
     if (result.success && result.data) {
       return {
@@ -163,16 +163,58 @@ export async function lookupCertificateByCCCD(
         items: Array.isArray(result.data.items) ? result.data.items : []
       };
     }
-    
+
     // If success is false, throw error with message
     if (!result.success) {
       throw new Error(result.message || 'Failed to fetch certificate');
     }
-    
+
     // Return empty results if no data
     return { total: 0, items: [] };
   } catch (error) {
     console.error(`❌ Error looking up certificate for CCCD ${cccd} (page ${page}, size ${size}):`, error);
     throw error;
+  }
+}
+
+/**
+ * Fetch available certificate types
+ * Caches the list in sessionStorage after successful fetch
+ * Calls: /api/v1/certificates/loai-cc
+ * Response format: { success: true, message: null, data: [...] }
+ */
+export async function getCertificateTypes(): Promise<string[]> {
+  try {
+    // Check sessionStorage first to avoid redundant API calls
+    if (typeof window !== 'undefined') {
+      const cached = sessionStorage.getItem('certificate_types');
+      if (cached) {
+        try {
+          return JSON.parse(cached);
+        } catch (e) {
+          console.error('Error parsing cached certificate types:', e);
+        }
+      }
+    }
+
+    const response = await apiFetch('/api/v1/certificates/all-loai-cc');
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (result.success && Array.isArray(result.data)) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('certificate_types', JSON.stringify(result.data));
+      }
+      return result.data;
+    }
+
+    return [];
+  } catch (error) {
+    console.error(`❌ Error fetching certificate types:`, error);
+    return [];
   }
 }
