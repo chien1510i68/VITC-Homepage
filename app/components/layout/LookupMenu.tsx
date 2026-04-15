@@ -20,6 +20,10 @@ const menuItems = [
   {
     title: 'Tài liệu',
     href: '/tien-ich-dich-vu#tai-lieu',
+  },
+  {
+    title: 'Thi thử',
+    href: '/thi-thu',
   }
 ];
 

@@ -11,7 +11,6 @@
 import type { Metadata } from "next";
 import { Quicksand, Roboto } from "next/font/google";
 import "./globals.css";
-import PopupManager from "./components/PopupManager";
 import ScreenReaderAnnouncer from "./components/ScreenReaderAnnouncer";
 import SkipToContent from "./components/SkipToContent";
 import ChatWidget from "./components/ChatWidget";
@@ -75,7 +74,6 @@ export default function RootLayout({
         <SkipToContent />
         <ScreenReaderAnnouncer />
         {children}
-        <PopupManager />
         <ChatWidget />
         <Toaster position="top-right" richColors />
       </body>

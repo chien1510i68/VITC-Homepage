@@ -18,6 +18,8 @@ export * from './lookup';
 export * from './forms';
 export * from './documents';
 export * from './slides';
+export * from './exams';
+export * from './auth';
 
 // Export unified API object for backward compatibility
 import { 

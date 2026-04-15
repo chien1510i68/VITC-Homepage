@@ -16,8 +16,8 @@ export default function TinHocPage() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-1">
-        <HeroSection />
-        <LookupSection {...TIN_HOC_LOOKUP_CONFIG} />
+        <HeroSection height="h-[250px] sm:h-[350px] md:h-[400px] lg:h-[450px]" />
+        {/* <LookupSection {...TIN_HOC_LOOKUP_CONFIG} /> */}
         <ScheduleSection
           title="Lịch khai giảng Tin học"
           ctaLink="/khoa-hoc"
@@ -25,7 +25,7 @@ export default function TinHocPage() {
         <ProgramsSection />
         <NewsAndConsultation />
         {/* <InstructorsSection /> */}
-        <AboutSection />
+        {/* <AboutSection /> */}
 
       </main>
       <Footer />

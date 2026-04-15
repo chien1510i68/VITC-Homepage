@@ -57,6 +57,30 @@ export default function LookupSection({
   const [pageSize, setPageSize] = useState(30);
   const [totalItems, setTotalItems] = useState(0);
 
+  // Handle hash change for tab selection
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash === '#diem-thi' || hash === '#tra-cuu-diem-thi') {
+        setLookupType('score');
+        // Scroll to the section as well
+        const section = document.getElementById(sectionId);
+        if (section) section.scrollIntoView({ behavior: 'smooth' });
+      } else if (hash === '#chung-chi' || hash === '#tra-cuu-chung-chi') {
+        setLookupType('certificate');
+        // Scroll to the section as well
+        const section = document.getElementById(sectionId);
+        if (section) section.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+    // Initial check
+    handleHashChange();
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [sectionId]);
+
 
 
   // Filter results when certificate type changes

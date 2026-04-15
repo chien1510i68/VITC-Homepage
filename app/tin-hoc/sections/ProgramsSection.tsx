@@ -3,339 +3,238 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { api, Program } from '@/lib/api';
-import { STYLES, SECTION_CONFIG } from '../constants';
-import type { SectionHeaderProps, ProgramDetailProps, ProgramListProps } from '../types';
+import { 
+  BookOpen, 
+  Clock, 
+  ArrowRight, 
+  ChevronRight, 
+  Star,
+  Users,
+  Award
+} from 'lucide-react';
 
-// Section Header Component
-function SectionHeader({ title, subtitle }: SectionHeaderProps) {
+/**
+ * CourseCard Component
+ * Modern, clean card for displaying course information
+ */
+function CourseCard({ course, index, isTall }: { course: Program; index: number; isTall: boolean }) {
   return (
-    <div className="text-center mb-12">
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-gray-900 mb-4">
-        {title}
-      </h2>
-      {subtitle && (
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          {subtitle}
-        </p>
-      )}
-    </div>
-  );
-}
-
-// Loading State Component
-function LoadingState() {
-  return (
-    <div className={STYLES.loadingState}>
-      <div className="flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
-      </div>
-    </div>
-  );
-}
-
-// Program Detail Component
-function ProgramDetail({ program }: ProgramDetailProps) {
-  return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
-      <div className="relative h-48 md:h-64 lg:h-72 overflow-hidden group">
-        {program.image ? (
-          <img
-            src={program.image}
-            alt={program.title}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-            <span className="text-white text-4xl font-bold">{program.title.charAt(0)}</span>
-          </div>
-        )}
-      </div>
-
-      <div className="p-4 md:p-6 max-h-[500px] overflow-y-auto custom-scrollbar">
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 flex-1">
-            {program.title}
-          </h3>
-          {program.price && (
-            <div className="ml-4 text-right">
-              <div className="text-2xl font-bold text-green-600">{program.price}</div>
-            </div>
-          )}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col"
+    >
+      {/* Image Container */}
+      <div className="relative w-full aspect-[4/3] flex-shrink-0 z-0">
+        <Image
+          src={course.image || '/images/courses/default-course.jpg'}
+          alt={course.title}
+          fill
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        
+        {/* Category Badge with title */}
+        <div className="absolute top-3 left-3 z-10">
+          <span className="px-2 py-1 bg-white/90 backdrop-blur-sm text-green-700 text-xs font-bold rounded-full shadow-sm whitespace-nowrap">
+            {course.title}
+          </span>
         </div>
+      </div>
 
-        {/* Short Description */}
-        {program.description && (
-          <p className="text-gray-600 leading-relaxed mb-3">
-            {program.description}
+      {/* Content for tall cards */}
+      {isTall && (
+        <div className="p-3 flex flex-col">
+          <p className="text-slate-500 text-sm line-clamp-2">
+            {course.description}
           </p>
-        )}
-
-        {/* Highlights */}
-        {program.highlights && program.highlights.length > 0 && (
-          <div className="mb-3">
-            <h4 className="text-sm font-semibold text-gray-900 mb-3">Điểm nổi bật:</h4>
-            <div className="flex flex-wrap gap-2">
-              {program.highlights.map((highlight, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-3 py-1.5 bg-green-50 text-green-700 text-sm font-medium rounded-full"
-                >
-                  <svg className="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  {highlight}
-                </span>
-              ))}
-            </div>
+          <div className="flex items-center gap-1.5 mt-2 text-slate-500">
+            <Clock className="w-3.5 h-3.5 text-green-500" />
+            <span className="text-xs font-medium">{course.duration}</span>
           </div>
-        )}
-
-        {/* Info Bar */}
-        <div className="flex flex-wrap gap-3 py-3 mb-3 border-y border-gray-200">
-          {program.duration && (
-            <div className="flex items-center gap-2 text-gray-700">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{program.duration}</span>
-            </div>
-          )}
-          {program.level && (
-            <div className="flex items-center gap-2 text-gray-700">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              <span>{program.level}</span>
-            </div>
-          )}
-          {program.students && (
-            <div className="flex items-center gap-2 text-gray-700">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-              <span>{program.students}</span>
-            </div>
-          )}
-          {program.rating && (
-            <div className="flex items-center gap-2 text-gray-700">
-              <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <span>{program.rating}</span>
-            </div>
-          )}
         </div>
-
-
-
-        {/* Button Xem Chi Tiết */}
-        <div className="mt-3 flex justify-end">
-          <Link
-            href={`/khoa-hoc/${program.id}`}
-            className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            Xem chi tiết
-          </Link>
-        </div>
-      </div>
-    </div>
+      )}
+    </motion.div>
   );
 }
 
-// Program List Component
-function ProgramList({ programs, selectedProgram, onProgramSelect }: ProgramListProps) {
-  return (
-    <div className="bg-white rounded-2xl shadow-lg p-6">
-      <h4 className="text-xl font-bold text-gray-900 mb-4">Danh sách khóa học</h4>
-      <div className="space-y-3 max-h-[500px] lg:max-h-[600px] overflow-y-auto custom-scrollbar">
-        {programs.map((program) => (
-          <div
-            key={program.id}
-            onClick={() => onProgramSelect(program)}
-            className={`w-full rounded-lg transition-all cursor-pointer ${selectedProgram?.id === program.id
-                ? 'bg-green-50 border-2 border-green-500 shadow-md'
-                : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100 hover:border-gray-300'
-              }`}
-          >
-            <div className="flex gap-2 p-2">
-              {/* Ảnh 30% bên trái */}
-              <div className="w-[30%] flex-shrink-0">
-                <div className="relative w-full pb-[75%] rounded-lg overflow-hidden">
-                  {program.image ? (
-                    <img
-                      src={program.image}
-                      alt={program.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                      <span className="text-white text-xl font-bold">{program.title.charAt(0)}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Nội dung 70% bên phải */}
-              <div className="flex-1 flex flex-col justify-between min-w-0">
-                <div>
-                  {/* Title 1 dòng */}
-                  <h5 className="font-semibold text-gray-900 mb-0.5 line-clamp-1">
-                    {program.title}
-                  </h5>
-                  {/* Mô tả 2 dòng */}
-                  <p className="text-sm text-gray-600 line-clamp-2 mb-1">
-                    {program.description || program.category || 'Khóa học chất lượng cao'}
-                  </p>
-                </div>
-
-                {/* Button xem chi tiết dưới cùng bên phải */}
-                <div className="flex justify-end">
-                  <Link
-                    href={`/khoa-hoc/${program.id}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="inline-flex text-right items-center text-sm text-green-600 hover:text-green-700 font-medium"
-                  >
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                    Xem chi tiết
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// Main Section Component
+/**
+ * ProgramsSection Component
+ * Simplified course display using a clean responsive grid
+ */
 export default function ProgramsSection() {
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
+  const [courses, setCourses] = useState<Program[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadPrograms = async () => {
+    async function loadCourses() {
       setIsLoading(true);
       try {
-        // Gọi API lấy khóa học tin học với type = IT (thay vì categoryCode)
-        const data = await api.getCoursesByType('IT', 0, 50);
-        setPrograms(data);
-        if (data && data.length > 0) {
-          setSelectedProgram(data[0] || null);
-        }
+        const data = await api.getCoursesByType('IT', 0, 8);
+        setCourses(data);
       } catch (error) {
         console.error('Error loading programs:', error);
       } finally {
         setIsLoading(false);
       }
-    };
-
-    loadPrograms();
+    }
+    loadCourses();
   }, []);
 
-  const handleProgramSelect = (program: Program) => {
-    setSelectedProgram(program);
-  };
-
-  if (isLoading) {
-    return <LoadingState />;
-  }
-
-  if (!selectedProgram || programs.length === 0) {
-    return null;
-  }
-
   return (
-    <motion.section
-      className={STYLES.section}
-      id="programs"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6 }}
-    >
-      <div className={STYLES.container}>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          <SectionHeader
-            title={SECTION_CONFIG.title}
-            subtitle={SECTION_CONFIG.subtitle}
-          />
-        </motion.div>
+    <section className="py-20 bg-white relative overflow-hidden" id="programs">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 left-0 w-64 h-64 bg-green-50 rounded-full blur-3xl opacity-60 -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-slate-50 rounded-full blur-3xl opacity-60 translate-x-1/3 translate-y-1/3" />
 
-        <motion.div
-          className={STYLES.grid}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.2,
-                duration: 0.6
-              }
-            }
-          }}
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Section Header */}
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 mb-6"
+          >
+            <BookOpen className="w-4 h-4 text-green-600" />
+            <span className="text-sm font-bold text-green-700 uppercase tracking-widest">Chương trình đào tạo</span>
+          </motion.div>
+          
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight"
+          >
+            Nâng tầm kỹ năng <span className="text-green-600">Công nghệ</span>
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-lg text-slate-600 leading-relaxed"
+          >
+            Hệ thống khóa học tin học chuẩn quốc tế, giúp bạn làm chủ công nghệ và bứt phá sự nghiệp trong kỷ nguyên số.
+          </motion.p>
+        </div>
+
+        {/* Content */}
+        {isLoading ? (
+          <div className="mb-16 mx-2 md:mx-4">
+            {/* Mobile: 2 cols */}
+            <div className="lg:hidden flex gap-2">
+              {[0, 1].map((colIdx) => (
+                <div key={colIdx} className="flex-1 flex flex-col gap-2">
+                  {[0, 1].map((itemIdx) => (
+                    <div key={itemIdx} className="bg-slate-50 rounded-2xl animate-pulse h-[200px]" />
+                  ))}
+                </div>
+              ))}
+            </div>
+            {/* Tablet: 3 cols */}
+            <div className="hidden md:block lg:hidden flex gap-3">
+              {[0, 1, 2].map((colIdx) => (
+                <div key={colIdx} className="flex-1 flex flex-col gap-3">
+                  {[0, 1].map((itemIdx) => (
+                    <div key={itemIdx} className="bg-slate-50 rounded-2xl animate-pulse h-[250px]" />
+                  ))}
+                </div>
+              ))}
+            </div>
+            {/* Desktop: 4 cols */}
+            <div className="hidden lg:flex gap-3">
+              {[0, 1, 2, 3].map((colIdx) => (
+                <div key={colIdx} className="flex-1 flex flex-col gap-3">
+                  {[0, 1].map((itemIdx) => (
+                    <div key={itemIdx} className="bg-slate-50 rounded-2xl animate-pulse h-[250px]" />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : courses.length > 0 ? (
+          <div className="mb-16 mx-2 md:mx-4">
+            {/* Mobile: 2 cols x 2 rows */}
+            <div className="lg:hidden flex gap-2">
+              {[0, 1].map((colIdx) => {
+                const isReversed = colIdx === 1;
+                const colCourses = courses.slice(0, 4).filter((_, i) => i % 2 === colIdx);
+                return (
+                  <div key={colIdx} className="flex-1 flex flex-col gap-2">
+                    {colCourses.map((course, itemIdx) => {
+                      const isTall = isReversed ? itemIdx === 1 : itemIdx === 0;
+                      return (
+                        <CourseCard key={course.id} course={course} index={itemIdx} isTall={isTall} />
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+            {/* Tablet: 3 cols x 2 rows */}
+            <div className="hidden md:block lg:hidden flex gap-3">
+              {[0, 1, 2].map((colIdx) => {
+                const isReversed = colIdx === 1;
+                const colCourses = courses.slice(0, 6).filter((_, i) => i % 3 === colIdx);
+                return (
+                  <div key={colIdx} className="flex-1 flex flex-col gap-3">
+                    {colCourses.map((course, itemIdx) => {
+                      const isTall = isReversed ? itemIdx === 1 : itemIdx === 0;
+                      return (
+                        <CourseCard key={course.id} course={course} index={itemIdx} isTall={isTall} />
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+            {/* Desktop: 4 cols x 2 rows */}
+            <div className="hidden lg:flex gap-3">
+              {[0, 1, 2, 3].map((colIdx) => {
+                const isReversed = colIdx % 2 === 1;
+                const colCourses = courses.slice(0, 8).filter((_, i) => i % 4 === colIdx);
+                return (
+                  <div key={colIdx} className="flex-1 flex flex-col gap-3">
+                    {colCourses.map((course, itemIdx) => {
+                      const isTall = isReversed ? itemIdx === 1 : itemIdx === 0;
+                      return (
+                        <CourseCard key={course.id} course={course} index={itemIdx} isTall={isTall} />
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-20 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+            <p className="text-slate-500 font-medium">Hiện chưa có khóa học nào. Vui lòng quay lại sau.</p>
+          </div>
+        )}
+
+        {/* Bottom CTA */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex justify-center"
         >
-          <motion.div
-            className="lg:col-span-8 xl:col-span-7"
-            variants={{
-              hidden: { opacity: 0, x: -50 },
-              visible: { opacity: 1, x: 0 }
-            }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+          <Link 
+            href="/khoa-hoc"
+            className="group inline-flex items-center gap-3 px-8 py-4 bg-white border-2 border-slate-900 text-slate-900 font-bold rounded-2xl hover:bg-slate-900 hover:text-white transition-all duration-300 shadow-xl shadow-slate-100"
           >
-            <ProgramDetail program={selectedProgram} />
-          </motion.div>
-          <motion.div
-            className="lg:col-span-4 xl:col-span-5"
-            variants={{
-              hidden: { opacity: 0, x: 50 },
-              visible: { opacity: 1, x: 0 }
-            }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <ProgramList
-              programs={programs}
-              selectedProgram={selectedProgram}
-              onProgramSelect={handleProgramSelect}
-            />
-          </motion.div>
+            <span>KHÁM PHÁ TẤT CẢ KHÓA HỌC</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </motion.div>
       </div>
-
-      {/* Custom Scrollbar Styles */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-          }
-        `
-      }} />
-    </motion.section>
+    </section>
   );
 }

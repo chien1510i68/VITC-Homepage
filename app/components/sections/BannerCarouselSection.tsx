@@ -16,7 +16,7 @@ import 'swiper/css/pagination';
 const BANNER_CONFIG = {
   WIDTH: 1360,
   HEIGHT: 450,
-  ASPECT_RATIO: 1360 / 380,
+  ASPECT_RATIO: 1360 / 450,
   AUTOPLAY_DELAY: 5000,
 } as const;
 
@@ -145,7 +145,7 @@ function BannerCarouselSection({
                     priority={index === 0}
                     quality={95}
                     sizes="100vw"
-                    className="object-fill"
+                    className="object-cover"
                     onError={() => handleImageError(banner.id)}
                   />
                 ) : (

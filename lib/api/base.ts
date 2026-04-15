@@ -78,22 +78,35 @@ export async function fetchWithTimeout<T>(
 
     clearTimeout(timeoutId);
 
+    const contentType = response.headers.get('content-type');
+    let result: any;
+    
+    if (contentType && contentType.includes('application/json')) {
+      result = await response.json();
+    }
+
     if (!response.ok) {
       return {
         success: false,
         data: null as any,
-        error: `HTTP ${response.status}: ${response.statusText}`,
+        error: result?.message || result?.error || `HTTP ${response.status}: ${response.statusText}`,
       };
     }
 
-    const result = await response.json();
+    if (!result) {
+      return {
+        success: false,
+        data: null as any,
+        error: 'No data returned from server',
+      };
+    }
     
     // Check backend response format - can be either:
     // { success: true, data: {...} } or { status: "success", data: {...} }
-    if (result.success === true || result.status === 'success') {
+    if (result.success === true || result.status === 'success' || (response.ok && !result.status && !result.error)) {
       return {
         success: true,
-        data: result.data,
+        data: result.data || result, // Fallback to entire result if no data field
         message: result.message || 'Success',
       };
     } else {

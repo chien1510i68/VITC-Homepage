@@ -40,7 +40,7 @@ export default function NewsAndConsultation() {
                 const newsResponse = await apiFetch('/api/v1/news/filter', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ page: 0, category: 'IT', size: 8 })
+                    body: JSON.stringify({ page: 0, category: 'IT', size: 5 })
                 });
                 if (newsResponse.ok) {
                     const result = await newsResponse.json();
@@ -88,33 +88,33 @@ export default function NewsAndConsultation() {
             {/* Dynamic Background */}
             <div className="absolute top-0 right-0 w-1/3 h-full bg-green-50/50 -skew-x-12 translate-x-20 z-0"></div>
 
-            <div className="container mx-auto px-4 relative z-10">
-                <div className="flex flex-col lg:flex-row gap-16 items-stretch">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-stretch">
 
                     {/* Section: News Feed (Minimalist) */}
-                    <div className="flex-1 space-y-12">
+                    <div className="flex-1 space-y-6 mx-2 lg:mx-0">
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 text-green-600 font-bold tracking-widest text-xs sm:text-sm uppercase">
                                 <Sparkles className="w-4 h-4" />
                                 <span>Insight & Updates</span>
                             </div>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 tracking-normal leading-tight">
+                            <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 tracking-normal leading-tight">
                                 Cùng VITC cập nhật <br /><span className="text-green-600">kiến thức mới.</span>
                             </h2>
                         </div>
 
-                        <div className="grid gap-6">
+                        <div className="grid gap-3">
                             {newsLoading ? (
-                                [...Array(5)].map((_, i) => <div key={i} className="h-16 bg-slate-100 rounded-xl animate-pulse"></div>)
+                                [...Array(5)].map((_, i) => <div key={i} className="h-12 bg-slate-100 rounded-xl animate-pulse"></div>)
                             ) : (
                                 allNews.map((item) => (
-                                    <Link key={item.id} href={`/tin-tuc-thong-bao/${item.id}`} className="group flex items-center gap-5">
-                                        <div className="relative w-16 h-16 flex-shrink-0 bg-slate-100 rounded-xl overflow-hidden shadow-sm group-hover:shadow-md transition-all">
+                                    <Link key={item.id} href={`/tin-tuc-thong-bao/${item.id}`} className="group flex items-center gap-3">
+                                        <div className="relative w-12 h-12 flex-shrink-0 bg-slate-100 rounded-lg overflow-hidden shadow-sm group-hover:shadow-md transition-all">
                                             <Image src={item.image} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                                             <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="text-base font-bold text-slate-800 line-clamp-1 group-hover:text-green-600 transition-colors mb-1">
+                                            <h3 className="text-sm font-bold text-slate-800 line-clamp-1 group-hover:text-green-600 transition-colors mb-0.5">
                                                 {item.title}
                                             </h3>
                                             <div className="flex items-center text-xs text-slate-400 font-medium">
@@ -132,32 +132,32 @@ export default function NewsAndConsultation() {
                     </div>
 
                     {/* Section: Simple Registration (Minimalist Premium) */}
-                    <div className="w-full lg:w-[420px] flex-shrink-0">
-                        <div className="bg-white rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)] p-10 lg:p-12 relative border border-slate-100 h-full flex flex-col justify-center">
+                    <div className="w-full lg:w-[380px] flex-shrink-0 mx-2 lg:mx-0">
+                        <div className="bg-white rounded-2xl lg:rounded-[32px] shadow-[0_16px_32px_-8px_rgba(0,0,0,0.06)] p-6 lg:p-8 relative border border-slate-100 h-full flex flex-col justify-center">
 
                             {isSuccess ? (
-                                <div className="text-center space-y-4 animate-in fade-in zoom-in duration-500">
-                                    <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto text-white shadow-lg shadow-green-200">
-                                        <ArrowRight className="w-10 h-10 rotate-[-45deg]" />
+                                <div className="text-center space-y-3 animate-in fade-in zoom-in duration-500">
+                                    <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto text-white shadow-lg shadow-green-200">
+                                        <ArrowRight className="w-8 h-8 rotate-[-45deg]" />
                                     </div>
-                                    <h3 className="text-2xl font-bold text-slate-900">Great!</h3>
+                                    <h3 className="text-xl font-bold text-slate-900">Great!</h3>
                                     <p className="text-slate-500 text-sm">VITC sẽ gọi cho bạn trong ít phút nữa để tư vấn lộ trình tốt nhất.</p>
                                 </div>
                             ) : (
                                 <>
-                                    <div className="mb-10">
-                                        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-2">Tư vấn lộ trình</h3>
-                                        <p className="text-slate-500 text-sm sm:text-base leading-relaxed">Đơn giản hóa việc học tin học, bắt đầu từ con số 0 ngay hôm nay.</p>
+                                    <div className="mb-6">
+                                        <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1">Tư vấn lộ trình</h3>
+                                        <p className="text-slate-500 text-sm leading-relaxed">Đơn giản hóa việc học tin học, bắt đầu từ con số 0 ngay hôm nay.</p>
                                     </div>
 
-                                    <form onSubmit={handleSubmit} className="space-y-6">
+                                    <form onSubmit={handleSubmit} className="space-y-4">
                                         <div className="space-y-1">
                                             <Input
                                                 placeholder="Họ tên của bạn"
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                                className="h-14 border-none bg-slate-50 rounded-2xl px-6 focus:bg-white focus:ring-2 focus:ring-green-500 transition-all font-medium text-slate-900 placeholder:text-slate-400"
+                                                className="h-12 border-none bg-slate-50 rounded-xl px-4 focus:bg-white focus:ring-2 focus:ring-green-500 transition-all font-medium text-slate-900 placeholder:text-slate-400 text-sm"
                                             />
                                         </div>
 
@@ -168,7 +168,7 @@ export default function NewsAndConsultation() {
                                                 name="phone"
                                                 value={formData.phone}
                                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                                className="h-14 border-none bg-slate-50 rounded-2xl px-6 focus:bg-white focus:ring-2 focus:ring-green-500 transition-all font-medium text-slate-900 placeholder:text-slate-400"
+                                                className="h-12 border-none bg-slate-50 rounded-xl px-4 focus:bg-white focus:ring-2 focus:ring-green-500 transition-all font-medium text-slate-900 placeholder:text-slate-400 text-sm"
                                             />
                                         </div>
 
@@ -177,19 +177,19 @@ export default function NewsAndConsultation() {
                                                 name="program"
                                                 value={formData.program}
                                                 onChange={(e) => setFormData({ ...formData, program: e.target.value })}
-                                                className="w-full h-14 bg-slate-50 border-none rounded-2xl px-6 appearance-none focus:bg-white focus:ring-2 focus:ring-green-500 transition-all font-medium text-slate-900 outline-none"
+                                                className="w-full h-12 bg-slate-50 border-none rounded-xl px-4 appearance-none focus:bg-white focus:ring-2 focus:ring-green-500 transition-all font-medium text-slate-900 outline-none text-sm"
                                             >
                                                 <option value="">Chọn khóa học</option>
                                                 {courses.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
                                             </select>
-                                            <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-20">
+                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-20">
                                                 <GraduationCap className="w-5 h-5" />
                                             </div>
                                         </div>
 
                                         <Button
                                             disabled={isSubmitting}
-                                            className="w-full h-16 bg-slate-900 hover:bg-green-600 text-white font-bold text-lg rounded-2xl transition-all duration-300 shadow-xl shadow-slate-200 hover:shadow-green-200 hover:-translate-y-1"
+                                            className="w-full h-12 bg-slate-900 hover:bg-green-600 text-white font-bold text-base rounded-xl transition-all duration-300 shadow-lg shadow-slate-200 hover:shadow-green-200 hover:-translate-y-0.5"
                                         >
                                             {isSubmitting ? "SENDING..." : "BẮT ĐẦU NGAY"}
                                         </Button>

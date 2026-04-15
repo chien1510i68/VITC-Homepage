@@ -102,7 +102,7 @@ export const LookupResults = ({
                         <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-700">Nơi sinh</th>
                         <th className="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-gray-700">Điểm LT</th>
                         <th className="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-gray-700">Điểm TH</th>
-                        <th className="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-gray-700">Điểm TB</th>
+
                         <th className="px-2 sm:px-4 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-gray-700">Kết quả</th>
                         <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-700">Ngày thi</th>
                         <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-gray-700">Kỳ thi</th>
@@ -148,16 +148,7 @@ export const LookupResults = ({
                           <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700">{result.birthPlace}</td>
                           <td className="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs sm:text-sm font-semibold text-gray-900">{result.theoryScore}</td>
                           <td className="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs sm:text-sm font-semibold text-gray-900">{result.practiceScore}</td>
-                          <td className="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs sm:text-sm">
-                            <motion.span
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{ duration: 0.3, delay: 0.5 }}
-                              className={`font-bold ${result.finalScore >= 80 ? TAILWIND_COLORS.textPrimary : result.finalScore >= 50 ? 'text-orange-600' : 'text-red-600'}`}
-                            >
-                              {result.finalScore}
-                            </motion.span>
-                          </td>
+
                           <td className="px-2 sm:px-4 py-2 sm:py-3 text-center text-xs sm:text-sm">
                             <motion.span
                               initial={{ scale: 0, rotate: -180 }}
