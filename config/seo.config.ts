@@ -34,7 +34,7 @@ export const PAGE_METADATA: Record<string, PageMetadata> = {
     title: `${siteConfig.name} - ${siteConfig.fullName}`,
     description: 'Trung tâm Tin học và Kỹ năng mềm VNUA - Đào tạo chuyên nghiệp với chứng chỉ quốc tế ICDL, chuẩn đầu ra Tin học VNUA, và các khóa kỹ năng mềm thiết yếu. Đội ngũ giảng viên giàu kinh nghiệm, cơ sở vật chất hiện đại.',
     keywords: [
-      'VISC', 'VITC', 'VNUA',
+      'VISC', 'VISC', 'VNUA',
       'trung tâm tin học VNUA',
       'trung tâm kỹ năng mềm VNUA',
       'đào tạo tin học',
@@ -152,7 +152,7 @@ export const PAGE_METADATA: Record<string, PageMetadata> = {
  */
 export const DEFAULT_KEYWORDS = [
   'VISC',
-  'VITC',
+  'VISC',
   'VNUA',
   'Học viện Nông nghiệp Việt Nam',
   'trung tâm tin học',

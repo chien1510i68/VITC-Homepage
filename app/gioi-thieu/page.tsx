@@ -59,7 +59,7 @@ export default function GioiThieuPage() {
                 
                 <p className="text-gray-700 text-lg leading-relaxed mb-6">
                   Trung tâm Tin học và Kỹ năng mềm (VISC) được thành lập trên cơ sở sáp nhập 
-                  Trung tâm Tin học (VITC) và Trung tâm Đào tạo Kỹ năng mềm thuộc Học viện Nông nghiệp Việt Nam.
+                  Trung tâm Tin học (VISC) và Trung tâm Đào tạo Kỹ năng mềm thuộc Học viện Nông nghiệp Việt Nam.
                 </p>
                 
                 <p className="text-gray-700 text-lg leading-relaxed mb-6">

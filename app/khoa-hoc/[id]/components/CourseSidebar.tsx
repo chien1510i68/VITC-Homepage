@@ -116,7 +116,7 @@ export default function CourseSidebar({ program }: CourseSidebarProps) {
             </div>
             <div className="flex items-center gap-2">
               <span className="font-semibold">Email:</span>
-              <span className={TAILWIND_COLORS.textPrimary}>support@vitc.edu.vn</span>
+              <span className={TAILWIND_COLORS.textPrimary}>support@visc.edu.vn</span>
             </div>
           </div>
         </div>

@@ -81,7 +81,7 @@ export function HeroSection() {
             Tiện ích và Dịch vụ
             <br />
             <span className={TAILWIND_COLORS.textPrimary}>
-              VITC
+              VISC
             </span>
           </motion.h1>
 

@@ -64,7 +64,7 @@ export async function generateCourseMetadata(
   } catch (error) {
     console.error('Error generating course metadata:', error);
     return {
-      title: 'Khóa học - VITC',
+      title: 'Khóa học - VISC',
       description: siteConfig.description,
     };
   }
@@ -85,7 +85,7 @@ export function generateCourseStructuredData(course: any) {
     description: course.description,
     provider: {
       '@type': 'Organization',
-      name: 'VITC',
+      name: 'VISC',
       sameAs: siteConfig.url,
     },
     instructor: instructor ? {

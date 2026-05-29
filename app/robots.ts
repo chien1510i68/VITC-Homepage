@@ -5,7 +5,7 @@
 
 import { MetadataRoute } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://vitc.edu.vn';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://visc.edu.vn';
 
 export default function robots(): MetadataRoute.Robots {
   return {

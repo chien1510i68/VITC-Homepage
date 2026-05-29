@@ -7,7 +7,7 @@ import { MetadataRoute } from 'next';
 import { getCourses } from '@/lib/api/courses';
 import { getNews } from '@/lib/api/news';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://vitc.edu.vn';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://visc.edu.vn';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages

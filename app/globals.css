@@ -53,14 +53,14 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* VITC Green - Primary Color */
+  /* VISC Green - Primary Color */
   --primary: oklch(0.45 0.15 160);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  /* VITC Light Green - Accent */
+  /* VISC Light Green - Accent */
   --accent: oklch(0.92 0.05 160);
   --accent-foreground: oklch(0.3 0.1 160);
   --destructive: oklch(0.577 0.245 27.325);

@@ -20,7 +20,7 @@ interface VideoPlayerProps {
 export function VideoPlayer({
   videoUrl = "https://www.youtube.com/embed/Swpi6hfyR4A?si=BhveuYKhXSZHI54s",
   thumbnailUrl = "https://img.youtube.com/vi/Swpi6hfyR4A/maxresdefault.jpg",
-  title = "Video giới thiệu VITC"
+  title = "Video giới thiệu VISC"
 }: VideoPlayerProps) {
   // Set to true by default to allow autoplay when entering the site
   const [isPlaying, setIsPlaying] = useState(true);

@@ -296,7 +296,7 @@ export default function AboutSection() {
             Tương Lai
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-            Hãy cùng VITC viết tiếp những trang sử mới trong hành trình chinh phục công nghệ.
+            Hãy cùng VISC viết tiếp những trang sử mới trong hành trình chinh phục công nghệ.
           </p>
           <motion.button
             whileHover={{ scale: 1.05 }}

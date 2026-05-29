@@ -1,4 +1,4 @@
-// Main API exports for VITC Homepage
+// Main API exports for VISC Homepage
 // Import from this file in your components
 
 // Export types

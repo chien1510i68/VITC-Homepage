@@ -14,7 +14,7 @@ const MOCK_EXAMS = [
     color: 'text-blue-600',
     bgColor: 'bg-blue-50',
     borderColor: 'border-blue-100',
-    link: 'https://elearning.vitc.edu.vn'
+    link: 'https://elearning.visc.edu.vn'
   },
   {
     title: 'UDCNTT Nâng cao',
@@ -25,7 +25,7 @@ const MOCK_EXAMS = [
     color: 'text-purple-600',
     bgColor: 'bg-purple-50',
     borderColor: 'border-purple-100',
-    link: 'https://elearning.vitc.edu.vn'
+    link: 'https://elearning.visc.edu.vn'
   },
   {
     title: 'Kỹ năng mềm',
@@ -36,7 +36,7 @@ const MOCK_EXAMS = [
     color: 'text-green-600',
     bgColor: 'bg-green-50',
     borderColor: 'border-green-100',
-    link: 'https://elearning.vitc.edu.vn'
+    link: 'https://elearning.visc.edu.vn'
   }
 ];
 
@@ -141,7 +141,7 @@ export default function MockExamSection() {
           </div>
           
           <a 
-            href="https://elearning.vitc.edu.vn"
+            href="https://elearning.visc.edu.vn"
             target="_blank"
             rel="noopener noreferrer"
             className="relative z-10 bg-white text-green-700 px-8 py-4 rounded-xl font-bold hover:bg-gray-50 transition-colors shadow-xl"

@@ -6,7 +6,7 @@ import { TAILWIND_COLORS } from '@/lib/colors';
 export default function Footer() {
   const quickLinks = [
     { title: 'Trang chủ', href: '/' },
-    { title: 'Trung tâm tin học', href: 'https://vitc.edu.vn/' },
+    { title: 'Trung tâm tin học', href: 'https://visc.edu.vn/' },
     { title: 'Trung tâm ĐT kỹ năng mềm', href: 'https://trungtamkynangmem.vnua.edu.vn' },
     { title: 'Tin tức', href: '/tin-tuc-thong-bao' },
     { title: 'Tra cứu', href: '/tien-ich-dich-vu' },
@@ -196,7 +196,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-400">
-              © 2026 <span className="text-white font-semibold">VITC VNUA</span>. All rights reserved.
+              © 2026 <span className="text-white font-semibold">VISC VNUA</span>. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
               <Link href="#" className={`hover:${TAILWIND_COLORS.textPrimary} transition-colors`}>

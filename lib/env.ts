@@ -25,11 +25,11 @@ const clientSchema = z.object({
 
   // Site Configuration
   NEXT_PUBLIC_SITE_URL: z.string().url().default('http://localhost:3000'),
-  NEXT_PUBLIC_SITE_NAME: z.string().default('VITC - Trung tâm Tin học'),
+  NEXT_PUBLIC_SITE_NAME: z.string().default('VISC - Trung tâm Tin học'),
   NEXT_PUBLIC_SITE_DESCRIPTION: z
     .string()
     .default('Trung tâm đào tạo Tin học hàng đầu Việt Nam'),
-  NEXT_PUBLIC_CONTACT_EMAIL: z.string().email().default('contact@vitc.edu.vn'),
+  NEXT_PUBLIC_CONTACT_EMAIL: z.string().email().default('contact@visc.edu.vn'),
   NEXT_PUBLIC_CONTACT_PHONE: z.string().default('024-1234-5678'),
 
   // Feature Flags
@@ -58,6 +58,7 @@ const clientSchema = z.object({
   // Third-party Services (Optional)
   NEXT_PUBLIC_FB_PIXEL_ID: z.string().optional(),
   NEXT_PUBLIC_ZALO_OA_ID: z.string().optional(),
+  NEXT_PUBLIC_ZALO_PHONE: z.string().default('0961174239'),
   NEXT_PUBLIC_RECAPTCHA_SITE_KEY: z.string().optional(),
 
   // Image & Media (Optional)
@@ -159,7 +160,7 @@ export const isTest = () => env.NODE_ENV === 'test';
  */
 export const getSiteUrl = () => {
   if (isProduction()) {
-    return env.NEXT_PUBLIC_SITE_URL.replace('localhost:3000', 'vitc.edu.vn');
+    return env.NEXT_PUBLIC_SITE_URL.replace('localhost:3000', 'visc.edu.vn');
   }
   return env.NEXT_PUBLIC_SITE_URL;
 };

@@ -14,6 +14,7 @@ import "./globals.css";
 import ScreenReaderAnnouncer from "./components/ScreenReaderAnnouncer";
 import SkipToContent from "./components/SkipToContent";
 import ChatWidget from "./components/ChatWidget";
+import GoogleAnalytics from "./components/GoogleAnalytics";
 import { siteConfig, seoConfig } from "@/config/site.config";
 import { Toaster } from "sonner";
 
@@ -70,7 +71,9 @@ export default function RootLayout({
     <html lang="vi" suppressHydrationWarning>
       <body
         className={`${primaryFont.variable} ${headerFont.variable} font-sans antialiased`}
+        suppressHydrationWarning
       >
+        <GoogleAnalytics />
         <SkipToContent />
         <ScreenReaderAnnouncer />
         {children}

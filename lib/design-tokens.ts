@@ -1,7 +1,7 @@
 /**
  * Design System Tokens
  * 
- * Centralized design tokens for the VITC Homepage
+ * Centralized design tokens for the VISC Homepage
  * All spacing, colors, typography, and design values in one place
  * 
  * @module lib/design-tokens

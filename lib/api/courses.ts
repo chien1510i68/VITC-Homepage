@@ -96,7 +96,7 @@ const convertCourseToProgram = (course: Course): Program => {
       achievements: ['ICDL Certified Trainer', 'Giảng viên xuất sắc 2021', '2500+ học viên đạt chứng chỉ'],
       image: course.instructor.avatarUrl
     } : {
-      name: 'Giảng viên VITC',
+      name: 'Giảng viên VISC',
       title: 'Giảng viên',
       bio: '',
       experience: '5+ năm',

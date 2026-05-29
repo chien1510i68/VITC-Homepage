@@ -1,4 +1,4 @@
-// API Client for VITC Homepage
+// API Client for VISC Homepage
 // This file is kept for backward compatibility
 // New code should import from specific modules or use the unified 'api' object
 

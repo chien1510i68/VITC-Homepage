@@ -63,7 +63,7 @@ export interface CourseCardData {
 }
 
 // Mock data for fallback - Backend Course model structure
-// Dữ liệu khóa học thực tế từ Trung tâm Tin học VNUA (https://vitc.edu.vn/)
+// Dữ liệu khóa học thực tế từ Trung tâm Tin học VNUA (https://visc.edu.vn/)
 export const mockFeaturedCourses: Course[] = [
   // ===== KHÓA HỌC CHỨNG CHỈ QUỐC TẾ =====
   {
@@ -104,7 +104,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-001",
       username: "Đỗ Thị Nhâm",
-      email: "dtnham@vitc.edu.vn",
+      email: "dtnham@visc.edu.vn",
       avatarUrl: "/instructors/do-thi-nham.jpg",
       description: `<p>Thạc sĩ ngành Công nghệ thông tin Đại học Bách khoa Hà Nội. Kỹ sư Tin học Đại học Nông nghiệp. Giảng viên giảng dạy các lớp ôn thi Chứng chỉ Quốc gia như Ứng dụng Công nghệ thông tin cơ bản tại Trung tâm Tin học Học viện Nông nghiệp Việt Nam.</p>`
     },
@@ -151,7 +151,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-002",
       username: "tran_thi_lan",
-      email: "ttlan@vitc.edu.vn",
+      email: "ttlan@visc.edu.vn",
       avatarUrl: "/instructors/tran-thi-lan.jpg",
       description: `<div style="line-height: 1.8;">
         <p style="margin-bottom: 12px;"><strong style="color: #1976d2;">Kỹ sư Công nghệ Thông tin</strong> - Đại học Quốc gia Hà Nội</p>
@@ -206,7 +206,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-002",
       username: "tran_thi_lan",
-      email: "ttlan@vitc.edu.vn",
+      email: "ttlan@visc.edu.vn",
       avatarUrl: "/instructors/tran-thi-lan.jpg",
       description: `<div style="line-height: 1.8;">
         <p style="margin-bottom: 12px;"><strong style="color: #1976d2;">Kỹ sư Công nghệ Thông tin</strong> - Đại học Quốc gia Hà Nội</p>
@@ -245,7 +245,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-003",
       username: "le_hoang_nam",
-      email: "lhnam@vitc.edu.vn",
+      email: "lhnam@visc.edu.vn",
       avatarUrl: "/instructors/le-hoang-nam.jpg",
       description: `<div style="line-height: 1.8;">
         <p style="margin-bottom: 12px;"><strong style="color: #1976d2;">Senior Web Developer</strong> - 8 năm kinh nghiệm</p>
@@ -259,7 +259,7 @@ export const mockFeaturedCourses: Course[] = [
     },
     benefitsHtml: `<div style="line-height: 1.6;">
       <div style="background: linear-gradient(to right, #f0f9ff, #e0f2fe); padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #0284c7;">
-        <p style="margin: 0; font-size: 13px; color: #0c4a6e;"><strong>Chứng nhận:</strong> Chứng chỉ hoàn thành từ VITC</p>
+        <p style="margin: 0; font-size: 13px; color: #0c4a6e;"><strong>Chứng nhận:</strong> Chứng chỉ hoàn thành từ VISC</p>
       </div>
       <div style="background: linear-gradient(to right, #f0fdf4, #dcfce7); padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #16a34a;">
         <p style="margin: 0; font-size: 13px; color: #14532d;"><strong>Dự án thực tế:</strong> Portfolio website cá nhân</p>
@@ -291,7 +291,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-004",
       username: "pham_thu_ha",
-      email: "ptha@vitc.edu.vn",
+      email: "ptha@visc.edu.vn",
       avatarUrl: "/instructors/pham-thu-ha.jpg",
       description: `<div style="line-height: 1.8;">
         <p style="margin-bottom: 12px;"><strong style="color: #1976d2;">Chuyên gia Đào tạo Kỹ năng mềm</strong></p>
@@ -354,7 +354,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-005",
       username: "Vũ Thị Lưu",
-      email: "vtluu@vitc.edu.vn",
+      email: "vtluu@visc.edu.vn",
       avatarUrl: "/instructors/vu-thi-luu.jpg",
       description: `<p>Thạc sĩ Công nghệ thông tin Đại học Bách khoa Hà Nội. Kỹ sư Tin học Đại học Nông nghiệp Hà Nội. Giảng viên giảng dạy các chứng chỉ Tin học văn phòng MOS tại Trung tâm Tin học Học viện Nông nghiệp Việt Nam.</p>`
     },
@@ -402,7 +402,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-002",
       username: "tran_thi_lan",
-      email: "ttlan@vitc.edu.vn",
+      email: "ttlan@visc.edu.vn",
       avatarUrl: "/instructors/tran-thi-lan.jpg",
       description: `<p>Kỹ sư Công nghệ Thông tin - Đại học Quốc gia Hà Nội. Chuyên gia Ứng dụng CNTT, IC3 với kinh nghiệm lâu năm trong đào tạo và thi chứng chỉ quốc tế.</p>`
     },
@@ -449,7 +449,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-001",
       username: "Đỗ Thị Nhâm",
-      email: "dtnham@vitc.edu.vn",
+      email: "dtnham@visc.edu.vn",
       avatarUrl: "/instructors/do-thi-nham.jpg",
       description: `<p>Thạc sĩ ngành Công nghệ thông tin Đại học Bách khoa Hà Nội. Giảng viên giảng dạy các lớp ôn thi Chuẩn đầu ra Tin học tại HVNN.</p>`
     },
@@ -498,7 +498,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-006",
       username: "Nguyễn Văn Toàn",
-      email: "nvtoan@vitc.edu.vn",
+      email: "nvtoan@visc.edu.vn",
       avatarUrl: "/instructors/nguyen-van-toan.jpg",
       description: `<p>Digital Marketing Expert với 10+ năm kinh nghiệm. Chuyên gia SEO, Google Ads, Facebook Ads đã triển khai thành công hàng trăm chiến dịch Marketing cho doanh nghiệp.</p>`
     },
@@ -546,7 +546,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-007",
       username: "Phạm Minh Tuấn",
-      email: "pmtuan@vitc.edu.vn",
+      email: "pmtuan@visc.edu.vn",
       avatarUrl: "/instructors/pham-minh-tuan.jpg",
       description: `<p>Tiến sĩ Thống kê, chuyên gia phân tích dữ liệu với hơn 15 năm kinh nghiệm giảng dạy và nghiên cứu. Thành thạo Excel, SPSS, R, Python.</p>`
     },
@@ -594,7 +594,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-008",
       username: "Lê Thị Hương",
-      email: "lthuong@vitc.edu.vn",
+      email: "lthuong@visc.edu.vn",
       avatarUrl: "/instructors/le-thi-huong.jpg",
       description: `<p>Cử nhân Kế toán, chuyên gia Excel trong Kế toán với 12 năm kinh nghiệm. Đã đào tạo hàng ngàn kế toán viên sử dụng Excel hiệu quả.</p>`
     },
@@ -642,7 +642,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-009",
       username: "Trần Văn Hùng",
-      email: "tvhung@vitc.edu.vn",
+      email: "tvhung@visc.edu.vn",
       avatarUrl: "/instructors/tran-van-hung.jpg",
       description: `<p>Thạc sĩ GIS, chuyên gia ArcGIS với 10 năm kinh nghiệm. Esri Certified Professional trong ArcGIS Desktop và ArcGIS Pro.</p>`
     },
@@ -690,7 +690,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-010",
       username: "Nguyễn Đức Anh",
-      email: "ndanh@vitc.edu.vn",
+      email: "ndanh@visc.edu.vn",
       avatarUrl: "/instructors/nguyen-duc-anh.jpg",
       description: `<p>Kỹ sư Xây dựng, chuyên gia MicroStation với 8 năm kinh nghiệm thiết kế hạ tầng. Bentley Certified Professional.</p>`
     },
@@ -738,7 +738,7 @@ export const mockFeaturedCourses: Course[] = [
     instructor: {
       id: "inst-005",
       username: "Vũ Thị Lưu",
-      email: "vtluu@vitc.edu.vn",
+      email: "vtluu@visc.edu.vn",
       avatarUrl: "/instructors/vu-thi-luu.jpg",
       description: `<p>Thạc sĩ Công nghệ thông tin, MOS Master Instructor. Đã đào tạo hàng ngàn học viên đạt chứng chỉ MOS.</p>`
     },

@@ -24,7 +24,7 @@ export const TIN_HOC_LOOKUP_CONFIG: Partial<LookupSectionProps> = {
  */
 export const TIEN_ICH_LOOKUP_CONFIG: Partial<LookupSectionProps> = {
   sectionId: 'tra-cuu-thong-tin',
-  contactEmail: 'support@vitc.edu.vn',
+  contactEmail: 'support@visc.edu.vn',
   contactPhone: '0123456789',
   title: 'Tra cứu điểm thi & Chứng chỉ',
   subtitle: 'Tra cứu kết quả thi và chứng chỉ của bạn một cách nhanh chóng',
@@ -38,7 +38,7 @@ export const TIEN_ICH_LOOKUP_CONFIG: Partial<LookupSectionProps> = {
  */
 export const KY_NANG_MEM_LOOKUP_CONFIG: Partial<LookupSectionProps> = {
   sectionId: 'tra-cuu-ky-nang-mem',
-  contactEmail: 'kynanmem@vitc.edu.vn',
+  contactEmail: 'kynanmem@visc.edu.vn',
   contactPhone: '0123456789',
   title: 'Tra cứu điểm thi & Chứng chỉ Kỹ năng mềm',
   subtitle: 'Tra cứu kết quả thi và chứng chỉ Kỹ năng mềm của bạn',

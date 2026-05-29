@@ -47,7 +47,7 @@ export default function CourseHeroSection({ programsCount }: CourseHeroSectionPr
             </span>
             <br />
             <span className="bg-gradient-to-r from-emerald-700 via-green-600 to-teal-600 bg-clip-text text-transparent">
-              các khóa học tại VITC
+              các khóa học tại VISC
             </span>
           </h1>
           

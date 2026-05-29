@@ -41,17 +41,17 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'vitc.edu.vn',
+        hostname: 'visc.edu.vn',
         pathname: '/image_slide/**',
       },
       {
         protocol: 'https',
-        hostname: 'vitc.edu.vn',
+        hostname: 'visc.edu.vn',
         pathname: '/Frond_end/images/**',
       },
       {
         protocol: 'https',
-        hostname: 'vitc.edu.vn',
+        hostname: 'visc.edu.vn',
       },
       {
         protocol: 'https',
@@ -131,8 +131,8 @@ const nextConfig: NextConfig = {
     
     // In development, allow localhost connections
     const connectSrc = isDev 
-      ? `'self' ${apiOrigin} https://vitc.edu.vn https://www.google-analytics.com https://*.sentry.io https://*.facebook.com https://*.facebook.net`
-      : `'self' https://vitc.edu.vn https://www.google-analytics.com https://*.sentry.io https://*.facebook.com https://*.facebook.net`;
+      ? `'self' ${apiOrigin} https://visc.edu.vn https://www.google-analytics.com https://*.sentry.io https://*.facebook.com https://*.facebook.net`
+      : `'self' https://visc.edu.vn https://www.google-analytics.com https://*.sentry.io https://*.facebook.com https://*.facebook.net`;
     
     return [
       {

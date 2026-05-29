@@ -136,7 +136,7 @@ export class CourseService {
     // Generate mock data for missing fields
     const mockRating = Math.floor(Math.random() * 0.4 + 4.6); // 4.6 - 5.0
     const mockStudentCount = Math.floor(Math.random() * 1000 + 200); // 200 - 1200
-    const mockInstructor = 'ThS. Giảng viên VITC';
+    const mockInstructor = 'ThS. Giảng viên VISC';
 
     return {
       id: course.id,
@@ -148,7 +148,7 @@ export class CourseService {
       studentCount: mockStudentCount,
       description: course.descriptionHtml ? 
         course.descriptionHtml.replace(/<[^>]*>/g, '').substring(0, 100) + '...' : 
-        'Khóa học chất lượng cao tại VITC',
+        'Khóa học chất lượng cao tại VISC',
       category: course.subject || 'Khóa học'
     };
   }

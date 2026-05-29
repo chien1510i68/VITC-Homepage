@@ -1,4 +1,4 @@
-// API Types for VITC Homepage
+// API Types for VISC Homepage
 
 export interface Program {
   id: number | string; // Support both number and UUID string

@@ -48,7 +48,7 @@ function NewsAnnouncementsContent() {
           {pageTitle}
         </h1>
         <p className="text-base text-gray-600">
-          Cập nhật thông tin mới nhất về hoạt động và tin tức của VITC
+          Cập nhật thông tin mới nhất về hoạt động và tin tức của VISC
         </p>
       </div>
 

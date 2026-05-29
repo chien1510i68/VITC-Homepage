@@ -57,7 +57,7 @@ export const seoConfig = {
     'lập trình cơ bản',
     'ứng dụng CNTT',
     'VISC',
-    'VITC',
+    'VISC',
     // English keywords
     'IT training Vietnam',
     'soft skills training',

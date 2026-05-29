@@ -1,4 +1,4 @@
-// Mock data for VITC Homepage - Used as fallback when API is unavailable
+// Mock data for VISC Homepage - Used as fallback when API is unavailable
 
 import { Program, Instructor, NewsArticle, LookupResult, CourseSchedule, AboutTimeline } from './types';
 
@@ -91,7 +91,7 @@ export const mockAboutTimeline: AboutTimeline[] = [
   {
     id: 1,
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=1000&fit=crop",
-    title: "Bước 1: Thành lập Trung tâm VITC",
+    title: "Bước 1: Thành lập Trung tâm VISC",
     description: "Năm 2015 đánh dấu sự khởi đầu với tầm nhìn đào tạo nguồn nhân lực CNTT chất lượng cao, đáp ứng nhu cầu của thị trường công nghệ đang phát triển nhanh chóng.",
     year: "2015"
   },
@@ -113,7 +113,7 @@ export const mockAboutTimeline: AboutTimeline[] = [
     id: 4,
     image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=1000&fit=crop",
     title: "Bước 4: Đạt mốc 1000 học viên",
-    description: "Cột mốc quan trọng với 1000 học viên đã tin tưởng và lựa chọn VITC, khẳng định chất lượng đào tạo và uy tín của trung tâm trên thị trường.",
+    description: "Cột mốc quan trọng với 1000 học viên đã tin tưởng và lựa chọn VISC, khẳng định chất lượng đào tạo và uy tín của trung tâm trên thị trường.",
     year: "2018"
   },
   {
@@ -155,7 +155,7 @@ export const mockAboutTimeline: AboutTimeline[] = [
     id: 10,
     image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&h=1000&fit=crop",
     title: "Bước 10: Kỷ niệm 10 năm thành lập",
-    description: "Đánh dấu 10 năm hành trình phát triển vững mạnh, VITC cam kết tiếp tục đổi mới và nâng cao chất lượng đào tạo, đồng hành cùng sự phát triển của ngành công nghệ Việt Nam.",
+    description: "Đánh dấu 10 năm hành trình phát triển vững mạnh, VISC cam kết tiếp tục đổi mới và nâng cao chất lượng đào tạo, đồng hành cùng sự phát triển của ngành công nghệ Việt Nam.",
     year: "2025"
   }
 ];

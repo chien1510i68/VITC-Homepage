@@ -23,7 +23,7 @@ function formatDate(dateString: string): string {
 }
 
 function getFallbackImage(): string {
-    return 'https://placehold.co/400x300/f8fafc/64748b?text=VITC';
+    return 'https://placehold.co/400x300/f8fafc/64748b?text=VISC';
 }
 
 export default function NewsAndConsultation() {
@@ -99,7 +99,7 @@ export default function NewsAndConsultation() {
                                 <span>Insight & Updates</span>
                             </div>
                             <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 tracking-normal leading-tight">
-                                Cùng VITC cập nhật <br /><span className="text-green-600">kiến thức mới.</span>
+                                Cùng VISC cập nhật <br /><span className="text-green-600">kiến thức mới.</span>
                             </h2>
                         </div>
 
@@ -141,7 +141,7 @@ export default function NewsAndConsultation() {
                                         <ArrowRight className="w-8 h-8 rotate-[-45deg]" />
                                     </div>
                                     <h3 className="text-xl font-bold text-slate-900">Great!</h3>
-                                    <p className="text-slate-500 text-sm">VITC sẽ gọi cho bạn trong ít phút nữa để tư vấn lộ trình tốt nhất.</p>
+                                    <p className="text-slate-500 text-sm">VISC sẽ gọi cho bạn trong ít phút nữa để tư vấn lộ trình tốt nhất.</p>
                                 </div>
                             ) : (
                                 <>

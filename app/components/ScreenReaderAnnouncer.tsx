@@ -15,6 +15,7 @@ export default function ScreenReaderAnnouncer() {
       aria-live="polite"
       aria-atomic="true"
       className="sr-only"
+      suppressHydrationWarning
     />
   );
 }

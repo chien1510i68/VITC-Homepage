@@ -1,17 +1,17 @@
 version: '3.8'
 
 services:
-  vitc-web:
+  visc-web:
     # Nếu muốn build trong docker-compose (thay vì dùng image đã build)
     # build:
     #   context: .
     #   dockerfile: Dockerfile
     #   args:
-    #     NEXT_PUBLIC_API_URL: https://api.vitc.edu.vn/api/v1
+    #     NEXT_PUBLIC_API_URL: https://api.visc.edu.vn/api/v1
     
     # Sử dụng image đã build
-    image: vitc-homepage:latest
-    container_name: vitc-homepage
+    image: visc-homepage:latest
+    container_name: visc-homepage
     ports:
       - "3000:3000"
     # Chọn 1 trong 2 cách:
@@ -54,8 +54,8 @@ services:
     
     # Network
     networks:
-      - vitc-network
+      - visc-network
 
 networks:
-  vitc-network:
+  visc-network:
     driver: bridge

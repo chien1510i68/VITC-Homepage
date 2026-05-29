@@ -1,11 +1,11 @@
 /**
- * VITC Brand Colors
+ * VISC Brand Colors
  * Centralized color configuration for the entire application
  * Change colors here to apply throughout the entire website
  */
 
 export const COLORS = {
-  // Primary Brand Color - VITC Green
+  // Primary Brand Color - VISC Green
   primary: {
     DEFAULT: 'green-600',
     light: 'green-500',

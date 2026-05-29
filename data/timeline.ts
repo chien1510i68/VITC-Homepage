@@ -1,17 +1,17 @@
 /**
  * Timeline Data
  * 
- * Dữ liệu cố định cho hành trình phát triển của VITC
+ * Dữ liệu cố định cho hành trình phát triển của VISC
  * Sử dụng cho trang Tin học và các trang khác cần hiển thị timeline
  */
 
 import { AboutTimeline } from '@/lib/api/types';
 
-export const VITC_TIMELINE: AboutTimeline[] = [
+export const VISC_TIMELINE: AboutTimeline[] = [
   {
     id: 1,
     year: '2015',
-    title: 'Thành lập Trung tâm VITC',
+    title: 'Thành lập Trung tâm VISC',
     description: 'Năm 2015 đánh dấu sự khởi đầu với tầm nhìn đào tạo nguồn nhân lực CNTT chất lượng cao, đáp ứng nhu cầu của thị trường công nghệ đang phát triển nhanh chóng.',
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=1000&fit=crop'
   },
@@ -33,7 +33,7 @@ export const VITC_TIMELINE: AboutTimeline[] = [
     id: 4,
     year: '2018',
     title: 'Đạt mốc 1000 học viên',
-    description: 'Cột mốc quan trọng với 1000 học viên đã tin tưởng và lựa chọn VITC, khẳng định chất lượng đào tạo và uy tín của trung tâm trên thị trường.',
+    description: 'Cột mốc quan trọng với 1000 học viên đã tin tưởng và lựa chọn VISC, khẳng định chất lượng đào tạo và uy tín của trung tâm trên thị trường.',
     image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=1000&fit=crop'
   },
   {
@@ -75,7 +75,7 @@ export const VITC_TIMELINE: AboutTimeline[] = [
     id: 10,
     year: '2025',
     title: 'Kỷ niệm 10 năm thành lập',
-    description: 'Đánh dấu 10 năm hành trình phát triển vững mạnh, VITC cam kết tiếp tục đổi mới và nâng cao chất lượng đào tạo, đồng hành cùng sự phát triển của ngành công nghệ Việt Nam.',
+    description: 'Đánh dấu 10 năm hành trình phát triển vững mạnh, VISC cam kết tiếp tục đổi mới và nâng cao chất lượng đào tạo, đồng hành cùng sự phát triển của ngành công nghệ Việt Nam.',
     image: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&h=1000&fit=crop'
   }
 ];

@@ -108,7 +108,7 @@ export default function ChucNangNhiemVuPage() {
               <div className="prose prose-lg max-w-none text-center">
                 <p className="text-gray-700 leading-relaxed mb-6">
                   Trung tâm Tin học và Kỹ năng mềm được thành lập trên cơ sở sáp nhập 
-                  Trung tâm Tin học (VITC) và Trung tâm Đào tạo Kỹ năng mềm thuộc 
+                  Trung tâm Tin học (VISC) và Trung tâm Đào tạo Kỹ năng mềm thuộc 
                   Học viện Nông nghiệp Việt Nam. Đây là bước chuyển mình chiến lược 
                   nhằm tạo ra một hệ sinh thái đào tạo toàn diện, kết hợp nhuần nhuyễn 
                   giữa <strong className="text-green-600">Năng lực số (Digital Literacy)</strong> và{' '}

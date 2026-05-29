@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { VITC_TIMELINE } from '@/data/timeline';
+import { VISC_TIMELINE } from '@/data/timeline';
 import type { AboutTimeline } from '@/lib/api';
 
 // Timeline Item Component with Hover Effect
@@ -137,7 +137,7 @@ const TimelineItem = ({ item, index, isLast }: { item: AboutTimeline; index: num
 };
 
 export default function AboutSection() {
-  const [timelineData] = useState<AboutTimeline[]>(VITC_TIMELINE);
+  const [timelineData] = useState<AboutTimeline[]>(VISC_TIMELINE);
   const [isLoading] = useState(false);
 
   if (isLoading) {
@@ -168,7 +168,7 @@ export default function AboutSection() {
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             Hành trình
-            <span className="text-emerald-600"> VITC</span>
+            <span className="text-emerald-600"> VISC</span>
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Những mốc quan trọng trong quá trình phát triển của chúng tôi
